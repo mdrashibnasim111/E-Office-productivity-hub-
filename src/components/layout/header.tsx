@@ -23,17 +23,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import Logo from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const navItems = [
-  { href: '#', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '#', icon: Target, label: 'Goals & KPIs' },
-  { href: '#', icon: ListTodo, label: 'Tasks' },
-  { href: '#', icon: Users, label: 'Team' },
-  { href: '#', icon: BarChart2, label: 'Reports' },
-  { href: '#', icon: Trophy, label: 'Leaderboard' },
+    { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
+    { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
+    { href: '/dashboard/team', icon: Users, label: 'Team' },
+    { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
+    { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
 
 const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
@@ -49,10 +49,10 @@ export function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
-          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <SheetTitle>Navigation Menu</SheetTitle>
           <nav className="grid gap-2 text-lg font-medium">
             <Link
-              href="#"
+              href="/dashboard"
               className="flex items-center gap-2 text-lg font-semibold mb-4"
             >
               <Logo className="h-6 w-6 text-primary" />

@@ -16,12 +16,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
-  { href: '#', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '#', icon: Target, label: 'Goals & KPIs' },
-  { href: '#', icon: ListTodo, label: 'Tasks' },
-  { href: '#', icon: Users, label: 'Team' },
-  { href: '#', icon: BarChart2, label: 'Reports' },
-  { href: '#', icon: Trophy, label: 'Leaderboard' },
+  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
+  { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
+  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
+  { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
 
 export function Sidebar() {
@@ -41,7 +41,7 @@ export function Sidebar() {
                 key={index}
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  item.label === 'Dashboard' ? 'bg-muted text-primary' : ''
+                  item.href === '/dashboard' ? 'bg-muted text-primary' : ''
                 }`}
               >
                 <item.icon className="h-4 w-4" />
