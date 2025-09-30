@@ -1,12 +1,18 @@
+import { ProductivityChart } from "@/components/dashboard/productivity-chart";
+import { StatsCards } from "@/components/dashboard/stats-cards";
+
 export default function ReportsPage() {
   return (
-    <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-      <div className="flex flex-col items-center gap-1 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Reports</h1>
-        <p className="text-muted-foreground">
-          This page is under construction.
-        </p>
+    <>
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
+        Reports
+      </h1>
+      <StatsCards />
+      <div className="grid gap-4 md:gap-8 lg:grid-cols-1">
+        <div className="xl:col-span-2">
+            <ProductivityChart />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
