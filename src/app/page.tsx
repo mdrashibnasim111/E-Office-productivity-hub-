@@ -51,10 +51,10 @@ export default function LoginPage() {
                  />
                 <Label htmlFor="password"  className="absolute left-0 -top-3.5 text-sm text-white transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm peer-focus:translate-y-0">Enter your password</Label>
               </div>
-              <div className="flex items-center justify-between my-6">
+              <div className="flex items-center justify-between my-6 text-white">
                 <div className="flex items-center">
-                    <Checkbox id="remember" className="border-white text-white data-[state=checked]:bg-white data-[state=checked]:text-black" />
-                    <Label htmlFor="remember" className="text-sm font-medium text-white ml-2">Remember me</Label>
+                    <Checkbox id="remember" className="border-white text-white data-[state=checked]:bg-white data-[state=checked]:text-black accent-white" />
+                    <Label htmlFor="remember" className="text-sm font-medium ml-2">Remember me</Label>
                 </div>
                 <Link
                   href="#"
@@ -63,12 +63,12 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 text-base" asChild>
+              <Button type="submit" className="w-full bg-white text-black font-semibold h-auto py-3 px-5 rounded-sm text-base border-2 border-transparent transition-all duration-300 ease-in-out hover:text-white hover:border-white hover:bg-white/15" asChild>
                 <Link href="/select-role">Log In</Link>
               </Button>
-                <div className="mt-4 text-center text-sm text-white">
+                <div className="mt-8 text-center text-sm text-white">
                 Don't have an account?{' '}
-                <Link href="#" className="underline">
+                <Link href="#" className="underline hover:text-white">
                   Register
                 </Link>
               </div>
