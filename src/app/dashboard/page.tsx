@@ -6,6 +6,7 @@ import { TasksTable } from "@/components/dashboard/tasks-table";
 import { Leaderboard } from "@/components/dashboard/leaderboard";
 import { Recommendations } from "@/components/dashboard/recommendations";
 import { OfflineSummary } from "@/components/dashboard/offline-summary";
+import { StreaksCard } from "@/components/dashboard/streaks-card";
 
 export default function DashboardPage() {
   return (
@@ -18,7 +19,10 @@ export default function DashboardPage() {
         <div className="xl:col-span-2">
             <ProductivityChart />
         </div>
-        <Leaderboard />
+        <div className="space-y-4">
+          <Leaderboard />
+          <StreaksCard />
+        </div>
       </div>
       <div className="grid gap-4 md:gap-8 lg:grid-cols-1">
         <TasksTable />
