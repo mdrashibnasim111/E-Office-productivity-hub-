@@ -19,7 +19,7 @@ const chartConfig = {
 
 export function StatsCards() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <>
       <Card className="flex flex-col justify-between shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
@@ -115,6 +115,6 @@ export function StatsCards() {
           <p className="text-xs text-muted-foreground">3 team, 5 individual</p>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }

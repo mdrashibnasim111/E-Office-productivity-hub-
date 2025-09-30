@@ -25,17 +25,17 @@ export function StreaksCard() {
   const isLoading = isUserLoading || isStreakLoading;
 
   return (
-    <Card className="shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+    <Card className="shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl lg:col-span-1">
       <CardHeader>
-        <CardTitle className="font-headline flex items-center gap-2">
+        <CardTitle className="font-headline flex items-center gap-2 text-sm font-medium">
           <Flame className="text-accent" />
           Engagement Streaks
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="sr-only">
             Your daily activity streak. Keep it up!
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex justify-around items-center text-center">
+      <CardContent className="flex justify-around items-center text-center pt-6">
         {isLoading ? (
             <>
                 <div className="space-y-2"><Skeleton className="h-8 w-16" /><Skeleton className="h-4 w-20" /></div>
