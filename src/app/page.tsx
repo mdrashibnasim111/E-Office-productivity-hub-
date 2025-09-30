@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -23,7 +24,7 @@ export default function LoginPage() {
           />
         )}
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="w-full max-w-md rounded-2xl border border-white/20 bg-black/20 p-8 shadow-2xl backdrop-blur-lg">
+        <div className="w-full max-w-md rounded-lg border border-white/50 bg-black/20 p-8 shadow-2xl backdrop-blur-md">
           <div className="mx-auto grid gap-6">
             <div className="grid gap-2 text-center text-white">
                <h2 className="text-3xl font-bold font-headline">Login Form</h2>
@@ -35,10 +36,10 @@ export default function LoginPage() {
                   type="email"
                   required
                   defaultValue="manager@example.gov"
-                  className="peer h-12 bg-transparent text-white placeholder-transparent focus:outline-none focus:border-primary"
+                  className="peer h-12 border-b-2 border-white bg-transparent text-white placeholder-transparent focus:outline-none focus:border-primary"
                   placeholder="m@example.gov"
                 />
-                 <Label htmlFor="email" className="absolute left-3 -top-6 text-sm text-white transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-6 peer-focus:text-sm">Enter your email</Label>
+                 <Label htmlFor="email" className="absolute left-0 -top-6 text-sm text-white transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-6 peer-focus:text-sm">Enter your email</Label>
               </div>
               <div className="grid gap-2 relative">
                 <Input 
@@ -46,10 +47,10 @@ export default function LoginPage() {
                   type="password" 
                   required 
                   defaultValue="password"
-                  className="peer h-12 bg-transparent text-white placeholder-transparent focus:outline-none focus:border-primary"
+                  className="peer h-12 border-b-2 border-white bg-transparent text-white placeholder-transparent focus:outline-none focus:border-primary"
                   placeholder="password"
                  />
-                <Label htmlFor="password"  className="absolute left-3 -top-6 text-sm text-white transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-6 peer-focus:text-sm">Enter your password</Label>
+                <Label htmlFor="password"  className="absolute left-0 -top-6 text-sm text-white transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-6 peer-focus:text-sm">Enter your password</Label>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
