@@ -119,7 +119,7 @@ export default function SelectRolePage() {
           // Designation Selection
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {selectedCategory.designations.map((designation) => (
-              <Link href="/dashboard" key={designation} className="block">
+              <Link href={`/dashboard?designation=${encodeURIComponent(designation)}`} key={designation} className="block">
                 <Card className="flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out h-full p-6">
                   <CardTitle className="font-headline text-base">{designation}</CardTitle>
                 </Card>
