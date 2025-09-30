@@ -47,7 +47,7 @@ export default function LoginPage() {
               <Input id="password" type="password" required defaultValue="password" />
             </div>
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90" asChild>
-              <Link href="/dashboard">Login</Link>
+              <Link href="/select-role">Login</Link>
             </Button>
           </div>
         </div>
