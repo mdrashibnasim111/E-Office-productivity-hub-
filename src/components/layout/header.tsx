@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {
   Menu,
   Search,
@@ -23,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetHeader, SheetDescription } from '@/components/ui/sheet';
 import Logo from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -39,6 +42,7 @@ const navItems = [
 const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
 
 export function Header() {
+  const pathname = usePathname();
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -49,7 +53,10 @@ export function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
-          <SheetTitle>Navigation Menu</SheetTitle>
+            <SheetHeader>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetDescription className="sr-only">Main navigation for the application.</SheetDescription>
+            </SheetHeader>
           <nav className="grid gap-2 text-lg font-medium">
             <Link
               href="/dashboard"
@@ -62,7 +69,7 @@ export function Header() {
                  <Link
                  key={item.label}
                  href={item.href}
-                 className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                 className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${pathname === item.href ? 'bg-muted text-foreground' : ''}`}
                >
                  <item.icon className="h-5 w-5" />
                  {item.label}
