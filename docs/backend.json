@@ -1,0 +1,69 @@
+{
+  "entities": {
+    "UserStreak": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserStreak",
+      "type": "object",
+      "description": "Represents a user's streak data for tracking daily engagement.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user streak entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. Unique identifier of the user associated with the streak. (Relationship: User 1:1 UserStreak)"
+        },
+        "currentStreak": {
+          "type": "number",
+          "description": "The user's current streak (number of consecutive days active).",
+          "format": "integer"
+        },
+        "longestStreak": {
+          "type": "number",
+          "description": "The user's longest streak ever achieved.",
+          "format": "integer"
+        },
+        "lastActiveDate": {
+          "type": "string",
+          "description": "The date when the user was last active.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "currentStreak",
+        "longestStreak",
+        "lastActiveDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/userStreaks/{userStreakId}",
+        "definition": {
+          "entityName": "UserStreak",
+          "schema": {
+            "$ref": "#/backend/entities/UserStreak"
+          },
+          "description": "Stores user streak data, including current streak, longest streak, and last active date. Documents are identified by a unique userStreakId. The userId field ensures authorization independence.",
+          "params": [
+            {
+              "name": "userStreakId",
+              "description": "Unique identifier for the user streak document, derived from the userId."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support the User Streaks feature within the Productivity Management Module. It focuses on simplicity, scalability, and clear authorization. By storing user streaks in a dedicated collection and structuring the data for easy access, we can efficiently manage and update streak information. The structure achieves Authorization Independence by ensuring that each `userStreak` document contains all the necessary information (userId) to determine ownership, without needing to perform costly `get()` operations to parent documents. This design enables secure `list` operations (QAPs) since the rules can be applied directly to the `userStreaks` collection without needing to filter based on external data."
+  }
+}

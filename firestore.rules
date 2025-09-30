@@ -1,0 +1,55 @@
+/**
+ * @file Firestore Security Rules for User Streaks.
+ * @core_philosophy This ruleset enforces a user-ownership model for managing user streak data. Each user can only read and write their own streak data.
+ * @data_structure User streak data is stored in the `/userStreaks/{userStreakId}` collection, where `{userStreakId}` corresponds to the user's ID.
+ * @key_security_decisions User listing is allowed only to owners to enable dashboard display and potential leaderboard features. Write access is strictly limited to the owner of the streak data. Data consistency is enforced between the document ID and the `userId` field.
+ * @denormalization For simplicity and performance, each `userStreak` document contains all necessary information (userId) for authorization, eliminating the need for additional reads.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Manages user streak data, including current streak, longest streak, and last active date.
+     * @path /userStreaks/{userStreakId}
+     * @allow (create) - Authenticated user creates their own streak data if userId matches the userStreakId.
+     * @allow (update) - Authenticated user updates their own streak data.
+     * @allow (get) - Authenticated user reads their own streak data.
+     * @allow (list) - Authenticated user lists their own streak data.
+     * @allow (delete) - Authenticated user deletes their own streak data.
+     * @deny (create) - Authenticated user attempts to create streak data with a mismatched userId.
+     * @principle Enforces document ownership for writes and restricts read access to the owner. Validates the relationship between the document ID and the `userId` field on creation and update.
+     */
+    match /userStreaks/{userStreakId} {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the user is the owner of the document
+      function isOwner(userId) {
+        return isSignedIn() && request.auth.uid == userId;
+      }
+
+      // Helper function to check if the user is the existing owner of the document
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      // Allow create: only if the user is signed in and the userStreakId matches the userId in the request
+      allow create: if isOwner(userStreakId) && request.resource.data.userId == userStreakId;
+
+      // Allow get: only if the user is signed in and is the owner of the document
+      allow get: if isOwner(userStreakId);
+
+      // Allow list: only if the user is signed in and is the owner of the document
+      allow list: if isOwner(userStreakId);
+
+      // Allow update: only if the user is signed in, is the owner of the document and the userId field is immutable
+      allow update: if isExistingOwner(userStreakId) && request.resource.data.userId == resource.data.userId;
+
+      // Allow delete: only if the user is signed in and is the owner of the document
+      allow delete: if isExistingOwner(userStreakId);
+    }
+  }
+}
