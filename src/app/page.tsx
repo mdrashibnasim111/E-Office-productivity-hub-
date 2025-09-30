@@ -51,10 +51,10 @@ export default function LoginPage() {
                  />
                 <Label htmlFor="password"  className="absolute left-0 -top-3.5 text-sm text-white transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm peer-focus:translate-y-0">Enter your password</Label>
               </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="remember" className="border-white text-white data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
-                    <Label htmlFor="remember" className="text-sm font-medium text-white">Remember me</Label>
+              <div className="flex items-center justify-between my-6">
+                <div className="flex items-center">
+                    <Checkbox id="remember" className="border-white text-white data-[state=checked]:bg-white data-[state=checked]:text-black" />
+                    <Label htmlFor="remember" className="text-sm font-medium text-white ml-2">Remember me</Label>
                 </div>
                 <Link
                   href="#"
