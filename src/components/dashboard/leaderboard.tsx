@@ -11,7 +11,7 @@ import { leaderboard } from '@/lib/data';
 
 export function Leaderboard() {
   return (
-    <Card className="flex-grow shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+    <Card className="flex-grow">
       <CardHeader>
         <CardTitle className="font-headline">Top Performers</CardTitle>
         <CardDescription>

@@ -25,7 +25,7 @@ export function StreaksCard() {
   const isLoading = isUserLoading || isStreakLoading;
 
   return (
-    <Card className="shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl lg:col-span-1">
+    <Card className="lg:col-span-1">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-sm font-medium">
           <Flame className="text-accent" />
