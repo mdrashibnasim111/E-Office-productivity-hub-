@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import {
   Menu,
   Search,
@@ -26,7 +27,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetHeader, SheetDescription } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetHeader, SheetDescription, SheetClose } from '@/components/ui/sheet';
 import Logo from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -43,9 +44,11 @@ const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
 
 export function Header() {
   const pathname = usePathname();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6">
-      <Sheet>
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 lg:hidden">
             <Menu className="h-5 w-5" />
@@ -54,13 +57,14 @@ export function Header() {
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
             <SheetHeader>
-                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetTitle className="font-headline sr-only">Navigation Menu</SheetTitle>
                 <SheetDescription className="sr-only">Main navigation for the application.</SheetDescription>
             </SheetHeader>
           <nav className="grid gap-2 text-lg font-medium">
             <Link
               href="/dashboard"
               className="flex items-center gap-2 text-lg font-semibold mb-4"
+               onClick={() => setIsSheetOpen(false)}
             >
               <Logo className="h-6 w-6 text-primary" />
               <span className="font-headline text-lg">e-Office Hub</span>
@@ -70,6 +74,7 @@ export function Header() {
                  key={item.label}
                  href={item.href}
                  className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${pathname === item.href ? 'bg-muted text-foreground' : ''}`}
+                 onClick={() => setIsSheetOpen(false)}
                >
                  <item.icon className="h-5 w-5" />
                  {item.label}
@@ -81,6 +86,7 @@ export function Header() {
                  <Link
                     href="#"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                    onClick={() => setIsSheetOpen(false)}
                     >
                     <Settings className="h-5 w-5" />
                     Settings
@@ -88,6 +94,7 @@ export function Header() {
                 <Link
                     href="/"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                    onClick={() => setIsSheetOpen(false)}
                     >
                     <LogOut className="h-5 w-5" />
                     Logout
