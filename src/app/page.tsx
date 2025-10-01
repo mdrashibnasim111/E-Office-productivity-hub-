@@ -14,7 +14,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[300px] rounded-lg bg-card/30 border border-primary/20 backdrop-blur-lg p-8 shadow-2xl text-foreground flex flex-col items-center text-center z-10">
         <div className="mx-auto flex w-full flex-col items-center text-center">
           <Logo className="h-[74px] w-[74px] text-primary mb-8" />
-          <div className="grid gap-1.5 text-center mb-14">
+          <div className="grid gap-1.5 text-center mb-10">
               <h2 className="text-2xl font-medium font-headline">Welcome to e-Office</h2>
               <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
           </div>
@@ -56,7 +56,7 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
 
-              <div className="mt-14 text-center text-sm text-muted-foreground">
+              <div className="mt-10 text-center text-sm text-muted-foreground">
               Not a member yet?{' '}
               <Link href="#" className="underline hover:text-primary font-semibold">
                 Sign up!
