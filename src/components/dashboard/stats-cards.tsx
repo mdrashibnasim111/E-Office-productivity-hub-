@@ -27,7 +27,7 @@ export function StatsCards() {
     <>
       <TooltipProvider>
       <Card 
-        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all"
+        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-lg shadow-primary/20"
         onClick={() => setIsDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
