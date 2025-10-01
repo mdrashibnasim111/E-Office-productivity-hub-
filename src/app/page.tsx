@@ -40,7 +40,7 @@ export default function LoginPage() {
                 className="peer h-[56px] w-full border-0 rounded-lg bg-[#251930] pt-2.5 text-foreground placeholder-transparent focus:outline-none focus:ring-0 focus:shadow-[0_0_0_2px_hsl(var(--primary))]"
                 placeholder="m@example.gov"
               />
-              <Label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-0 peer-focus:translate-y-[10px] peer-focus:text-xs peer-focus:text-primary">Email</Label>
+              <Label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Email</Label>
             </div>
             <div className="relative">
               <Input 
@@ -51,13 +51,13 @@ export default function LoginPage() {
                 className="peer h-[56px] w-full border-0 rounded-lg bg-[#251930] pt-2.5 text-foreground placeholder-transparent focus:outline-none focus:ring-0 focus:shadow-[0_0_0_2px_hsl(var(--primary))]"
                 placeholder="password"
                 />
-              <Label htmlFor="password"  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-0 peer-focus:translate-y-[10px] peer-focus:text-xs peer-focus:text-primary">Password</Label>
+              <Label htmlFor="password"  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Password</Label>
             </div>
             
-              <Button type="submit" className="w-full bg-primary text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg text-base transition-all duration-300 ease-in-out hover:bg-primary/80 mt-4 flex justify-between items-center" asChild>
+              <Button type="submit" className="w-full bg-primary text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg text-base transition-all duration-300 ease-in-out hover:bg-primary/80 mt-4 flex justify-between items-center group" asChild>
               <Link href="/select-role">
-                  <span>Login</span>
-                  <ArrowRight className="h-5 w-5" />
+                  <span className="transition-all duration-300 group-hover:pr-2">Login</span>
+                  <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </form>
