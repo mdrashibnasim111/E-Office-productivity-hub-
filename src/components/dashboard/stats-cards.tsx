@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle2, ListTodo, Target, Hand } from 'lucide-react';
 import {
@@ -12,7 +12,17 @@ import type { PieSectorDataItem } from 'recharts/types/polar/Pie';
 import { ProductivityDetailsDialog } from '@/components/dashboard/productivity-details-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-const chartData = [{ name: 'Score', value: 85, fill: 'hsl(var(--primary))' }];
+const score = 85; // The score value
+
+const getScoreColor = (value: number) => {
+  if (value < 50) {
+    return 'hsl(var(--destructive))';
+  }
+  if (value < 80) {
+    return 'hsl(var(--warning))';
+  }
+  return 'hsl(var(--primary))';
+};
 
 const chartConfig = {
   score: {
@@ -23,13 +33,27 @@ const chartConfig = {
 export function StatsCards() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const scoreColor = useMemo(() => getScoreColor(score), []);
+
+  const chartData = useMemo(() => [
+    { name: 'Score', value: score, fill: scoreColor },
+    { name: 'Remaining', value: 100 - score, fill: 'hsl(var(--muted))' }
+  ], [scoreColor]);
+
+
   return (
     <>
       <TooltipProvider>
       <Card 
-        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-lg shadow-primary/20"
+        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-lg"
         onClick={() => setIsDialogOpen(true)}
+        style={{ '--shadow-color': scoreColor } as React.CSSProperties}
       >
+        <style jsx>{`
+          .shadow-dynamic {
+            box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+          }
+        `}</style>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Overall Productivity
@@ -47,7 +71,7 @@ export function StatsCards() {
           </Tooltip>
         </CardHeader>
         <CardContent>
-          <div className="h-[120px] w-full" style={{ filter: 'drop-shadow(0 4px 6px hsla(var(--primary) / 0.4))' }}>
+          <div className="h-[120px] w-full" style={{ filter: `drop-shadow(0 4px 6px ${scoreColor})` }}>
             <ChartContainer
               config={chartConfig}
               className="mx-auto aspect-square h-full"
@@ -67,15 +91,9 @@ export function StatsCards() {
                   startAngle={90}
                   endAngle={450}
                 >
-                    <Cell
-                        key="score"
-                        fill="hsl(var(--primary))"
-                        className="fill-primary"
-                      />
-                      <Cell
-                        key="background"
-                        fill="hsl(var(--muted))"
-                      />
+                    {chartData.map((entry) => (
+                         <Cell key={entry.name} fill={entry.fill} />
+                    ))}
                      <Label
                         content={({ viewBox }) => {
                         if (viewBox && "cx" in viewBox && "cy" in viewBox) {
