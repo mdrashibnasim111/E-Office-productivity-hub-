@@ -61,7 +61,8 @@ export function StatsCards() {
         style={{ '--shadow-color': scoreColor } as React.CSSProperties}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <Target className="h-4 w-4 text-muted-foreground" />
             Overall Productivity
           </CardTitle>
            <Tooltip>
@@ -135,21 +136,21 @@ export function StatsCards() {
         onClick={() => setIsCompletedTasksDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Tasks Completed</CardTitle>
-          <div className="flex items-center gap-2">
-             <Tooltip>
-                <TooltipTrigger asChild>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Hand className="h-4 w-4" />
-                        <span>click here</span>
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Click to view details</p>
-                </TooltipContent>
-              </Tooltip>
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-          </div>
+            Tasks Completed
+          </CardTitle>
+          <Tooltip>
+            <TooltipTrigger asChild>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Hand className="h-4 w-4" />
+                    <span>click here</span>
+                </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to view details</p>
+            </TooltipContent>
+          </Tooltip>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold font-headline">{completedTasksCount}</div>
@@ -163,21 +164,21 @@ export function StatsCards() {
         onClick={() => setIsPendingTasksDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Pending Tasks</CardTitle>
-          <div className="flex items-center gap-2">
-             <Tooltip>
-                <TooltipTrigger asChild>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Hand className="h-4 w-4" />
-                        <span>click here</span>
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Click to view details</p>
-                </TooltipContent>
-              </Tooltip>
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
             <ListTodo className="h-4 w-4 text-muted-foreground" />
-          </div>
+            Pending Tasks
+          </CardTitle>
+          <Tooltip>
+            <TooltipTrigger asChild>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Hand className="h-4 w-4" />
+                    <span>click here</span>
+                </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to view details</p>
+            </TooltipContent>
+          </Tooltip>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold font-headline">{pendingTasksCount}</div>
@@ -186,8 +187,10 @@ export function StatsCards() {
       </Card>
       <Card className="shadow-dynamic" style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Active Goals</CardTitle>
-          <Target className="h-4 w-4 text-muted-foreground" />
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <Target className="h-4 w-4 text-muted-foreground" />
+            Active Goals
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold font-headline">8</div>
