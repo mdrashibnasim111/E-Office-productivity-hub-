@@ -1,4 +1,5 @@
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { BadgeProps } from '@/components/ui/badge';
 
 export type Task = {
   id: string;
@@ -69,17 +70,23 @@ export const productivityData = [
     { week: 'Week 6', score: 85 },
 ];
 
+export type BadgeType = {
+  name: string;
+  variant: BadgeProps['variant'];
+}
+
 export type LeaderboardUser = {
   name: string;
   title: string;
   points: number;
   avatar: string | undefined;
+  badges: BadgeType[];
 }
 
 export const leaderboard: LeaderboardUser[] = [
-  { name: 'Sarah Lee', title: 'Finance Analyst', points: 1250, avatar: PlaceHolderImages.find(i => i.id === 'avatar-1')?.imageUrl },
-  { name: 'David Chen', title: 'HR Coordinator', points: 1180, avatar: PlaceHolderImages.find(i => i.id === 'avatar-2')?.imageUrl },
-  { name: 'Maria Rodriguez', title: 'System Administrator', points: 1120, avatar: PlaceHolderImages.find(i => i.id === 'avatar-3')?.imageUrl },
-  { name: 'Kenji Tanaka', title: 'UI/UX Designer', points: 1050, avatar: PlaceHolderImages.find(i => i.id === 'avatar-4')?.imageUrl },
-  { name: 'Fatima Al-Fassi', title: 'Field Officer', points: 980, avatar: PlaceHolderImages.find(i => i.id === 'avatar-5')?.imageUrl },
+  { name: 'Sarah Lee', title: 'Finance Analyst', points: 1250, avatar: PlaceHolderImages.find(i => i.id === 'avatar-1')?.imageUrl, badges: [{name: 'Achiever', variant: 'default'}, {name: 'Pro', variant: 'secondary'}] },
+  { name: 'David Chen', title: 'HR Coordinator', points: 1180, avatar: PlaceHolderImages.find(i => i.id === 'avatar-2')?.imageUrl, badges: [{name: 'Rising Star', variant: 'outline'}] },
+  { name: 'Maria Rodriguez', title: 'System Administrator', points: 1120, avatar: PlaceHolderImages.find(i => i.id === 'avatar-3')?.imageUrl, badges: [{name: 'Achiever', variant: 'default'}] },
+  { name: 'Kenji Tanaka', title: 'UI/UX Designer', points: 1050, avatar: PlaceHolderImages.find(i => i.id === 'avatar-4')?.imageUrl, badges: [{name: 'Pro', variant: 'secondary'}] },
+  { name: 'Fatima Al-Fassi', title: 'Field Officer', points: 980, avatar: PlaceHolderImages.find(i => i.id === 'avatar-5')?.imageUrl, badges: [] },
 ];

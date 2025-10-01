@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { leaderboard } from '@/lib/data';
+import { Badges } from '@/components/dashboard/badges';
 
 export default function TeamPage() {
   return (
@@ -32,6 +33,7 @@ export default function TeamPage() {
                     <p className="text-sm font-medium leading-none">{user.name}</p>
                     <p className="text-xs text-muted-foreground">{user.title}</p>
                 </div>
+                <Badges badges={user.badges} />
             </div>
             ))}
         </CardContent>
