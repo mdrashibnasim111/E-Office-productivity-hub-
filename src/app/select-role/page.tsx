@@ -107,7 +107,7 @@ export default function SelectRolePage() {
               >
                 <CardHeader className="flex-1 p-6">
                   <div className="flex justify-between items-start">
-                    <category.icon className={`h-10 w-10 mb-4 ${category.name === 'Technical / Professional' ? 'text-[#11DBDC]' : 'text-primary'}`} />
+                    <category.icon className="h-10 w-10 mb-4 text-primary" />
                     <ChevronRight className="h-6 w-6 text-muted-foreground transition-transform group-hover:translate-x-1" />
                   </div>
                   <CardTitle className="font-headline text-xl">{category.name}</CardTitle>
