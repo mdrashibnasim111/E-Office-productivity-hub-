@@ -11,68 +11,80 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Briefcase, HardHat, Users, Building, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Briefcase, HardHat, Users, Building, ChevronRight, ArrowLeft, User, PenTool, Database, Laptop, FileText, Wrench, Microscope, BriefcaseBusiness, UserCog, Building2 } from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
 
-const categories = [
+type Designation = {
+  name: string;
+  icon: React.ComponentType<LucideProps>;
+};
+
+type Category = {
+  name: string;
+  icon: React.ComponentType<LucideProps>;
+  designations: Designation[];
+};
+
+
+const categories: Category[] = [
   {
     name: 'Clerical / Support',
     icon: Users,
     designations: [
-      'Office Assistant',
-      'Clerk',
-      'Data Entry Operator',
-      'Junior Assistant',
-      'Typist',
+      { name: 'Office Assistant', icon: User },
+      { name: 'Clerk', icon: FileText },
+      { name: 'Data Entry Operator', icon: Database },
+      { name: 'Junior Assistant', icon: User },
+      { name: 'Typist', icon: PenTool },
     ],
   },
   {
     name: 'Technical / Professional',
     icon: HardHat,
     designations: [
-      'Junior Engineer (JE)',
-      'Assistant Engineer (AE)',
-      'IT Officer',
-      'Research Analyst',
-      'Technical Officer',
+      { name: 'Junior Engineer (JE)', icon: Wrench },
+      { name: 'Assistant Engineer (AE)', icon: Wrench },
+      { name: 'IT Officer', icon: Laptop },
+      { name: 'Research Analyst', icon: Microscope },
+      { name: 'Technical Officer', icon: HardHat },
     ],
   },
   {
     name: 'Supervisory / Field',
     icon: Users,
     designations: [
-      'Field Inspector',
-      'Site Supervisor',
-      'Field Officer',
-      'Surveyor',
-      'Monitoring Officer',
+      { name: 'Field Inspector', icon: User },
+      { name: 'Site Supervisor', icon: HardHat },
+      { name: 'Field Officer', icon: User },
+      { name: 'Surveyor', icon: PenTool },
+      { name: 'Monitoring Officer', icon: Laptop },
     ],
   },
   {
     name: 'Managerial / Officers',
     icon: Briefcase,
     designations: [
-      'Section Officer (SO)',
-      'Project Manager',
-      'Deputy Manager',
-      'Accounts Officer',
-      'HR Officer',
+      { name: 'Section Officer (SO)', icon: BriefcaseBusiness },
+      { name: 'Project Manager', icon: Briefcase },
+      { name: 'Deputy Manager', icon: BriefcaseBusiness },
+      { name: 'Accounts Officer', icon: FileText },
+      { name: 'HR Officer', icon: UserCog },
     ],
   },
   {
     name: 'Administrative / Executive',
     icon: Building,
     designations: [
-      'Under Secretary',
-      'Deputy Secretary',
-      'Joint Secretary',
-      'Director',
-      'Additional Director',
-      'Head of Department',
+      { name: 'Under Secretary', icon: Building2 },
+      { name: 'Deputy Secretary', icon: Building2 },
+      { name: 'Joint Secretary', icon: Building },
+      { name: 'Director', icon: Briefcase },
+      { name: 'Additional Director', icon: Briefcase },
+      { name: 'Head of Department', icon: Building },
     ],
   },
 ];
 
-type Category = (typeof categories)[0];
 
 export default function SelectRolePage() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -120,9 +132,10 @@ export default function SelectRolePage() {
           // Designation Selection
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {selectedCategory.designations.map((designation) => (
-              <Link href={`/dashboard?designation=${encodeURIComponent(designation)}`} key={designation} className="block">
-                <Card className="flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out h-full p-6">
-                  <CardTitle className="font-headline text-base">{designation}</CardTitle>
+              <Link href={`/dashboard?designation=${encodeURIComponent(designation.name)}`} key={designation.name} className="block">
+                <Card className="flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out h-full p-6 group bg-[#182531] hover:bg-card/60">
+                   <designation.icon className="h-10 w-10 mb-4 text-primary transition-colors duration-300 group-hover:text-accent" />
+                  <CardTitle className="font-headline text-base">{designation.name}</CardTitle>
                 </Card>
               </Link>
             ))}
