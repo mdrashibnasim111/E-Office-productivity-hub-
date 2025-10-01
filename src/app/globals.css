@@ -89,7 +89,7 @@
 
 @layer components {
   .ocean {
-    height: 80px;
+    height: 160px;
     width: 100%;
     position: absolute;
     bottom: 0;
