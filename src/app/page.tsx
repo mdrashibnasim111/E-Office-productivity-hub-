@@ -25,12 +25,12 @@ export default function LoginPage() {
         )}
       <div className="w-full max-w-[380px] rounded-[40px] bg-card/25 p-8 shadow-2xl backdrop-blur-xl text-foreground flex flex-col items-center text-center">
         <div className="mx-auto flex flex-col items-center text-center">
-          <Logo className="h-12 w-12 text-primary" />
-          <div className="grid gap-1 text-center my-6">
-              <h2 className="text-3xl font-bold font-headline">Welcome to e-Office</h2>
-              <h3 className="text-muted-foreground">Lightning quick productivity!</h3>
+          <Logo className="h-16 w-16 text-primary mb-8" />
+          <div className="grid gap-1.5 text-center mb-14">
+              <h2 className="text-2xl font-medium">Welcome to e-Office</h2>
+              <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
           </div>
-          <form className="grid gap-4 w-full">
+          <form className="grid gap-3 w-full mb-8">
             <div className="relative my-4 border-b-2 border-muted/50 focus-within:border-primary transition-colors duration-300">
               <Input
                 id="email"
@@ -60,10 +60,10 @@ export default function LoginPage() {
                   <ArrowRight className="ml-auto h-5 w-5" />
               </Link>
             </Button>
-
-              <Link
+          </form>
+            <Link
                 href="#"
-                className="inline-block text-sm text-muted-foreground hover:text-foreground hover:underline mt-2"
+                className="inline-block text-sm text-muted-foreground hover:text-foreground hover:underline"
               >
                 Forgot password?
               </Link>
@@ -74,7 +74,6 @@ export default function LoginPage() {
                 Sign up!
               </Link>
             </div>
-          </form>
         </div>
       </div>
     </div>
