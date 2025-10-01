@@ -12,6 +12,7 @@ import type { PieSectorDataItem } from 'recharts/types/polar/Pie';
 import { ProductivityDetailsDialog } from '@/components/dashboard/productivity-details-dialog';
 import { CompletedTasksDialog } from '@/components/dashboard/completed-tasks-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { tasks } from '@/lib/data';
 
 const score = 85; // The score value
 
@@ -30,6 +31,8 @@ const chartConfig = {
     label: 'Score',
   },
 };
+
+const completedTasksCount = tasks.filter(task => task.status === 'Completed').length;
 
 export function StatsCards() {
   const [isProductivityDialogOpen, setIsProductivityDialogOpen] = useState(false);
@@ -143,7 +146,7 @@ export function StatsCards() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-headline">124</div>
+          <div className="text-2xl font-bold font-headline">{completedTasksCount}</div>
           <p className="text-xs text-muted-foreground">+15% from last month</p>
         </CardContent>
       </Card>
