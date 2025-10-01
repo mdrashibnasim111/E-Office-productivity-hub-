@@ -24,8 +24,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { leaderboard } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
-import { useUser, useFirestore } from '@/firebase';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { savePerformanceReview } from '@/firebase/firestore/mutations';
+import { collection, query, where } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const assessmentCriteria = [
     { id: 'quality', label: 'Quality of Work' },
@@ -50,6 +52,19 @@ export default function PerformancePage() {
     const [selectedEmployee, setSelectedEmployee] = useState(leaderboard[0].id);
     const [managerFeedback, setManagerFeedback] = useState('');
 
+    const selfReviewsQuery = useMemoFirebase(() => {
+        if (!firestore || !user) return null;
+        return query(
+            collection(firestore, 'performanceReviews'),
+            where('userId', '==', user.uid),
+            where('reviewerId', '==', user.uid),
+            where('type', '==', 'self-assessment')
+        );
+    }, [firestore, user]);
+
+    const { data: selfReviews, isLoading: isLoadingReviews } = useCollection(selfReviewsQuery);
+
+
     const handleRatingChange = (id: string, value: number[]) => {
         setRatings(prev => ({ ...prev, [id]: value[0] }));
     };
@@ -73,8 +88,16 @@ export default function PerformancePage() {
         savePerformanceReview(firestore, user.uid, reviewData);
 
         toast({
-            title: 'Self-Assessment Submitted',
-            description: 'Your performance review has been recorded.',
+            title: 'Success',
+            description: 'Self assessment submitted successfully.',
+        });
+        setSelfComments('');
+        setRatings({
+            quality: 5,
+            timeliness: 5,
+            communication: 5,
+            collaboration: 5,
+            initiative: 5,
         });
     };
 
@@ -163,6 +186,50 @@ export default function PerformancePage() {
                     <Button onClick={handleSelfSubmit}>Submit Self-Assessment</Button>
                 </CardFooter>
             </Card>
+
+            <div className="mt-8">
+                <h2 className="text-2xl font-bold font-headline mb-4">Submitted Assessments</h2>
+                {isLoadingReviews ? (
+                    <div className="space-y-4">
+                        <Skeleton className="h-24 w-full" />
+                        <Skeleton className="h-24 w-full" />
+                    </div>
+                ) : selfReviews && selfReviews.length > 0 ? (
+                    <div className="space-y-4">
+                        {selfReviews.map(review => (
+                            <Card key={review.id}>
+                                <CardHeader>
+                                    <CardTitle className="text-xl font-headline">
+                                        Self-Assessment from {new Date(review.createdAt?.toDate()).toLocaleDateString()}
+                                    </CardTitle>
+                                     <CardDescription>
+                                        Submitted by {user?.displayName || user?.email}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <h4 className="font-semibold">Ratings:</h4>
+                                            <ul className="list-disc list-inside text-muted-foreground">
+                                                {review.ratings && Object.entries(review.ratings).map(([key, value]) => (
+                                                    <li key={key} className="capitalize">{key}: {value}/10</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold">Comments:</h4>
+                                            <p className="text-muted-foreground">{review.comments || 'No comments provided.'}</p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-muted-foreground">You have not submitted any self-assessments yet.</p>
+                )}
+            </div>
+
         </TabsContent>
         <TabsContent value="team-feedback">
              <Card>
