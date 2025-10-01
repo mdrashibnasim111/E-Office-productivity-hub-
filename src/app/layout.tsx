@@ -5,6 +5,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'e-Office Productivity Hub',
   description: 'Productivity Management Module for Government Offices',
+  viewport: 'width=device-width, initial-scale=1.0',
 };
 
 export default function RootLayout({
