@@ -35,8 +35,11 @@ export function StatsCards() {
             Overall Productivity
           </CardTitle>
            <Tooltip>
-            <TooltipTrigger>
-              <Hand className="h-4 w-4 text-muted-foreground" />
+            <TooltipTrigger asChild>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Hand className="h-4 w-4" />
+                    <span>click here</span>
+                </div>
             </TooltipTrigger>
             <TooltipContent>
               <p>Click to view details</p>
