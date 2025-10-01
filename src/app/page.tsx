@@ -13,12 +13,12 @@ export default function LoginPage() {
     <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] relative overflow-hidden">
       <div className="w-full max-w-[300px] rounded-lg bg-card/30 border border-primary/20 backdrop-blur-lg p-8 shadow-2xl text-foreground flex flex-col items-center text-center z-10">
         <div className="mx-auto flex w-full flex-col items-center text-center">
-          <Logo className="h-[74px] w-[74px] text-primary mb-8" />
-          <div className="grid gap-1.5 text-center mb-10">
+          <Logo className="h-[74px] w-[74px] text-primary mb-4" />
+          <div className="grid gap-1.5 text-center mb-6">
               <h2 className="text-2xl font-medium font-headline">Welcome to e-Office</h2>
               <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
           </div>
-          <form className="grid gap-3 w-full mb-8">
+          <form className="grid gap-3 w-full mb-6">
             <div className="relative">
               <Input
                 id="email"
@@ -42,7 +42,7 @@ export default function LoginPage() {
               <Label htmlFor="password"  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Password</Label>
             </div>
             
-              <Button type="submit" className="relative w-full bg-primary text-lg text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg transition-all duration-300 ease-in-out hover:bg-primary/80 mt-4 overflow-hidden group" asChild>
+              <Button type="submit" className="relative w-full bg-primary text-lg text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg transition-all duration-300 ease-in-out hover:bg-primary/80 mt-2 overflow-hidden group" asChild>
               <Link href="/select-role">
                   <span className="transition-all duration-300 group-hover:-translate-x-4">Login</span>
                   <ArrowRight className="absolute top-1/2 left-1/2 h-6 w-6 opacity-0 -translate-y-1/2 translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-8" />
@@ -56,7 +56,7 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
 
-              <div className="mt-10 text-center text-sm text-muted-foreground">
+              <div className="mt-6 text-center text-sm text-muted-foreground">
               Not a member yet?{' '}
               <Link href="#" className="underline hover:text-primary font-semibold">
                 Sign up!
