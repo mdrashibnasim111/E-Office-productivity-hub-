@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Lightbulb, Loader2 } from "lucide-react";
+import { ElectricBorder } from "@/components/ui/electric-border";
 
 export function Recommendations() {
   const [kpis, setKpis] = useState("");
@@ -61,21 +62,25 @@ export function Recommendations() {
       <CardContent className="space-y-4">
         <div className="grid w-full gap-1.5">
           <Label htmlFor="kpis">Team KPIs</Label>
-          <Textarea 
-            placeholder="e.g., Reduce average task completion time by 15%, Increase citizen satisfaction score to 95%" 
-            id="kpis"
-            value={kpis}
-            onChange={(e) => setKpis(e.target.value)}
-            />
+          <ElectricBorder>
+            <Textarea 
+              placeholder="e.g., Reduce average task completion time by 15%, Increase citizen satisfaction score to 95%" 
+              id="kpis"
+              value={kpis}
+              onChange={(e) => setKpis(e.target.value)}
+              />
+          </ElectricBorder>
         </div>
         <div className="grid w-full gap-1.5">
           <Label htmlFor="context">Organizational Context</Label>
-          <Textarea 
-            placeholder="e.g., Currently undergoing a digital transformation initiative to improve public service delivery." 
-            id="context"
-            value={context}
-            onChange={(e) => setContext(e.target.value)}
-          />
+          <ElectricBorder>
+            <Textarea 
+              placeholder="e.g., Currently undergoing a digital transformation initiative to improve public service delivery." 
+              id="context"
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+            />
+          </ElectricBorder>
         </div>
         {recommendations && (
             <div className="p-4 bg-muted/50 rounded-lg border">
