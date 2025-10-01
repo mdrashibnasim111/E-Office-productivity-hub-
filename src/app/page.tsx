@@ -10,17 +10,12 @@ import { ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   return (
-    <div className="w-full min-h-screen grid place-items-center p-4">
-      <div className="wave-bg">
-        <div className="wave-one"></div>
-        <div className="wave-two"></div>
-        <div className="wave-three"></div>
-      </div>
-      <div className="w-full max-w-[380px] rounded-[40px] bg-black/25 p-8 shadow-2xl backdrop-blur-[38px] text-foreground flex flex-col items-center text-center">
+    <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822]">
+      <div className="w-full max-w-[380px] rounded-lg bg-card p-8 shadow-2xl text-foreground flex flex-col items-center text-center">
         <div className="mx-auto flex w-full flex-col items-center text-center">
           <Logo className="h-[74px] w-[74px] text-primary mb-8" />
           <div className="grid gap-1.5 text-center mb-14">
-              <h2 className="text-2xl font-medium">Welcome to e-Office</h2>
+              <h2 className="text-2xl font-medium font-headline">Welcome to e-Office</h2>
               <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
           </div>
           <form className="grid gap-3 w-full mb-8">
@@ -30,7 +25,7 @@ export default function LoginPage() {
                 type="email"
                 required
                 defaultValue="manager@example.gov"
-                className="peer h-[56px] w-full border-0 rounded-lg bg-[#251930] pt-2.5 text-base text-foreground placeholder-transparent focus:outline-none focus:ring-0 focus:shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_hsl(var(--primary))] transition-shadow duration-300"
+                className="peer h-[56px] w-full border-0 rounded-lg bg-input pt-2.5 text-base text-foreground placeholder-transparent ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-shadow duration-300"
                 placeholder="m@example.gov"
               />
               <Label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Email</Label>
@@ -41,7 +36,7 @@ export default function LoginPage() {
                 type="password" 
                 required 
                 defaultValue="password"
-                className="peer h-[56px] w-full border-0 rounded-lg bg-[#251930] pt-2.5 text-base text-foreground placeholder-transparent focus:outline-none focus:ring-0 focus:shadow-[0_0_0_2px_transparent] focus:shadow-[0_0_0_2px_hsl(var(--primary))] transition-shadow duration-300"
+                className="peer h-[56px] w-full border-0 rounded-lg bg-input pt-2.5 text-base text-foreground placeholder-transparent ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-shadow duration-300"
                 placeholder="password"
                 />
               <Label htmlFor="password"  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Password</Label>
