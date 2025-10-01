@@ -19,6 +19,19 @@
   display: none;
 }
 
+.scroll-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-list::-webkit-scrollbar-track {
+  background: hsl(var(--card));
+}
+
+.scroll-list::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
 .list-item-motion {
   margin-bottom: 1rem;
   cursor: pointer;
@@ -32,7 +45,7 @@
 }
 
 .item.selected {
-  background-color: hsl(var(--muted) / 0.5);
+  background-color: hsl(var(--muted));
   box-shadow: 0 0 0 2px hsl(var(--primary) / 0.5);
 }
 
