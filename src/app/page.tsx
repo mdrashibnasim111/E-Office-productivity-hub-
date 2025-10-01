@@ -66,8 +66,6 @@ export default function LoginPage() {
       </div>
       <div className="ocean">
         <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
       </div>
     </div>
   );
