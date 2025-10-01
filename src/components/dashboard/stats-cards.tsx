@@ -10,6 +10,7 @@ import {
 import { Pie, PieChart, Cell, Label } from 'recharts';
 import type { PieSectorDataItem } from 'recharts/types/polar/Pie';
 import { ProductivityDetailsDialog } from '@/components/dashboard/productivity-details-dialog';
+import { CompletedTasksDialog } from '@/components/dashboard/completed-tasks-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const score = 85; // The score value
@@ -31,7 +32,8 @@ const chartConfig = {
 };
 
 export function StatsCards() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isProductivityDialogOpen, setIsProductivityDialogOpen] = useState(false);
+  const [isCompletedTasksDialogOpen, setIsCompletedTasksDialogOpen] = useState(false);
 
   const scoreColor = useMemo(() => getScoreColor(score), []);
 
@@ -46,7 +48,7 @@ export function StatsCards() {
       <TooltipProvider>
       <Card 
         className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-dynamic"
-        onClick={() => setIsDialogOpen(true)}
+        onClick={() => setIsProductivityDialogOpen(true)}
         style={{ '--shadow-color': scoreColor } as React.CSSProperties}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -117,17 +119,35 @@ export function StatsCards() {
           </div>
         </CardContent>
       </Card>
-      </TooltipProvider>
-      <Card className="shadow-dynamic" style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}>
+      
+      <Card 
+        className="shadow-dynamic cursor-pointer hover:border-primary/50 transition-all"
+        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}
+        onClick={() => setIsCompletedTasksDialogOpen(true)}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Tasks Completed</CardTitle>
-          <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-2">
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Hand className="h-4 w-4" />
+                        <span>click here</span>
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Click to view details</p>
+                </TooltipContent>
+              </Tooltip>
+            <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold font-headline">124</div>
           <p className="text-xs text-muted-foreground">+15% from last month</p>
         </CardContent>
       </Card>
+
       <Card className="shadow-dynamic" style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Pending Tasks</CardTitle>
@@ -148,8 +168,9 @@ export function StatsCards() {
           <p className="text-xs text-muted-foreground">3 team, 5 individual</p>
         </CardContent>
       </Card>
-
-      <ProductivityDetailsDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
+      </TooltipProvider>
+      <ProductivityDetailsDialog isOpen={isProductivityDialogOpen} onClose={() => setIsProductivityDialogOpen(false)} />
+      <CompletedTasksDialog isOpen={isCompletedTasksDialogOpen} onClose={() => setIsCompletedTasksDialogOpen(false)} />
     </>
   );
 }
