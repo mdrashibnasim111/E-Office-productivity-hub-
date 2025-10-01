@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -17,8 +18,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import type { Task, Comment, Attachment } from '@/lib/data';
+import type { Task, Comment } from '@/lib/data';
 import { FileText, ImageIcon, Paperclip, Send, Calendar, User as UserIcon } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 interface TaskDetailsDialogProps {
   task: Task;
@@ -38,7 +40,30 @@ const attachmentIcons = {
   'Document': <FileText className="h-5 w-5 text-blue-500" />,
 };
 
+const currentUser = {
+    name: 'Jane Doe',
+    avatar: PlaceHolderImages.find(i => i.id === 'avatar-manager')?.imageUrl || '',
+};
+
 export function TaskDetailsDialog({ task, isOpen, onClose }: TaskDetailsDialogProps) {
+    const [comments, setComments] = useState<Comment[]>(task.comments);
+    const [newComment, setNewComment] = useState('');
+
+    const handleCommentSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (newComment.trim() === '') return;
+
+        const newCommentObject: Comment = {
+            author: currentUser.name,
+            avatar: currentUser.avatar,
+            timestamp: 'Just now',
+            text: newComment,
+        };
+
+        setComments([newCommentObject, ...comments]);
+        setNewComment('');
+    };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl h-[90vh] flex flex-col">
@@ -110,7 +135,7 @@ export function TaskDetailsDialog({ task, isOpen, onClose }: TaskDetailsDialogPr
             <h3 className="font-semibold p-4 border-b">Comments</h3>
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
-                {task.comments.map((comment, index) => (
+                {comments.map((comment, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={comment.avatar} />
@@ -125,19 +150,24 @@ export function TaskDetailsDialog({ task, isOpen, onClose }: TaskDetailsDialogPr
                     </div>
                   </div>
                 ))}
-                {task.comments.length === 0 && (
+                {comments.length === 0 && (
                     <p className="text-sm text-muted-foreground text-center py-4">No comments yet.</p>
                 )}
               </div>
             </ScrollArea>
             <div className="p-4 border-t">
-               <div className="relative">
-                 <Input placeholder="Add a comment..." className="pr-10" />
+               <form onSubmit={handleCommentSubmit} className="relative">
+                 <Input 
+                    placeholder="Add a comment..." 
+                    className="pr-10" 
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                 />
                  <Button type="submit" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8">
                     <Send className="h-4 w-4" />
                     <span className="sr-only">Send</span>
                 </Button>
-               </div>
+               </form>
             </div>
           </div>
         </div>
