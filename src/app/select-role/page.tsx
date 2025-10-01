@@ -78,7 +78,7 @@ export default function SelectRolePage() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 sm:p-6 lg:p-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0F1822] p-4 sm:p-6 lg:p-8">
       <div className="mx-auto w-full max-w-4xl">
         <div className="text-center mb-10">
             {selectedCategory && (
