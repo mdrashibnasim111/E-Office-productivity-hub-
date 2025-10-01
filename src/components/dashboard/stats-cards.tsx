@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle2, ListTodo, Target } from 'lucide-react';
 import {
@@ -8,6 +9,7 @@ import {
 } from '@/components/ui/chart';
 import { Pie, PieChart, Cell, Label } from 'recharts';
 import type { PieSectorDataItem } from 'recharts/types/polar/Pie';
+import { ProductivityDetailsDialog } from '@/components/dashboard/productivity-details-dialog';
 
 const chartData = [{ name: 'Score', value: 85, fill: 'hsl(var(--primary))' }];
 
@@ -18,9 +20,14 @@ const chartConfig = {
 };
 
 export function StatsCards() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <>
-      <Card className="flex flex-col justify-between">
+      <Card 
+        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all"
+        onClick={() => setIsDialogOpen(true)}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Overall Productivity
@@ -115,6 +122,8 @@ export function StatsCards() {
           <p className="text-xs text-muted-foreground">3 team, 5 individual</p>
         </CardContent>
       </Card>
+
+      <ProductivityDetailsDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
     </>
   );
 }
