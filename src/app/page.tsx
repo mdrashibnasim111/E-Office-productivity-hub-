@@ -13,7 +13,7 @@ export default function LoginPage() {
   const loginImage = PlaceHolderImages.find(image => image.id === 'login-image');
 
   return (
-    <div className="w-full min-h-screen grid place-items-center">
+    <div className="w-full min-h-screen grid place-items-center p-4">
        {loginImage && (
           <Image
             src={loginImage.imageUrl}
@@ -24,40 +24,40 @@ export default function LoginPage() {
           />
         )}
       <div className="w-full max-w-[380px] rounded-[40px] bg-card/25 p-8 shadow-2xl backdrop-blur-xl text-foreground flex flex-col items-center text-center">
-        <div className="mx-auto flex flex-col items-center text-center">
-          <Logo className="h-16 w-16 text-primary mb-8" />
+        <div className="mx-auto flex w-full flex-col items-center text-center">
+          <Logo className="h-[74px] w-[74px] text-primary mb-8" />
           <div className="grid gap-1.5 text-center mb-14">
               <h2 className="text-2xl font-medium">Welcome to e-Office</h2>
               <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
           </div>
           <form className="grid gap-3 w-full mb-8">
-            <div className="relative my-4 border-b-2 border-muted/50 focus-within:border-primary transition-colors duration-300">
+            <div className="relative">
               <Input
                 id="email"
                 type="email"
                 required
                 defaultValue="manager@example.gov"
-                className="peer h-10 w-full border-none bg-transparent p-0 text-foreground placeholder-transparent focus:outline-none focus:ring-0"
+                className="peer h-[56px] w-full border-0 rounded-lg bg-[#251930] pt-2.5 text-foreground placeholder-transparent focus:outline-none focus:ring-0 focus:shadow-[0_0_0_2px_hsl(var(--primary))]"
                 placeholder="m@example.gov"
               />
-                <Label htmlFor="email" className="absolute left-0 -top-3.5 text-sm text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-foreground">Email</Label>
+              <Label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-0 peer-focus:translate-y-[10px] peer-focus:text-xs peer-focus:text-primary">Email</Label>
             </div>
-            <div className="relative my-4 border-b-2 border-muted/50 focus-within:border-primary transition-colors duration-300">
+            <div className="relative">
               <Input 
                 id="password" 
                 type="password" 
                 required 
                 defaultValue="password"
-                className="peer h-10 w-full border-none bg-transparent p-0 text-foreground placeholder-transparent focus:outline-none focus:ring-0"
+                className="peer h-[56px] w-full border-0 rounded-lg bg-[#251930] pt-2.5 text-foreground placeholder-transparent focus:outline-none focus:ring-0 focus:shadow-[0_0_0_2px_hsl(var(--primary))]"
                 placeholder="password"
                 />
-              <Label htmlFor="password"  className="absolute left-0 -top-3.5 text-sm text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-foreground">Password</Label>
+              <Label htmlFor="password"  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:-top-0 peer-focus:translate-y-[10px] peer-focus:text-xs peer-focus:text-primary">Password</Label>
             </div>
             
-              <Button type="submit" className="w-full bg-primary text-primary-foreground font-semibold h-auto py-3 px-5 rounded-md text-base transition-all duration-300 ease-in-out hover:bg-primary/80 mt-4" asChild>
+              <Button type="submit" className="w-full bg-primary text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg text-base transition-all duration-300 ease-in-out hover:bg-primary/80 mt-4 flex justify-between items-center" asChild>
               <Link href="/select-role">
-                  Login
-                  <ArrowRight className="ml-auto h-5 w-5" />
+                  <span>Login</span>
+                  <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
           </form>
