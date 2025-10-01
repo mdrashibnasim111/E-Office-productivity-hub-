@@ -14,7 +14,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         <div className="md:col-span-2">
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
-                Welcome, Rashib
+                Welcome back, Rashib! Let’s get productive.
             </h1>
         </div>
         <div className="md:col-span-1">
