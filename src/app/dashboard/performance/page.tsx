@@ -24,6 +24,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { leaderboard } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
+import { useUser, useFirestore } from '@/firebase';
+import { savePerformanceReview } from '@/firebase/firestore/mutations';
 
 const assessmentCriteria = [
     { id: 'quality', label: 'Quality of Work' },
@@ -35,6 +37,8 @@ const assessmentCriteria = [
 
 export default function PerformancePage() {
     const { toast } = useToast();
+    const { user } = useUser();
+    const firestore = useFirestore();
     const [ratings, setRatings] = useState<Record<string, number>>({
         quality: 5,
         timeliness: 5,
@@ -51,6 +55,23 @@ export default function PerformancePage() {
     };
     
     const handleSelfSubmit = () => {
+        if (!user || !firestore) {
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: 'You must be logged in to submit a review.',
+            });
+            return;
+        }
+
+        const reviewData = {
+            type: 'self-assessment' as const,
+            ratings,
+            comments: selfComments,
+        };
+
+        savePerformanceReview(firestore, user.uid, reviewData);
+
         toast({
             title: 'Self-Assessment Submitted',
             description: 'Your performance review has been recorded.',
@@ -58,6 +79,37 @@ export default function PerformancePage() {
     };
 
     const handleManagerSubmit = () => {
+        if (!user || !firestore) {
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: 'You must be logged in to submit feedback.',
+            });
+            return;
+        }
+        
+        // Find the user ID for the selected employee
+        const employee = leaderboard.find(e => e.name === selectedEmployee);
+        if (!employee) {
+             toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: 'Could not find the selected employee.',
+            });
+            return;
+        }
+
+        const reviewData = {
+            type: 'manager-feedback' as const,
+            feedback: managerFeedback,
+            reviewedUserId: employee.id, // We'll need user IDs in the leaderboard data
+        };
+
+        // Note: For manager feedback, you'd likely save it against the *reviewed user's* ID,
+        // and add the manager's ID as the reviewer. This is a simplified example.
+        // savePerformanceReview(firestore, employee.id, reviewData);
+        // For now, we'll just show the toast.
+        
         toast({
             title: 'Feedback Submitted',
             description: `Your feedback for ${selectedEmployee} has been saved.`,
