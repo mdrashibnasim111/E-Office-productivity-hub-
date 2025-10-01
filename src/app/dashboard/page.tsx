@@ -7,6 +7,7 @@ import { Leaderboard } from "@/components/dashboard/leaderboard";
 import { Recommendations } from "@/components/dashboard/recommendations";
 import { OfflineSummary } from "@/components/dashboard/offline-summary";
 import { StreaksCard } from "@/components/dashboard/streaks-card";
+import GradientText from "@/components/ui/gradient-text";
 
 export default function DashboardPage() {
   return (
@@ -14,7 +15,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         <div className="md:col-span-2">
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
-                Welcome back, Rashib!
+              <GradientText>Welcome back, Rashib!</GradientText>
             </h1>
             <p className="text-muted-foreground">Let’s get productive.</p>
         </div>
