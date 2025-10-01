@@ -13,6 +13,7 @@ import {
   Target,
   Trophy,
   Users,
+  ClipboardCheck,
 } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +24,7 @@ const navItems = [
   { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
   { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
   { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
   { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];

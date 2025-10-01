@@ -16,6 +16,7 @@ import {
   Settings,
   LogOut,
   User,
+  ClipboardCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -38,6 +39,7 @@ const navItems = [
     { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
     { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
     { href: '/dashboard/team', icon: Users, label: 'Team' },
+    { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
     { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
     { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
