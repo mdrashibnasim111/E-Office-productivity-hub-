@@ -5,27 +5,17 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Logo from '@/components/icons/logo';
 import { ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
-  const loginImage = PlaceHolderImages.find(image => image.id === 'login-image');
-
   return (
     <div className="w-full min-h-screen grid place-items-center p-4">
-       {loginImage && (
-          <div className="fixed top-[70%] left-1/2 -translate-x-1/2 w-[150vw] h-[100vh] z-[-1] bottom-[-70vh]">
-            <Image
-                src={loginImage.imageUrl}
-                alt={loginImage.description}
-                fill
-                className="object-cover scale-x-[2.25] scale-y-[3]"
-                style={{ transformOrigin: 'bottom' }}
-                data-ai-hint={loginImage.imageHint}
-            />
-          </div>
-        )}
+      <div className="wave-bg">
+        <div className="wave-one"></div>
+        <div className="wave-two"></div>
+        <div className="wave-three"></div>
+      </div>
       <div className="w-full max-w-[380px] rounded-[40px] bg-black/25 p-8 shadow-2xl backdrop-blur-[38px] text-foreground flex flex-col items-center text-center">
         <div className="mx-auto flex w-full flex-col items-center text-center">
           <Logo className="h-[74px] w-[74px] text-primary mb-8" />
