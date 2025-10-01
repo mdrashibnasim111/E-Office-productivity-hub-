@@ -47,7 +47,7 @@ export default function PerformancePage() {
         initiative: 5,
     });
     const [selfComments, setSelfComments] = useState('');
-    const [selectedEmployee, setSelectedEmployee] = useState(leaderboard[0].name);
+    const [selectedEmployee, setSelectedEmployee] = useState(leaderboard[0].id);
     const [managerFeedback, setManagerFeedback] = useState('');
 
     const handleRatingChange = (id: string, value: number[]) => {
@@ -88,8 +88,7 @@ export default function PerformancePage() {
             return;
         }
         
-        // Find the user ID for the selected employee
-        const employee = leaderboard.find(e => e.name === selectedEmployee);
+        const employee = leaderboard.find(e => e.id === selectedEmployee);
         if (!employee) {
              toast({
                 variant: 'destructive',
@@ -102,18 +101,17 @@ export default function PerformancePage() {
         const reviewData = {
             type: 'manager-feedback' as const,
             feedback: managerFeedback,
-            reviewedUserId: employee.id, // We'll need user IDs in the leaderboard data
+            reviewedUserId: employee.id,
         };
 
-        // Note: For manager feedback, you'd likely save it against the *reviewed user's* ID,
-        // and add the manager's ID as the reviewer. This is a simplified example.
-        // savePerformanceReview(firestore, employee.id, reviewData);
-        // For now, we'll just show the toast.
+        // The savePerformanceReview function will handle associating the manager's ID.
+        savePerformanceReview(firestore, user.uid, reviewData);
         
         toast({
             title: 'Feedback Submitted',
-            description: `Your feedback for ${selectedEmployee} has been saved.`,
+            description: `Your feedback for ${employee.name} has been saved.`,
         });
+        setManagerFeedback('');
     }
 
   return (
@@ -181,7 +179,7 @@ export default function PerformancePage() {
                             </SelectTrigger>
                             <SelectContent>
                                 {leaderboard.map(user => (
-                                <SelectItem key={user.name} value={user.name}>
+                                <SelectItem key={user.id} value={user.id}>
                                     <div className="flex items-center gap-2">
                                         <Avatar className="h-6 w-6">
                                             {user.avatar && <AvatarImage src={user.avatar} />}
@@ -198,7 +196,7 @@ export default function PerformancePage() {
                         <Label htmlFor="manager-feedback">Feedback</Label>
                         <Textarea 
                             id="manager-feedback" 
-                            placeholder={`Provide constructive feedback for ${selectedEmployee}...`}
+                            placeholder={`Provide constructive feedback for ${leaderboard.find(e => e.id === selectedEmployee)?.name}...`}
                             rows={8}
                             value={managerFeedback}
                             onChange={(e) => setManagerFeedback(e.target.value)}
