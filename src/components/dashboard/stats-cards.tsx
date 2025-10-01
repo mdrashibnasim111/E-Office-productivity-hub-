@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle2, ListTodo, Target } from 'lucide-react';
+import { CheckCircle2, ListTodo, Target, Hand } from 'lucide-react';
 import {
   ChartContainer,
   ChartTooltip,
@@ -10,6 +10,7 @@ import {
 import { Pie, PieChart, Cell, Label } from 'recharts';
 import type { PieSectorDataItem } from 'recharts/types/polar/Pie';
 import { ProductivityDetailsDialog } from '@/components/dashboard/productivity-details-dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const chartData = [{ name: 'Score', value: 85, fill: 'hsl(var(--primary))' }];
 
@@ -24,6 +25,7 @@ export function StatsCards() {
 
   return (
     <>
+      <TooltipProvider>
       <Card 
         className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all"
         onClick={() => setIsDialogOpen(true)}
@@ -32,7 +34,14 @@ export function StatsCards() {
           <CardTitle className="text-sm font-medium">
             Overall Productivity
           </CardTitle>
-          <Target className="h-4 w-4 text-muted-foreground" />
+           <Tooltip>
+            <TooltipTrigger>
+              <Hand className="h-4 w-4 text-muted-foreground" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to view details</p>
+            </TooltipContent>
+          </Tooltip>
         </CardHeader>
         <CardContent>
           <div className="h-[120px] w-full">
@@ -92,6 +101,7 @@ export function StatsCards() {
           </div>
         </CardContent>
       </Card>
+      </TooltipProvider>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Tasks Completed</CardTitle>
