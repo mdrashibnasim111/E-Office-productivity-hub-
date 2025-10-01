@@ -104,13 +104,13 @@ export function Header() {
             <Input
               type="search"
               placeholder="Search tasks, employees..."
-              className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+              className="w-full appearance-none bg-background pl-8 shadow-none md:w-1/2 lg:w-1/3"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => { if(searchQuery) setIsSuggestionsVisible(true)}}
             />
             {isSuggestionsVisible && suggestions.length > 0 && (
-                <div className="absolute top-full mt-2 w-full md:w-2/3 lg:w-1/3 rounded-md border bg-card text-card-foreground shadow-lg z-50">
+                <div className="absolute top-full mt-2 w-full md:w-1/2 lg:w-1/3 rounded-md border bg-card text-card-foreground shadow-lg z-50">
                     <ul className="py-1">
                         {suggestions.map((suggestion, index) => (
                             <li 
