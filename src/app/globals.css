@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 267 42% 13%; /* Dark Purple */
-    --foreground: 270 17% 98%; /* Light Lavender/White */
+    --background: 268 33% 9%; /* #1e142c */
+    --foreground: 276 25% 98%; /* #f9f8fa */
 
     --card: 267 40% 18%; /* Slightly lighter than background */
     --card-foreground: 270 17% 98%;
@@ -13,14 +13,14 @@
     --popover: 267 40% 10%;
     --popover-foreground: 270 17% 98%;
 
-    --primary: 279 100% 63%; /* Bright Purple */
+    --primary: 278 100% 63%; /* #a240ff */
     --primary-foreground: 279 100% 98%;
 
     --secondary: 270 30% 30%;
     --secondary-foreground: 270 17% 98%;
 
-    --muted: 267 25% 45%; /* Muted Purple */
-    --muted-foreground: 270 15% 75%;
+    --muted: 278 12% 64%; /* #a392b3 */
+    --muted-foreground: 278 12% 64%;
 
     --accent: 279 90% 70%; /* Lighter Purple */
     --accent-foreground: 270 17% 98%;
@@ -42,8 +42,8 @@
   }
 
   .dark {
-    --background: 267 42% 13%; /* Dark Purple */
-    --foreground: 270 17% 98%; /* Light Lavender/White */
+    --background: 268 33% 9%; /* #1e142c */
+    --foreground: 276 25% 98%; /* #f9f8fa */
 
     --card: 267 40% 18%; /* Slightly lighter than background */
     --card-foreground: 270 17% 98%;
@@ -51,14 +51,14 @@
     --popover: 267 40% 10%;
     --popover-foreground: 270 17% 98%;
 
-    --primary: 279 100% 63%; /* Bright Purple */
+    --primary: 278 100% 63%; /* #a240ff */
     --primary-foreground: 279 100% 98%;
 
     --secondary: 270 30% 30%;
     --secondary-foreground: 270 17% 98%;
 
-    --muted: 267 25% 45%; /* Muted Purple */
-    --muted-foreground: 270 15% 75%;
+    --muted: 278 12% 64%; /* #a392b3 */
+    --muted-foreground: 278 12% 64%;
 
     --accent: 279 90% 70%; /* Lighter Purple */
     --accent-foreground: 270 17% 98%;
