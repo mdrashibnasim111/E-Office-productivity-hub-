@@ -23,7 +23,7 @@ export default function LoginPage() {
             data-ai-hint={loginImage.imageHint}
           />
         )}
-      <div className="w-full max-w-sm rounded-xl bg-card/50 p-8 shadow-2xl backdrop-blur-lg text-foreground">
+      <div className="w-full max-w-[380px] rounded-[40px] bg-card/25 p-8 shadow-2xl backdrop-blur-xl text-foreground flex flex-col items-center text-center">
         <div className="mx-auto flex flex-col items-center text-center">
           <Logo className="h-12 w-12 text-primary" />
           <div className="grid gap-1 text-center my-6">
