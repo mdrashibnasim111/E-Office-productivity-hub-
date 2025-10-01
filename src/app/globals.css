@@ -102,7 +102,7 @@
   background: hsl(var(--primary) / 0.4);
   border-radius: 1000% 1000% 0 0;
   position: absolute;
-  width: 200%;
+  width: 300%;
   height: 100%;
   animation: wave 7s -3s linear infinite;
   transform: translate3d(0, 0, 0);
