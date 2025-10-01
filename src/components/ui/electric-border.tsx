@@ -1,6 +1,6 @@
 'use client';
 // Component inspired by @BalintFerenczy on X: https://codepen.io/BalintFerenczy/pen/KwdoyEN
-import React, { useRef, useMemo, useEffect, ReactNode } from 'react';
+import React, { useRef, useMemo, useEffect, ReactNode, useState } from 'react';
 
 type ElectricBorderProps = {
   children: ReactNode;
@@ -32,6 +32,7 @@ export function ElectricBorder({
   className = '',
 }: ElectricBorderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [pathLength, setPathLength] = useState(0);
   const uniqueId = useMemo(() => `electric-border-${Math.random().toString(36).substr(2, 9)}`, []);
 
   const chaosValue = useMemo(() => Math.max(0.1, Math.min(1, chaos)), [chaos]);
@@ -45,8 +46,6 @@ export function ElectricBorder({
     const path = container.querySelector('path');
     const svg = container.querySelector('svg');
     if (!path || !svg) return;
-
-    let pathLength = 0;
 
     const updatePath = () => {
       if (!container || !path) return;
@@ -73,8 +72,9 @@ export function ElectricBorder({
          L ${chaoticPoints[2][0]},${chaoticPoints[2][1]} 
          L ${chaoticPoints[3][0]},${chaoticPoints[3][1]} Z`
       );
-      pathLength = path.getTotalLength();
-      path.style.strokeDasharray = `${pathLength}`;
+      const length = path.getTotalLength();
+      setPathLength(length);
+      path.style.strokeDasharray = `${length}`;
     };
 
     updatePath();
@@ -118,7 +118,7 @@ export function ElectricBorder({
 
   return (
     <div ref={containerRef} style={borderStyle} className={className}>
-      <style>{keyframes}</style>
+      {pathLength > 0 && <style>{keyframes}</style>}
       <svg style={svgStyle}>
         <filter id={uniqueId}>
           <feTurbulence
