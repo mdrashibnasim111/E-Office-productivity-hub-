@@ -21,7 +21,7 @@ const completedTasks = tasks.filter(task => task.status === 'Completed');
 
 export function CompletedTasksDialog({ isOpen, onClose }: CompletedTasksDialogProps) {
   const renderItem = (task: Task) => (
-    <div className="flex flex-col gap-2 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors w-full">
+    <div className="flex flex-col gap-2 p-4 rounded-lg border bg-card/80 hover:bg-muted/50 transition-colors w-full">
       <div className="flex items-center justify-between">
         <p className="font-semibold text-base">{task.title}</p>
         <Badge variant="outline" className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Completed</Badge>
@@ -42,7 +42,7 @@ export function CompletedTasksDialog({ isOpen, onClose }: CompletedTasksDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
+      <DialogContent className="max-w-2xl h-[80vh] flex flex-col bg-card">
         <DialogHeader>
           <DialogTitle className="font-headline text-2xl flex items-center gap-2">
             <CheckCircle className="text-primary" />
@@ -55,7 +55,7 @@ export function CompletedTasksDialog({ isOpen, onClose }: CompletedTasksDialogPr
         
         <div className="flex-1 overflow-hidden relative">
           {completedTasks.length > 0 ? (
-            <AnimatedList
+            <AnimatedList<Task>
               items={completedTasks}
               renderItem={renderItem}
               onItemSelect={(item) => console.log('Selected:', item.title)}
