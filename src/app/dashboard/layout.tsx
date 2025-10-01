@@ -9,11 +9,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <FirebaseClientProvider>
       <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
         <Sidebar />
-        <div className="flex flex-col">
+        <div className="flex flex-col relative overflow-hidden">
           <Header />
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background pb-20 lg:pb-6">
+          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background pb-20 lg:pb-6 z-10">
             {children}
           </main>
+          <div className="ocean">
+            <div className="wave"></div>
+            <div className="wave"></div>
+            <div className="wave"></div>
+          </div>
         </div>
         <BottomNavBar />
       </div>
