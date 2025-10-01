@@ -12,6 +12,7 @@ import type { PieSectorDataItem } from 'recharts/types/polar/Pie';
 import { ProductivityDetailsDialog } from '@/components/dashboard/productivity-details-dialog';
 import { CompletedTasksDialog } from '@/components/dashboard/completed-tasks-dialog';
 import { PendingTasksDialog } from '@/components/dashboard/pending-tasks-dialog';
+import { ActiveGoalsDialog } from '@/components/dashboard/active-goals-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { tasks } from '@/lib/data';
 
@@ -43,6 +44,7 @@ export function StatsCards() {
   const [isProductivityDialogOpen, setIsProductivityDialogOpen] = useState(false);
   const [isCompletedTasksDialogOpen, setIsCompletedTasksDialogOpen] = useState(false);
   const [isPendingTasksDialogOpen, setIsPendingTasksDialogOpen] = useState(false);
+  const [isGoalsDialogOpen, setIsGoalsDialogOpen] = useState(false);
 
   const scoreColor = useMemo(() => getScoreColor(score), []);
 
@@ -185,12 +187,27 @@ export function StatsCards() {
           <p className="text-xs text-muted-foreground">{urgentPendingTasksCount} urgent</p>
         </CardContent>
       </Card>
-      <Card className="shadow-dynamic" style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}>
+      <Card 
+        className="shadow-dynamic cursor-pointer hover:border-primary/50 transition-all"
+        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}
+        onClick={() => setIsGoalsDialogOpen(true)}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-muted-foreground" />
             Active Goals
           </CardTitle>
+           <Tooltip>
+            <TooltipTrigger asChild>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Hand className="h-4 w-4" />
+                    <span>click here</span>
+                </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to view details</p>
+            </TooltipContent>
+          </Tooltip>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold font-headline">8</div>
@@ -201,6 +218,7 @@ export function StatsCards() {
       <ProductivityDetailsDialog isOpen={isProductivityDialogOpen} onClose={() => setIsProductivityDialogOpen(false)} />
       <CompletedTasksDialog isOpen={isCompletedTasksDialogOpen} onClose={() => setIsCompletedTasksDialogOpen(false)} />
       <PendingTasksDialog isOpen={isPendingTasksDialogOpen} onClose={() => setIsPendingTasksDialogOpen(false)} />
+      <ActiveGoalsDialog isOpen={isGoalsDialogOpen} onClose={() => setIsGoalsDialogOpen(false)} />
     </>
   );
 }

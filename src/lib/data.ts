@@ -35,7 +35,7 @@ export const tasks: Task[] = [
     team: 'Finance',
     status: 'In Progress',
     dueDate: '2024-08-15',
-    description: 'Prepare the quarterly financial report, including revenue analysis, expense breakdown, and profit margins. The draft needs to be ready for the management review meeting next week.',
+    description: 'Prepare the quarterly financial report, including revenue analysis, expense breakdown, and profit margins. The draft needs to be ready for the management review meeting next week. Urgent.',
     comments: [
       { author: 'Jane Doe', avatar: PlaceHolderImages.find(i => i.id === 'avatar-manager')?.imageUrl || '', timestamp: '2 hours ago', text: 'Sarah, please ensure you include the year-over-year growth comparison.' },
       { author: 'Sarah Lee', avatar: PlaceHolderImages.find(i => i.id === 'avatar-1')?.imageUrl || '', timestamp: '1 hour ago', text: 'Will do, Jane. I\'m on it.' },
@@ -65,7 +65,7 @@ export const tasks: Task[] = [
     team: 'Management',
     status: 'Pending',
     dueDate: '2024-07-30',
-    description: 'Review the submitted budget proposals for the upcoming fiscal year. Check for alignment with strategic goals and financial viability. Provide feedback or approval for each proposal.',
+    description: 'Review the submitted budget proposals for the upcoming fiscal year. Check for alignment with strategic goals and financial viability. Provide feedback or approval for each proposal. Urgent.',
     comments: [],
     attachments: [],
   },
@@ -246,3 +246,25 @@ export const leaderboard: LeaderboardUser[] = [
   { id: 'user-004', name: 'Kenji Tanaka', title: 'UI/UX Designer', points: 1050, avatar: PlaceHolderImages.find(i => i.id === 'avatar-4')?.imageUrl, badges: [{name: 'Pro', variant: 'secondary'}] },
   { id: 'user-005', name: 'Fatima Al-Fassi', title: 'Field Officer', points: 980, avatar: PlaceHolderImages.find(i => i.id === 'avatar-5')?.imageUrl, badges: [] },
 ];
+
+export type Goal = {
+  id: string;
+  title: string;
+  description: string;
+  progress: number; // Percentage
+  deadline: string;
+};
+
+export const teamGoals: Goal[] = [
+    { id: 'goal-team-1', title: 'Improve Citizen Satisfaction Score by 5%', description: 'Implement feedback mechanisms and reduce response times.', progress: 75, deadline: '2024-09-30' },
+    { id: 'goal-team-2', title: 'Reduce Departmental Budget Variance to < 2%', description: 'Enhance budget tracking and enforce stricter spending controls.', progress: 50, deadline: '2024-12-31' },
+    { id: 'goal-team-3', title: 'Launch New Digital Service Portal', description: 'Complete development, testing, and launch of the new portal for citizen services.', progress: 30, deadline: '2024-11-15' },
+];
+
+export const individualGoals: Goal[] = [
+    { id: 'goal-ind-1', title: 'Complete Advanced Project Management Certification', assignee: 'Sarah Lee', progress: 80, deadline: '2024-08-31' },
+    { id: 'goal-ind-2', title: 'Master New UI/UX Design Software', assignee: 'Kenji Tanaka', progress: 60, deadline: '2024-09-15' },
+    { id: 'goal-ind-3', title: 'Improve Public Speaking Skills', assignee: 'David Chen', progress: 90, deadline: '2024-08-20' },
+    { id: 'goal-ind-4', title: 'Automate a Manual Reporting Process', assignee: 'Maria Rodriguez', progress: 45, deadline: '2024-10-10' },
+    { id: 'goal-ind-5', title: 'Conduct 20 Successful Field Audits', assignee: 'Fatima Al-Fassi', progress: 70, deadline: '2024-09-30' },
+].map(g => ({...g, description: `Assigned to ${g.assignee}`}));
