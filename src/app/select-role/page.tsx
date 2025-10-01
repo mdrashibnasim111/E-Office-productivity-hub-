@@ -91,15 +91,17 @@ export default function SelectRolePage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0F1822] p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto w-full max-w-4xl">
+      <div className="mx-auto w-full max-w-4xl relative">
+        {selectedCategory && (
+          <div className="absolute -top-4 left-0">
+             <Button variant="ghost" onClick={() => setSelectedCategory(null)} className="text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Categories
+            </Button>
+          </div>
+        )}
         <div className="text-center mb-10">
-            {selectedCategory && (
-                 <Button variant="ghost" onClick={() => setSelectedCategory(null)} className="absolute top-8 left-8 text-muted-foreground hover:text-foreground">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Categories
-                </Button>
-            )}
-          <h1 className="text-3xl font-bold font-headline tracking-tight sm:text-4xl">
+          <h1 className="text-3xl font-bold font-headline tracking-tight sm:text-4xl pt-12">
             {selectedCategory ? `Select Your Designation` : 'Choose Your Category'}
           </h1>
           <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
