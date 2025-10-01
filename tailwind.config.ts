@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        dynamic: '0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color)',
+      },
       fontFamily: {
         body: ['"PT Sans"', 'sans-serif'],
         headline: ['"Playfair Display"', 'serif'],

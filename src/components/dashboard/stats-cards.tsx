@@ -45,15 +45,10 @@ export function StatsCards() {
     <>
       <TooltipProvider>
       <Card 
-        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-lg"
+        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-dynamic"
         onClick={() => setIsDialogOpen(true)}
         style={{ '--shadow-color': scoreColor } as React.CSSProperties}
       >
-        <style jsx>{`
-          .shadow-dynamic {
-            box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
-          }
-        `}</style>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Overall Productivity
