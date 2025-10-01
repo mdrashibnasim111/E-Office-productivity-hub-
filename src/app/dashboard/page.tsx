@@ -12,7 +12,7 @@ export default function DashboardPage() {
   return (
     <>
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
-        Welcome to your Dashboard
+        Welcome, Rashib
       </h1>
       
       {/* Top Row: Streaks and Stats */}
