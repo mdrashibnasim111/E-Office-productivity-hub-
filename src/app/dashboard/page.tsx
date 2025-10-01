@@ -14,7 +14,7 @@ export default function DashboardPage() {
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
         Welcome to your Dashboard
       </h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
         <StreaksCard />
         <StatsCards />
       </div>

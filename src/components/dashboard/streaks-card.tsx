@@ -20,7 +20,7 @@ export function StreaksCard() {
   const isLoading = isUserLoading || (user && isStreakLoading);
 
   return (
-    <Card className="lg:col-span-1">
+    <Card>
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-sm font-medium">
           <Flame className="text-accent" />
