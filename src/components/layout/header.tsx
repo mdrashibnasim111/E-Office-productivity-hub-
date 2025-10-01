@@ -86,7 +86,7 @@ export function Header() {
   }, [searchContainerRef]);
 
   return (
-    <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6">
+    <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:h-20 lg:px-6">
       <div className="lg:hidden">
         <Link
             href="/dashboard"
