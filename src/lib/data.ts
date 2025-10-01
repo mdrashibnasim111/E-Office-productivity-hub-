@@ -1,5 +1,19 @@
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { BadgeProps } from '@/components/ui/badge';
+import { MessageSquare, Paperclip } from 'lucide-react';
+
+export type Comment = {
+  author: string;
+  avatar: string;
+  timestamp: string;
+  text: string;
+};
+
+export type Attachment = {
+  name: string;
+  url: string;
+  type: 'PDF' | 'Image' | 'Document';
+};
 
 export type Task = {
   id: string;
@@ -8,6 +22,9 @@ export type Task = {
   team: string;
   status: 'Completed' | 'In Progress' | 'Pending';
   dueDate: string;
+  description: string;
+  comments: Comment[];
+  attachments: Attachment[];
 };
 
 export const tasks: Task[] = [
@@ -18,6 +35,15 @@ export const tasks: Task[] = [
     team: 'Finance',
     status: 'In Progress',
     dueDate: '2024-08-15',
+    description: 'Prepare the quarterly financial report, including revenue analysis, expense breakdown, and profit margins. The draft needs to be ready for the management review meeting next week.',
+    comments: [
+      { author: 'Jane Doe', avatar: PlaceHolderImages.find(i => i.id === 'avatar-manager')?.imageUrl || '', timestamp: '2 hours ago', text: 'Sarah, please ensure you include the year-over-year growth comparison.' },
+      { author: 'Sarah Lee', avatar: PlaceHolderImages.find(i => i.id === 'avatar-1')?.imageUrl || '', timestamp: '1 hour ago', text: 'Will do, Jane. I\'m on it.' },
+    ],
+    attachments: [
+      { name: 'Q2_Financials.pdf', url: '#', type: 'PDF' },
+      { name: 'Expense_Guidelines.docx', url: '#', type: 'Document' },
+    ],
   },
   {
     id: 'TASK-7878',
@@ -26,6 +52,11 @@ export const tasks: Task[] = [
     team: 'IT',
     status: 'In Progress',
     dueDate: '2024-08-05',
+    description: 'Complete the high-fidelity UI mockups for the new citizen portal project. The design should be responsive and accessible, following the latest government design standards.',
+    comments: [],
+    attachments: [
+        { name: 'Wireframes_v2.jpg', url: '#', type: 'Image' },
+    ],
   },
   {
     id: 'TASK-4582',
@@ -34,6 +65,9 @@ export const tasks: Task[] = [
     team: 'Management',
     status: 'Pending',
     dueDate: '2024-07-30',
+    description: 'Review the submitted budget proposals for the upcoming fiscal year. Check for alignment with strategic goals and financial viability. Provide feedback or approval for each proposal.',
+    comments: [],
+    attachments: [],
   },
   {
     id: 'TASK-3210',
@@ -42,6 +76,11 @@ export const tasks: Task[] = [
     team: 'HR',
     status: 'Completed',
     dueDate: '2024-07-20',
+    description: 'The annual training workshop has been successfully organized. All sessions were completed, and feedback from participants has been collected for review.',
+    comments: [],
+    attachments: [
+      { name: 'Final_Agenda.pdf', url: '#', type: 'PDF' },
+    ],
   },
   {
     id: 'TASK-5432',
@@ -50,6 +89,9 @@ export const tasks: Task[] = [
     team: 'IT',
     status: 'Completed',
     dueDate: '2024-07-22',
+    description: 'Security patch XYZ has been successfully deployed across all production servers. System monitoring shows no issues post-deployment.',
+    comments: [],
+    attachments: [],
   },
     {
     id: 'TASK-6891',
@@ -58,6 +100,9 @@ export const tasks: Task[] = [
     team: 'Field Operations',
     status: 'In Progress',
     dueDate: '2024-08-25',
+    description: 'Begin the field survey in the designated area for the upcoming infrastructure project. Data collection on soil quality and existing utilities is the primary focus.',
+    comments: [],
+    attachments: [],
   },
 ];
 
