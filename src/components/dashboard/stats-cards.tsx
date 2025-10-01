@@ -105,7 +105,7 @@ export function StatsCards() {
         </CardContent>
       </Card>
       </TooltipProvider>
-      <Card>
+      <Card className="shadow-lg shadow-primary/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Tasks Completed</CardTitle>
           <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
@@ -115,7 +115,7 @@ export function StatsCards() {
           <p className="text-xs text-muted-foreground">+15% from last month</p>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="shadow-lg shadow-primary/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Pending Tasks</CardTitle>
           <ListTodo className="h-4 w-4 text-muted-foreground" />
@@ -125,7 +125,7 @@ export function StatsCards() {
           <p className="text-xs text-muted-foreground">5 urgent</p>
         </CardContent>
       </Card>
-      <Card>
+      <Card className="shadow-lg shadow-primary/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Active Goals</CardTitle>
           <Target className="h-4 w-4 text-muted-foreground" />
