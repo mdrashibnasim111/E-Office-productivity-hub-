@@ -23,7 +23,7 @@ type PerformanceReviewData = {
  * Saves a performance review to Firestore.
  * This is a non-blocking operation.
  * @param firestore - The Firestore instance.
- * @param userId - The ID of the user submitting the review.
+ * @param userId - The ID of the user submitting the review (reviewer).
  * @param reviewData - The performance review data.
  */
 export function savePerformanceReview(
@@ -33,12 +33,25 @@ export function savePerformanceReview(
 ) {
   const reviewsCollection = collection(firestore, 'performanceReviews');
 
-  const dataToSave = {
-    ...reviewData,
-    userId: reviewData.type === 'manager-feedback' ? reviewData.reviewedUserId : userId,
-    reviewerId: userId,
-    createdAt: serverTimestamp(),
-  };
+  let dataToSave;
+
+  if (reviewData.type === 'manager-feedback') {
+    dataToSave = {
+      ...reviewData,
+      userId: reviewData.reviewedUserId, // The user being reviewed
+      reviewerId: userId, // The manager
+      createdAt: serverTimestamp(),
+    };
+    // The 'reviewedUserId' field is redundant in the final object, so we can remove it.
+    delete (dataToSave as any).reviewedUserId;
+  } else {
+    dataToSave = {
+      ...reviewData,
+      userId: userId, // The user doing the self-assessment
+      reviewerId: userId, // For self-assessment, reviewer is the user themselves
+      createdAt: serverTimestamp(),
+    };
+  }
 
   addDoc(reviewsCollection, dataToSave)
     .catch((serverError) => {

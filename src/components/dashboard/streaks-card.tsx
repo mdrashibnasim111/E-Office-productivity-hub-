@@ -2,27 +2,22 @@
 
 import { Flame } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { useUser, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getFirestore } from 'firebase/firestore';
+import { useUser, useDoc, useMemoFirebase, useFirestore } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function StreaksCard() {
   const { user, isUserLoading } = useUser();
-  const firestore = getFirestore();
+  const firestore = useFirestore();
 
   const userStreakRef = useMemoFirebase(
-    () => (user ? doc(firestore, 'userStreaks', user.uid) : null),
+    () => (user && firestore ? doc(firestore, 'userStreaks', user.uid) : null),
     [firestore, user]
   );
   
-  // For now, we'll use mock data. Once the backend functions are implemented
-  // this useDoc hook will fetch the real data.
-  // const { data: streakData, isLoading: isStreakLoading } = useDoc(userStreakRef);
-  const streakData = { currentStreak: 5, longestStreak: 12 };
-  const isStreakLoading = false;
-
-
-  const isLoading = isUserLoading || isStreakLoading;
+  const { data: streakData, isLoading: isStreakLoading } = useDoc(userStreakRef);
+  
+  const isLoading = isUserLoading || (user && isStreakLoading);
 
   return (
     <Card className="lg:col-span-1">
