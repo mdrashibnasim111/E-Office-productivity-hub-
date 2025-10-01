@@ -104,7 +104,7 @@ export default function SelectRolePage() {
               <Card
                 key={category.name}
                 onClick={() => setSelectedCategory(category)}
-                className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out cursor-pointer group bg-[#1E3347]"
+                className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out cursor-pointer group bg-[#182531]"
               >
                 <CardHeader className="flex-1 p-6">
                   <div className="flex justify-between items-start">
