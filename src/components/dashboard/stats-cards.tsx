@@ -47,7 +47,7 @@ export function StatsCards() {
           </Tooltip>
         </CardHeader>
         <CardContent>
-          <div className="h-[120px] w-full">
+          <div className="h-[120px] w-full" style={{ filter: 'drop-shadow(0 4px 6px hsla(var(--primary) / 0.4))' }}>
             <ChartContainer
               config={chartConfig}
               className="mx-auto aspect-square h-full"
