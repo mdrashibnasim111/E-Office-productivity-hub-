@@ -1,143 +1,144 @@
 'use client';
-// Component inspired by @BalintFerenczy on X: https://codepen.io/BalintFerenczy/pen/KwdoyEN
-import React, { useRef, useMemo, useEffect, ReactNode, useState } from 'react';
 
-type ElectricBorderProps = {
-  children: ReactNode;
+import React, { CSSProperties, PropsWithChildren, useEffect, useId, useLayoutEffect, useRef } from 'react';
+import './ElectricBorder.css';
+
+type ElectricBorderProps = PropsWithChildren<{
   color?: string;
   speed?: number;
   chaos?: number;
   thickness?: number;
-  style?: React.CSSProperties;
   className?: string;
-};
+  style?: CSSProperties;
+}>;
 
-const map = (
-  value: number,
-  in_min: number,
-  in_max: number,
-  out_min: number,
-  out_max: number
-): number => {
-  return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
-};
-
-export function ElectricBorder({
+const ElectricBorder: React.FC<ElectricBorderProps> = ({
   children,
-  color = '#7df9ff',
+  color = '#5227FF',
   speed = 1,
-  chaos = 0.5,
+  chaos = 1,
   thickness = 2,
-  style = {},
-  className = '',
-}: ElectricBorderProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [pathLength, setPathLength] = useState(0);
-  const uniqueId = useMemo(() => `electric-border-${Math.random().toString(36).substr(2, 9)}`, []);
+  className,
+  style
+}: ElectricBorderProps) => {
+  const rawId = useId().replace(/[:]/g, '');
+  const filterId = `turbulent-displace-${rawId}`;
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const strokeRef = useRef<HTMLDivElement | null>(null);
 
-  const chaosValue = useMemo(() => Math.max(0.1, Math.min(1, chaos)), [chaos]);
-  const speedValue = useMemo(() => map(speed, 0, 1, 3, 0.5), [speed]);
-  const thicknessValue = useMemo(() => map(thickness, 1, 5, 0.005, 0.02), [thickness]);
+  const updateAnim = () => {
+    const svg = svgRef.current;
+    const host = rootRef.current;
+    if (!svg || !host) return;
+
+    if (strokeRef.current) {
+      strokeRef.current.style.filter = `url(#${filterId})`;
+    }
+
+    const width = Math.max(1, Math.round(host.clientWidth || host.getBoundingClientRect().width || 0));
+    const height = Math.max(1, Math.round(host.clientHeight || host.getBoundingClientRect().height || 0));
+
+    const dyAnims = Array.from(svg.querySelectorAll<SVGAnimateElement>('feOffset > animate[attributeName="dy"]'));
+    if (dyAnims.length >= 2) {
+      dyAnims[0].setAttribute('values', `${height}; 0`);
+      dyAnims[1].setAttribute('values', `0; -${height}`);
+    }
+
+    const dxAnims = Array.from(svg.querySelectorAll<SVGAnimateElement>('feOffset > animate[attributeName="dx"]'));
+    if (dxAnims.length >= 2) {
+      dxAnims[0].setAttribute('values', `${width}; 0`);
+      dxAnims[1].setAttribute('values', `0; -${width}`);
+    }
+
+    const baseDur = 6;
+    const dur = Math.max(0.001, baseDur / (speed || 1));
+    [...dyAnims, ...dxAnims].forEach(a => a.setAttribute('dur', `${dur}s`));
+
+    const disp = svg.querySelector('feDisplacementMap');
+    if (disp) disp.setAttribute('scale', String(30 * (chaos || 1)));
+
+    const filterEl = svg.querySelector<SVGFilterElement>(`#${CSS.escape(filterId)}`);
+    if (filterEl) {
+      filterEl.setAttribute('x', '-200%');
+      filterEl.setAttribute('y', '-200%');
+      filterEl.setAttribute('width', '500%');
+      filterEl.setAttribute('height', '500%');
+    }
+
+    requestAnimationFrame(() => {
+      [...dyAnims, ...dxAnims].forEach((a: any) => {
+        if (typeof a.beginElement === 'function') {
+          try {
+            a.beginElement();
+          } catch { }
+        }
+      });
+    });
+  };
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    updateAnim();
+  }, [speed, chaos]);
 
-    const path = container.querySelector('path');
-    const svg = container.querySelector('svg');
-    if (!path || !svg) return;
+  useLayoutEffect(() => {
+    if (!rootRef.current) return;
+    const ro = new ResizeObserver(() => updateAnim());
+    ro.observe(rootRef.current);
+    updateAnim();
+    return () => ro.disconnect();
+  }, []);
 
-    const updatePath = () => {
-      if (!container || !path) return;
-      const rect = container.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
-
-      const points = [
-        [thicknessValue * width, thicknessValue * height],
-        [width - thicknessValue * width, thicknessValue * height],
-        [width - thicknessValue * width, height - thicknessValue * height],
-        [thicknessValue * width, height - thicknessValue * height],
-      ];
-
-      const chaoticPoints = points.map((p) => [
-        p[0] + (Math.random() - 0.5) * chaosValue * width * 0.1,
-        p[1] + (Math.random() - 0.5) * chaosValue * height * 0.1,
-      ]);
-
-      path.setAttribute(
-        'd',
-        `M ${chaoticPoints[0][0]},${chaoticPoints[0][1]} 
-         L ${chaoticPoints[1][0]},${chaoticPoints[1][1]} 
-         L ${chaoticPoints[2][0]},${chaoticPoints[2][1]} 
-         L ${chaoticPoints[3][0]},${chaoticPoints[3][1]} Z`
-      );
-      const length = path.getTotalLength();
-      setPathLength(length);
-      path.style.strokeDasharray = `${length}`;
-    };
-
-    updatePath();
-
-    const resizeObserver = new ResizeObserver(() => updatePath());
-    resizeObserver.observe(container);
-
-    return () => resizeObserver.disconnect();
-  }, [chaosValue, thicknessValue]);
-
-  const borderStyle: React.CSSProperties = {
-    position: 'relative',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    ...style,
+  const vars: CSSProperties = {
+    ['--electric-border-color' as any]: color,
+    ['--eb-border-width' as any]: `${thickness}px`
   };
-
-  const svgStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    pointerEvents: 'none',
-  };
-
-  const pathStyle: React.CSSProperties = {
-    fill: 'none',
-    stroke: color,
-    strokeWidth: '2',
-    animation: `draw ${speedValue}s linear infinite`,
-  };
-
-  const keyframes = `
-    @keyframes draw {
-      to {
-        stroke-dashoffset: -${pathLength * 2};
-      }
-    }
-  `;
 
   return (
-    <div ref={containerRef} style={borderStyle} className={className}>
-      {pathLength > 0 && <style>{keyframes}</style>}
-      <svg style={svgStyle}>
-        <filter id={uniqueId}>
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency={chaosValue}
-            numOctaves="1"
-            result="warp"
-          />
-          <feDisplacementMap
-            xChannelSelector="R"
-            yChannelSelector="G"
-            scale={chaosValue * 30}
-            in="SourceGraphic"
-            in2="warp"
-          />
-        </filter>
-        <path filter={`url(#${uniqueId})`} style={pathStyle}></path>
+    <div ref={rootRef} className={`electric-border ${className ?? ''}`} style={{ ...vars, ...style }}>
+      <svg ref={svgRef} className="eb-svg" aria-hidden focusable="false">
+        <defs>
+          <filter id={filterId} colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+              <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+              <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
+              <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
+              <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+            <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+            <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="combinedNoise"
+              scale="30"
+              xChannelSelector="R"
+              yChannelSelector="B"
+            />
+          </filter>
+        </defs>
       </svg>
-      {children}
+
+      <div className="eb-layers">
+        <div ref={strokeRef} className="eb-stroke" />
+        <div className="eb-glow-1" />
+        <div className="eb-glow-2" />
+        <div className="eb-background-glow" />
+      </div>
+
+      <div className="eb-content">{children}</div>
     </div>
   );
-}
+};
+
+export default ElectricBorder;
