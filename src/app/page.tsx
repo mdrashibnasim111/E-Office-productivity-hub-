@@ -11,7 +11,7 @@ import { ArrowRight } from 'lucide-react';
 export default function LoginPage() {
   return (
     <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] relative overflow-hidden">
-      <div className="w-full max-w-[380px] rounded-lg bg-card/30 border border-primary/20 backdrop-blur-lg p-8 shadow-2xl text-foreground flex flex-col items-center text-center z-10">
+      <div className="w-full max-w-xs rounded-lg bg-card/30 border border-primary/20 backdrop-blur-lg p-8 shadow-2xl text-foreground flex flex-col items-center text-center z-10">
         <div className="mx-auto flex w-full flex-col items-center text-center">
           <Logo className="h-[74px] w-[74px] text-primary mb-8" />
           <div className="grid gap-1.5 text-center mb-14">
