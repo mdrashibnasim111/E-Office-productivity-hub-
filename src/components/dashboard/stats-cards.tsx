@@ -25,7 +25,7 @@ const getScoreColor = (value: number) => {
   if (value < 80) {
     return 'hsl(var(--warning))';
   }
-  return 'hsl(var(--primary))';
+  return '#46EBEB';
 };
 
 const chartConfig = {
