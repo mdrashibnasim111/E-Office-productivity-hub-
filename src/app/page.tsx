@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
-import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
+import { initiateEmailSignIn, initiateEmailSignUp } from '@/firebase/non-blocking-login';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,7 @@ export default function LoginPage() {
   const { toast } = useToast();
   const [email, setEmail] = useState('user@example.com');
   const [password, setPassword] = useState('password');
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
   useEffect(() => {
     if (!isUserLoading && user) {
@@ -29,11 +30,19 @@ export default function LoginPage() {
   useEffect(() => {
     const handleAuthError = (event: Event) => {
       const customEvent = event as CustomEvent;
-      toast({
-        variant: 'destructive',
-        title: 'Login Failed',
-        description: 'Incorrect email or password. Please try again.',
-      });
+      setIsSigningIn(false);
+      // If login fails, try to sign up the user.
+      if (customEvent.detail?.code === 'auth/invalid-credential' || customEvent.detail?.code === 'auth/user-not-found') {
+        if(auth) {
+          initiateEmailSignUp(auth, email, password);
+        }
+      } else {
+         toast({
+          variant: 'destructive',
+          title: 'Login Failed',
+          description: customEvent.detail?.message || 'An unknown error occurred.',
+        });
+      }
     };
 
     window.addEventListener('auth-error', handleAuthError);
@@ -41,7 +50,7 @@ export default function LoginPage() {
     return () => {
       window.removeEventListener('auth-error', handleAuthError);
     };
-  }, [toast]);
+  }, [toast, auth, email, password]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +62,7 @@ export default function LoginPage() {
       });
       return;
     }
+    setIsSigningIn(true);
     initiateEmailSignIn(auth, email, password);
   };
   
@@ -60,6 +70,7 @@ export default function LoginPage() {
     if (!auth) return;
     const provider = new GoogleAuthProvider();
     try {
+      setIsSigningIn(true);
       await signInWithPopup(auth, provider);
       // Let the useEffect handle the redirect
     } catch (error) {
@@ -69,10 +80,12 @@ export default function LoginPage() {
         title: "Google Sign-In Failed",
         description: "Could not sign in with Google. Please try again.",
       });
+    } finally {
+        setIsSigningIn(false);
     }
   };
 
-  if (isUserLoading || (!isUserLoading && user)) {
+  if (isUserLoading || (!isUserLoading && user) || isSigningIn) {
     return (
       <div className="w-full min-h-screen grid place-items-center p-4 bg-background-light dark:bg-background-dark text-gray-900 dark:text-white">
         <div className="flex flex-col items-center gap-4">

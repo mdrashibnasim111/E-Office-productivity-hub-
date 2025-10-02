@@ -23,6 +23,8 @@ export function initiateEmailSignUp(authInstance: Auth, email: string, password:
   // CRITICAL: Call createUserWithEmailAndPassword directly. Do NOT use 'await createUserWithEmailAndPassword(...)'.
   createUserWithEmailAndPassword(authInstance, email, password).catch(error => {
     console.error("Sign-up error:", error);
+    // Even on sign-up error, dispatch a generic event for now.
+    // A more specific one could be created if needed.
     window.dispatchEvent(new CustomEvent('auth-error', { detail: error }));
   });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
