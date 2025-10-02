@@ -1,22 +1,17 @@
 
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import Logo from '@/components/icons/logo';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
-import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
+import { initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('user@example.com');
-  const [password, setPassword] = useState('password');
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
@@ -55,15 +50,7 @@ export default function LoginPage() {
       });
       return;
     }
-    if (!email || !password) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Please enter both email and password.',
-      });
-      return;
-    }
-    initiateEmailSignIn(auth, email, password);
+    initiateAnonymousSignIn(auth);
   };
 
   if (isUserLoading || (!isUserLoading && user)) {
@@ -88,33 +75,8 @@ export default function LoginPage() {
               <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
           </div>
           <form className="grid gap-3 w-full mb-6" onSubmit={handleLogin}>
-            <div className="relative">
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="peer h-[56px] w-full border-0 rounded-lg bg-input pt-2.5 text-base text-foreground placeholder-transparent ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-shadow duration-300"
-                placeholder="m@example.gov"
-              />
-              <Label htmlFor="email" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Email</Label>
-            </div>
-            <div className="relative">
-              <Input 
-                id="password" 
-                type="password" 
-                required 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="peer h-[56px] w-full border-0 rounded-lg bg-input pt-2.5 text-base text-foreground placeholder-transparent ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-shadow duration-300"
-                placeholder="password"
-                />
-              <Label htmlFor="password"  className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base peer-focus:top-3.5 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-primary peer-valid:top-3.5 peer-valid:-translate-y-1/2 peer-valid:scale-75 peer-valid:text-primary">Password</Label>
-            </div>
-            
             <Button type="submit" className="relative w-full bg-primary text-lg text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg transition-all duration-300 ease-in-out hover:bg-primary/80 mt-2 overflow-hidden group">
-                <span className="transition-all duration-300 group-hover:-translate-x-4">Login</span>
+                <span className="transition-all duration-300 group-hover:-translate-x-4">Login as Guest</span>
                 <ArrowRight className="absolute top-1/2 left-1/2 h-6 w-6 opacity-0 -translate-y-1/2 translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-8" />
             </Button>
           </form>
