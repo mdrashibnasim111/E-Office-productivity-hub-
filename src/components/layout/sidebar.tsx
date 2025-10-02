@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   BarChart2,
   Bell,
@@ -17,9 +17,11 @@ import {
   ClipboardCheck,
 } from 'lucide-react';
 import Logo from '@/components/icons/logo';
-import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import { useUser, useDoc, useFirestore, useMemoFirebase, useAuth } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
+import { signOut } from 'firebase/auth';
+import { Button } from '@/components/ui/button';
 
 const baseNavItems = [
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
@@ -40,6 +42,8 @@ export function Sidebar() {
   const pathname = usePathname();
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
+  const auth = useAuth();
+  const router = useRouter();
 
   const userDocRef = useMemoFirebase(
     () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
@@ -51,6 +55,11 @@ export function Sidebar() {
 
   const isManager = userData?.role === 'Manager';
   const navItems = isManager ? managerNavItems : baseNavItems;
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/');
+  };
 
   return (
     <div className="hidden border-r bg-card lg:block">
@@ -95,13 +104,14 @@ export function Sidebar() {
               <Settings className="h-4 w-4" />
               Settings
             </Link>
-            <Link
-              href="/"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            <Button
+              variant="ghost"
+              onClick={handleLogout}
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary justify-start w-full"
             >
               <LogOut className="h-4 w-4" />
               Logout
-            </Link>
+            </Button>
           </nav>
         </div>
       </div>

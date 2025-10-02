@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import {
@@ -37,6 +37,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { tasks } from '@/lib/data';
 import { leaderboard } from '@/lib/data';
 import { useMemo } from 'react';
+import { useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
 
 const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -57,6 +59,8 @@ export function Header() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const auth = useAuth();
+  const router = useRouter();
 
 
   const allSearchableItems = useMemo(() => [
@@ -92,6 +96,11 @@ export function Header() {
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/');
+  };
 
   return (
     <header className="flex h-16 items-center justify-between gap-4 border-b bg-card px-4 lg:h-20 lg:px-6">
@@ -189,11 +198,9 @@ export function Header() {
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Logout</span>
-              </Link>
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Logout</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
