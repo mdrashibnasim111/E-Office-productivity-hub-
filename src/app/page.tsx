@@ -1,24 +1,29 @@
 
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import LoginIllustration from '@/components/illustrations/login-illustration';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
-import { initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
+import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
 import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export default function LoginPage() {
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
+  const [email, setEmail] = useState('user@example.com');
+  const [password, setPassword] = useState('password');
 
   useEffect(() => {
     if (!isUserLoading && user) {
+      // Assuming you have a way to check if the user has completed onboarding
+      // For now, we'll redirect to the role selection page as the next step.
       router.push('/select-role');
     }
   }, [user, isUserLoading, router]);
@@ -29,7 +34,7 @@ export default function LoginPage() {
       toast({
         variant: 'destructive',
         title: 'Login Failed',
-        description: customEvent.detail.message,
+        description: 'Incorrect email or password. Please try again.',
       });
     };
 
@@ -50,20 +55,19 @@ export default function LoginPage() {
       });
       return;
     }
-    initiateAnonymousSignIn(auth);
+    initiateEmailSignIn(auth, email, password);
   };
 
   if (isUserLoading || (!isUserLoading && user)) {
     return (
-        <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] text-foreground">
-            <div className="flex flex-col items-center gap-4">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                <p>Loading...</p>
-            </div>
+      <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] text-foreground">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <p>Loading...</p>
         </div>
+      </div>
     );
   }
-
 
   return (
     <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] relative overflow-hidden">
@@ -71,31 +75,39 @@ export default function LoginPage() {
         <div className="mx-auto flex w-full flex-col items-center text-center">
           <LoginIllustration className="h-28 w-28 text-primary mb-6" />
           <div className="grid gap-1.5 text-center mb-6">
-              <h2 className="text-3xl font-medium font-headline">e-Office Hub</h2>
-              <h3 className="text-muted-foreground text-sm font-medium">Lightning quick productivity!</h3>
+            <h2 className="text-3xl font-medium font-headline">e-Office Hub</h2>
+            <h3 className="text-muted-foreground text-sm font-medium">Lightning quick productivity!</h3>
           </div>
-          <form className="grid gap-3 w-full mb-6" onSubmit={handleLogin}>
+          <form className="grid gap-4 w-full mb-6 text-left" onSubmit={handleLogin}>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="manager@example.gov"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
             <Button type="submit" className="relative w-full bg-primary text-lg text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg transition-all duration-300 ease-in-out hover:bg-primary/80 mt-2 overflow-hidden group">
-                <span className="transition-all duration-300 group-hover:-translate-x-4">Login as Guest</span>
-                <ArrowRight className="absolute top-1/2 left-1/2 h-6 w-6 opacity-0 -translate-y-1/2 translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-8" />
+              <span className="transition-all duration-300 group-hover:-translate-x-4">Login</span>
+              <ArrowRight className="absolute top-1/2 left-1/2 h-6 w-6 opacity-0 -translate-y-1/2 translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-8" />
             </Button>
           </form>
-            <Link
-                href="#"
-                className="inline-block text-sm text-primary hover:underline"
-              >
-                Forgot password?
-              </Link>
-
-              <div className="mt-6 text-center text-sm text-muted-foreground">
-              Not a member yet?{' '}
-              <Link href="#" className="underline hover:text-primary font-semibold">
-                Sign up!
-              </Link>
-            </div>
         </div>
       </div>
-       <div className="ocean">
+      <div className="ocean">
         <div className="wave"></div>
         <div className="wave"></div>
         <div className="wave"></div>
