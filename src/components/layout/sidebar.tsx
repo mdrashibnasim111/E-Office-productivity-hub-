@@ -16,21 +16,37 @@ import {
   ClipboardCheck,
 } from 'lucide-react';
 import Logo from '@/components/icons/logo';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 
-const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
+const baseNavItems = [
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
-  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
+];
+
+const managerNavItems = [
+  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  ...baseNavItems,
+  { href: '/dashboard/team', icon: Users, label: 'Team' },
   { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
   { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
 
+
 export function Sidebar() {
   const pathname = usePathname();
+  const { user } = useUser();
+  const firestore = useFirestore();
+
+  const userDocRef = useMemoFirebase(
+    () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
+    [firestore, user]
+  );
+  const { data: userData } = useDoc(userDocRef);
+  const isManager = userData?.role === 'Manager';
+  const navItems = isManager ? managerNavItems : baseNavItems;
+
 
   return (
     <div className="hidden border-r bg-card lg:block">
