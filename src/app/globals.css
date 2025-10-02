@@ -92,6 +92,10 @@
 }
 
 .custom-gradient-background {
+    background-image: linear-gradient(to bottom, #d8e8ec, #c6e6ec, #b3e4ea, #9ee1e7, #88dfe3, #88dfe3, #88dfe3, #88dfe3, #9ee1e7, #b3e4ea, #c6e6ec, #d8e8ec);
+}
+
+.dark .custom-gradient-background {
     background-image: linear-gradient(to bottom, #0e1a25, #1d3849, #2b5a6d, #387f91, #48a6b3, #48a6b3, #48a6b3, #48a6b3, #387f91, #2b5a6d, #1d3849, #0e1a25);
 }
 
