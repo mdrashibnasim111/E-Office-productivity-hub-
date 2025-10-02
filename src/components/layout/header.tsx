@@ -134,7 +134,7 @@ export function Header() {
             <Input
               type="search"
               placeholder="Search tasks, employees..."
-              className="w-full appearance-none bg-background pl-8 shadow-none md:w-[300px] lg:w-[400px]"
+              className="w-full appearance-none bg-background pl-8 shadow-none md:w-[400px] lg:w-[500px]"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => { if(searchQuery) setIsSuggestionsVisible(true)}}
