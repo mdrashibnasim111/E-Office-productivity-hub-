@@ -19,6 +19,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState('user@example.com');
   const [password, setPassword] = useState('password');
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [authAction, setAuthAction] = useState<'signIn' | 'signUp'>('signIn');
+
 
   useEffect(() => {
     if (!isUserLoading && user) {
@@ -30,18 +32,13 @@ export default function LoginPage() {
     const handleAuthError = (event: Event) => {
       const customEvent = event as CustomEvent;
       setIsSigningIn(false);
-      // If login fails, try to sign up the user.
-      if (customEvent.detail?.code === 'auth/invalid-credential' || customEvent.detail?.code === 'auth/user-not-found') {
-        if(auth) {
-          initiateEmailSignUp(auth, email, password);
-        }
-      } else {
-         toast({
-          variant: 'destructive',
-          title: 'Login Failed',
-          description: customEvent.detail?.message || 'An unknown error occurred.',
-        });
-      }
+      // If login fails with specific errors, it no longer automatically tries to sign up.
+      // This is now handled by the explicit "Sign up" button.
+      toast({
+        variant: 'destructive',
+        title: authAction === 'signIn' ? 'Login Failed' : 'Sign-up Failed',
+        description: customEvent.detail?.message || 'An unknown error occurred.',
+      });
     };
 
     window.addEventListener('auth-error', handleAuthError);
@@ -49,7 +46,7 @@ export default function LoginPage() {
     return () => {
       window.removeEventListener('auth-error', handleAuthError);
     };
-  }, [toast, auth, email, password]);
+  }, [toast, authAction]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,9 +59,25 @@ export default function LoginPage() {
       return;
     }
     setIsSigningIn(true);
+    setAuthAction('signIn');
     initiateEmailSignIn(auth, email, password);
   };
   
+  const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!auth) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Authentication service is not available.',
+      });
+      return;
+    }
+    setIsSigningIn(true);
+    setAuthAction('signUp');
+    initiateEmailSignUp(auth, email, password);
+  };
+
   const handleGoogleSignIn = async () => {
     if (!auth) return;
     const provider = new GoogleAuthProvider();
@@ -86,7 +99,7 @@ export default function LoginPage() {
 
   if (isUserLoading || (!isUserLoading && user) || isSigningIn) {
     return (
-      <div className="w-full min-h-screen grid place-items-center p-4 bg-background text-foreground">
+      <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] text-foreground">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-accent" />
           <p>Loading...</p>
@@ -117,7 +130,7 @@ export default function LoginPage() {
                             Welcome to e-Office
                         </h2>
                         <p className="mt-2 text-center text-sm text-text-medium">
-                            Sign in to continue your work
+                            Sign in or create an account to continue
                         </p>
                     </div>
                     <form className="mt-8 space-y-6" onSubmit={handleLogin}>
@@ -164,15 +177,18 @@ export default function LoginPage() {
                                 </a>
                             </div>
                         </div>
-                        <div>
+                        <div className="flex gap-4">
                             <Button type="submit" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-black bg-[#46EBEB] hover:bg-[#46EBEB]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-[#46EBEB]">
                                 Sign in
+                            </Button>
+                             <Button onClick={handleSignUp} variant="secondary" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg">
+                                Sign up
                             </Button>
                         </div>
                     </form>
                     <div className="relative flex py-5 items-center">
                         <div className="flex-grow border-t border-border-dark"></div>
-                        <span className="flex-shrink mx-4 text-text-medium">Or sign in with</span>
+                        <span className="flex-shrink mx-4 text-text-medium">Or continue with</span>
                         <div className="flex-grow border-t border-border-dark"></div>
                     </div>
                     <div>
