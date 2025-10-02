@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Flame } from 'lucide-react';
@@ -39,13 +40,13 @@ export function StreaksCard() {
         ) : (
           <>
             <div>
-              <div className="text-3xl font-bold font-headline text-primary flex items-center justify-center gap-1">
-                {streakData?.currentStreak ?? 0} <Flame size={28} />
+              <div className="text-3xl font-bold font-headline text-accent flex items-center justify-center gap-1">
+                {streakData?.currentStreak ?? 0} <Flame size={28} className="text-accent" />
               </div>
               <p className="text-xs text-muted-foreground">Current Streak</p>
             </div>
             <div>
-              <div className="text-3xl font-bold font-headline text-primary">
+              <div className="text-3xl font-bold font-headline text-accent">
                 {streakData?.longestStreak ?? 0}
               </div>
               <p className="text-xs text-muted-foreground">Longest Streak</p>
