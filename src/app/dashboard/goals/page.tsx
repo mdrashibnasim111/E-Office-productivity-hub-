@@ -152,7 +152,7 @@ export default function GoalsPage() {
                                     <tr key={index} className="bg-card border-b dark:border-border">
                                         <th scope="row" className="px-6 py-4 font-medium text-card-foreground whitespace-nowrap">{goal.name}</th>
                                         <td className="px-6 py-4">{goal.owner}</td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`px-2 py-1 text-xs font-medium rounded-full ${goal.statusColor}`}>{goal.status}</span>
                                         </td>
                                         <td className="px-6 py-4">{goal.dueDate}</td>
