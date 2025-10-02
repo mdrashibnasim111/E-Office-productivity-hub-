@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import Logo from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { tasks } from '@/lib/data';
@@ -126,24 +126,27 @@ export function Header() {
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
           <nav className="grid gap-2 text-lg font-medium">
-            <Link
-              href="#"
-              className="flex items-center gap-2 text-lg font-semibold mb-4"
-            >
-              <Logo className="h-6 w-6 text-primary" />
-              <span className="font-headline text-lg">e-Office Hub</span>
-            </Link>
-            {managerNavItems.map(item => ( // For now, showing all items. This can be dynamic based on user role.
-                 <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    pathname === item.href ? 'bg-muted text-primary' : ''
-                    }`}
+             <SheetClose asChild>
+                <Link
+                href="#"
+                className="flex items-center gap-2 text-lg font-semibold mb-4"
                 >
-                    <item.icon className="h-4 w-4" />
-                    {item.label}
-              </Link>
+                <Logo className="h-6 w-6 text-primary" />
+                <span className="font-headline text-lg">e-Office Hub</span>
+                </Link>
+            </SheetClose>
+            {managerNavItems.map(item => ( // For now, showing all items. This can be dynamic based on user role.
+                <SheetClose asChild key={item.href}>
+                    <Link
+                        href={item.href}
+                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
+                        pathname === item.href ? 'bg-muted text-primary' : ''
+                        }`}
+                    >
+                        <item.icon className="h-4 w-4" />
+                        {item.label}
+                    </Link>
+                </SheetClose>
             ))}
           </nav>
         </SheetContent>
