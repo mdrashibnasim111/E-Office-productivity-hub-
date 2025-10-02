@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import {
   Card,
@@ -31,7 +32,7 @@ export function Leaderboard() {
                 <p className="text-sm font-medium leading-none">{user.name}</p>
                 <p className="text-sm text-muted-foreground">{user.title}</p>
               </div>
-              <div className="ml-auto font-medium text-primary">{user.points} pts</div>
+              <div className="ml-auto font-medium text-accent">{user.points} pts</div>
             </div>
           ))}
         </div>
