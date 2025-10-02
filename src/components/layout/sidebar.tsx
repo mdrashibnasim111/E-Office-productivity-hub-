@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -18,6 +19,7 @@ import {
 import Logo from '@/components/icons/logo';
 import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const baseNavItems = [
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
@@ -36,17 +38,19 @@ const managerNavItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
 
   const userDocRef = useMemoFirebase(
     () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
     [firestore, user]
   );
-  const { data: userData } = useDoc(userDocRef);
+  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
+  
+  const isLoading = isUserLoading || isUserDocLoading;
+
   const isManager = userData?.role === 'Manager';
   const navItems = isManager ? managerNavItems : baseNavItems;
-
 
   return (
     <div className="hidden border-r bg-card lg:block">
@@ -59,18 +63,27 @@ export function Sidebar() {
         </div>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-            {navItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  pathname === item.href ? 'bg-muted text-primary' : ''
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            ))}
+            {isLoading ? (
+                <div className="space-y-2 pt-2">
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                </div>
+            ) : (
+                navItems.map((item, index) => (
+                <Link
+                    key={index}
+                    href={item.href}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
+                    pathname === item.href ? 'bg-muted text-primary' : ''
+                    }`}
+                >
+                    <item.icon className="h-4 w-4" />
+                    {item.label}
+                </Link>
+                ))
+            )}
           </nav>
         </div>
         <div className="mt-auto p-4">
