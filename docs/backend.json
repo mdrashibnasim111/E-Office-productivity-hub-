@@ -77,6 +77,52 @@
         }
       },
       "required": ["currentStreak", "longestStreak", "lastLogin"]
+    },
+    "PerformanceReview": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PerformanceReview",
+      "type": "object",
+      "description": "Stores performance review data for users.",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user being reviewed."
+        },
+        "reviewerId": {
+          "type": "string",
+          "description": "The ID of the user who submitted the review."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["self-assessment", "manager-feedback"],
+          "description": "The type of review."
+        },
+        "ratings": {
+          "type": "object",
+          "description": "Ratings for self-assessment.",
+          "properties": {
+            "quality": {"type": "number"},
+            "timeliness": {"type": "number"},
+            "communication": {"type": "number"},
+            "collaboration": {"type": "number"},
+            "initiative": {"type": "number"}
+          }
+        },
+        "comments": {
+          "type": "string",
+          "description": "Comments for self-assessment."
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Feedback from a manager."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the review was created."
+        }
+      },
+      "required": ["userId", "reviewerId", "type", "createdAt"]
     }
   },
   "auth": {
@@ -92,6 +138,10 @@
     "/userStreaks/{userId}": {
       "schema": { "$ref": "#/entities/UserStreak" },
       "description": "Stores engagement streak data for each user."
+    },
+    "/performanceReviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/PerformanceReview" },
+      "description": "Stores performance review documents."
     }
   }
 }
