@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -9,19 +11,27 @@ import {
 } from '@/components/ui/card';
 import { leaderboard } from '@/lib/data';
 import ChromaGrid from '@/components/dashboard/ChromaGrid';
+import type { ChromaItem } from '@/components/dashboard/ChromaGrid';
 
-// Map leaderboard data to the format expected by ChromaGrid
-const items = leaderboard.map(user => ({
-    image: user.avatar || `https://i.pravatar.cc/300?u=${user.id}`,
-    title: user.name,
-    subtitle: user.title,
-    handle: `@${user.name.split(' ')[0].toLowerCase()}`,
-    borderColor: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'), // Random color
-    gradient: `linear-gradient(145deg, hsl(var(--primary)), #000)`,
-    url: '#'
-}));
 
 export default function TeamPage() {
+  const [gridItems, setGridItems] = useState<ChromaItem[]>([]);
+
+  useEffect(() => {
+    // This effect runs only on the client-side after the component mounts.
+    const items = leaderboard.map(user => ({
+        image: user.avatar || `https://i.pravatar.cc/300?u=${user.id}`,
+        title: user.name,
+        subtitle: user.title,
+        handle: `@${user.name.split(' ')[0].toLowerCase()}`,
+        // Math.random() is now safe to use here.
+        borderColor: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'), 
+        gradient: `linear-gradient(145deg, hsl(var(--primary)), #000)`,
+        url: '#'
+    }));
+    setGridItems(items);
+  }, []);
+
   return (
     <>
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
@@ -37,7 +47,7 @@ export default function TeamPage() {
         <CardContent>
            <div style={{ height: '600px', position: 'relative', width: '100%' }}>
               <ChromaGrid 
-                items={items} 
+                items={gridItems} 
                 radius={300}
                 damping={0.45}
                 fadeOut={0.6}

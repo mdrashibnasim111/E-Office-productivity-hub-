@@ -123,7 +123,7 @@ export default function LoginPage() {
             <header className="border-b border-border-dark">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-[#46EBEB] rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
                             <span className="material-symbols-outlined text-black">
                                 workspaces
                             </span>
@@ -181,13 +181,13 @@ export default function LoginPage() {
                                 </Label>
                             </div>
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-[#46EBEB] hover:text-[#46EBEB]/80">
+                                <a href="#" className="font-medium text-accent hover:text-accent/80">
                                     Forgot your password?
                                 </a>
                             </div>
                         </div>
                         <div className="flex gap-4">
-                            <Button type="submit" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-black bg-[#46EBEB] hover:bg-[#46EBEB]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-[#46EBEB]">
+                            <Button type="submit" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-black bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-accent">
                                 Sign in
                             </Button>
                              <Button onClick={handleSignUp} variant="secondary" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg">

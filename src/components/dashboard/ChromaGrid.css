@@ -56,12 +56,12 @@
   object-fit: cover;
   position: absolute;
   inset: 0;
-  opacity: 0.8;
+  opacity: 0.5; /* Always show image slightly */
   transition: opacity 0.3s ease;
 }
 
 .chroma-card:hover .chroma-img-wrapper img {
-    opacity: 0.3;
+    opacity: 0.3; /* Dim image on hover to make text more readable */
 }
 
 .chroma-info {
@@ -72,12 +72,8 @@
   padding: 1rem;
   color: white;
   background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-  transform: translateY(100%);
+  transform: translateY(0); /* Always show info */
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.chroma-card:hover .chroma-info {
-  transform: translateY(0);
 }
 
 .chroma-info .name {
