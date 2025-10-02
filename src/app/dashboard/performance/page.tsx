@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -57,13 +58,22 @@ export default function PerformancePage() {
         return query(
             collection(firestore, 'performanceReviews'),
             where('userId', '==', user.uid),
-            where('reviewerId', '==', user.uid),
             where('type', '==', 'self-assessment')
         );
     }, [firestore, user]);
 
-    const { data: selfReviews, isLoading: isLoadingReviews } = useCollection(selfReviewsQuery);
+    const { data: selfReviews, isLoading: isLoadingSelfReviews } = useCollection(selfReviewsQuery);
 
+    const managerReviewsQuery = useMemoFirebase(() => {
+        if (!firestore || !user) return null;
+        return query(
+            collection(firestore, 'performanceReviews'),
+            where('reviewerId', '==', user.uid),
+            where('type', '==', 'manager-feedback')
+        );
+    }, [firestore, user]);
+
+    const { data: managerReviews, isLoading: isLoadingManagerReviews } = useCollection(managerReviewsQuery);
 
     const handleRatingChange = (id: string, value: number[]) => {
         setRatings(prev => ({ ...prev, [id]: value[0] }));
@@ -137,6 +147,10 @@ export default function PerformancePage() {
         setManagerFeedback('');
     }
 
+    const getEmployeeName = (userId: string) => {
+        return leaderboard.find(e => e.id === userId)?.name || 'Unknown Employee';
+    }
+
   return (
     <>
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
@@ -189,7 +203,7 @@ export default function PerformancePage() {
 
             <div className="mt-8">
                 <h2 className="text-2xl font-bold font-headline mb-4">Submitted Assessments</h2>
-                {isLoadingReviews ? (
+                {isLoadingSelfReviews ? (
                     <div className="space-y-4">
                         <Skeleton className="h-24 w-full" />
                         <Skeleton className="h-24 w-full" />
@@ -274,8 +288,41 @@ export default function PerformancePage() {
                     <Button onClick={handleManagerSubmit}>Submit Feedback</Button>
                 </CardFooter>
             </Card>
+
+            <div className="mt-8">
+                <h2 className="text-2xl font-bold font-headline mb-4">Submitted Feedback</h2>
+                {isLoadingManagerReviews ? (
+                     <div className="space-y-4">
+                        <Skeleton className="h-24 w-full" />
+                        <Skeleton className="h-24 w-full" />
+                    </div>
+                ) : managerReviews && managerReviews.length > 0 ? (
+                    <div className="space-y-4">
+                        {managerReviews.map(review => (
+                            <Card key={review.id}>
+                                <CardHeader>
+                                    <CardTitle className="text-xl font-headline">
+                                        Feedback for {getEmployeeName(review.userId)}
+                                    </CardTitle>
+                                    <CardDescription>
+                                        Submitted on {new Date(review.createdAt?.toDate()).toLocaleDateString()}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-muted-foreground">{review.feedback}</p>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-muted-foreground">You have not submitted any manager feedback yet.</p>
+                )}
+            </div>
+
         </TabsContent>
       </Tabs>
     </>
   );
 }
+
+    
