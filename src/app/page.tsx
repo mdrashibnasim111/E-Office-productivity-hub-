@@ -22,8 +22,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isUserLoading && user) {
-      // Assuming you have a way to check if the user has completed onboarding
-      // For now, we'll redirect to the role selection page as the next step.
+      // User is logged in, redirect to the role selection/routing page.
       router.push('/select-role');
     }
   }, [user, isUserLoading, router]);
