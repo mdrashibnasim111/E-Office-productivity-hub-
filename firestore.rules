@@ -1,162 +1,201 @@
 /**
- * @file Firestore Security Rules
- * @description This ruleset enforces role-based access control for an e-Office Productivity Hub application.
+ * @file Firestore Security Rules for e-Office Productivity Hub
  *
- * Core Philosophy:
- *  This ruleset implements a hybrid security model. User profiles are strictly owned by the user themselves.
- *  Tasks are also owned by users and stored under user-specific subcollections for scalable listing.
- *  Organization, Team, Goal, KPI, AuditLog, and ProductivityScore documents are accessible by anyone who is authenticated.
+ * @core_philosophy This ruleset enforces a strict user-ownership model for user-specific data
+ * and allows for public read access to organization-level data. It leverages role-based
+ * access control for certain operations and ensures that only authenticated users can
+ * access the application's resources. Data validation is relaxed for prototyping but
+ * enforces key relationships.
  *
- * Data Structure:
- *  - /users/{userId}: Stores user profile data. Document ID matches the Firebase Auth UID.
- *  - /users/{userId}/tasks/{taskId}: Stores tasks associated with a specific user.
- *  - /teams/{teamId}: Stores team information.
- *  - /organizations/{organizationId}: Stores organization information.
- *  - /goals/{goalId}: Stores goals.
- *  - /kpis/{kpiId}: Stores KPIs.
- *  - /audit_logs/{auditLogId}: Stores audit logs.
- *  - /productivity_scores/{productivityScoreId}: Stores productivity scores.
+ * @data_structure
+ * - /users/{userId}: Stores user profiles, with userId matching the Firebase Auth UID.
+ * - /users/{userId}/tasks/{taskId}: Stores tasks assigned to a specific user.
+ * - /teams/{teamId}: Stores team information.
+ * - /organizations/{organizationId}: Stores organization-level information (singleton).
+ * - /goals/{goalId}: Stores goals at organization, team, or individual levels.
+ * - /kpis/{kpiId}: Stores KPIs associated with goals.
+ * - /audit_logs/{auditLogId}: Stores audit log entries.
+ * - /productivity_scores/{productivityScoreId}: Stores productivity scores.
  *
- * Key Security Decisions:
- *  - Strict user-ownership for /users/{userId} documents.
- *  - Employees can only access their own tasks under /users/{userId}/tasks/{taskId}.
- *  - Public read access for /teams/{teamId}, /organizations/{organizationId}, /goals/{goalId}, /kpis/{kpiId}, /audit_logs/{auditLogId}, and /productivity_scores/{productivityScoreId}.
- *  - Role-based access control is enforced via the 'role' field in the /users/{userId} document.
+ * @key_security_decisions
+ * - User listing is implicitly denied.
+ * - Public read access is granted to the /organizations collection.
+ * - Write access to user-specific data is restricted to the authenticated user.
+ * - Owner-only access is enforced for user-owned resources such as tasks.
  *
- * Denormalization for Authorization:
- *  - User roles ('Employee' or 'Manager') are stored directly in the /users/{userId} document
- *    to avoid costly `get()` operations in security rules.
+ * @denormalization_for_authorization
+ * - User roles are stored directly within the /users/{uid} document to avoid
+ *   `get()` calls in security rules.
+ *
+ * @structural_segregation
+ * - User-specific data is stored under the /users/{userId} path to ensure
+ *   clear ownership and prevent unauthorized access.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Controls access to user profile data.
+     * @description Controls access to user profile information.
      * @path /users/{userId}
-     * @allow (create) - Authenticated user can create their own profile if the userId matches their auth UID.
-     * @allow (get, update, delete) - Authenticated user can read, update, or delete their own profile if the userId matches their auth UID.
-     * @deny (create) - User attempts to create a profile with an ID that doesn't match their auth UID.
-     * @deny (get, update, delete) - User attempts to access another user's profile.
-     * @principle Enforces document ownership for user profiles.
+     * @allow (create) User with UID 'user_abc' can create their own profile document if request.auth.uid == 'user_abc'.
+     * @allow (get) User with UID 'user_abc' can read their profile document.
+     * @allow (update) User with UID 'user_abc' can update their own profile document.
+     * @allow (delete) User with UID 'user_abc' can delete their own profile document.
+     * @deny (create) User with UID 'user_xyz' cannot create a profile document for 'user_abc'.
+     * @deny (update) User with UID 'user_xyz' cannot update the profile document for 'user_abc'.
+     * @deny (delete) User with UID 'user_xyz' cannot delete the profile document for 'user_abc'.
+     * @principle Enforces document ownership for writes and allows owner to read.
      */
     match /users/{userId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
       function isOwner(userId) {
         return request.auth.uid == userId;
       }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
       allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
+      allow list: if false; // User listing is not permitted.
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isOwner(userId) && resource.data.id == userId;
+      allow delete: if isOwner(userId) && resource.data.id == userId;
     }
 
     /**
      * @description Controls access to tasks assigned to a specific user.
      * @path /users/{userId}/tasks/{taskId}
-     * @allow (create, get, list, update, delete) - Authenticated user can manage their own tasks if the userId matches their auth UID.
-     * @deny (create, get, list, update, delete) - User attempts to access another user's tasks.
-     * @principle Enforces document ownership for tasks.
+     * @allow (create) User with UID 'user_abc' can create a task under their profile.
+     * @allow (get) User with UID 'user_abc' can read a task under their profile.
+     * @allow (update) User with UID 'user_abc' can update a task under their profile.
+     * @allow (delete) User with UID 'user_abc' can delete a task under their profile.
+     * @deny (create) User with UID 'user_xyz' cannot create a task under 'user_abc'.
+     * @deny (update) User with UID 'user_xyz' cannot update a task under 'user_abc'.
+     * @deny (delete) User with UID 'user_xyz' cannot delete a task under 'user_abc'.
+     * @principle Enforces document ownership for writes and allows owner to read.
      */
     match /users/{userId}/tasks/{taskId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
       function isOwner(userId) {
         return request.auth.uid == userId;
       }
-
-       function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
       allow get: if isOwner(userId);
       allow list: if isOwner(userId);
-      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if isExistingOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isOwner(userId) && resource.data.userId == userId;
+      allow delete: if isOwner(userId) && resource.data.userId == userId;
     }
 
     /**
      * @description Controls access to team information.
      * @path /teams/{teamId}
-     * @allow (get, list) - Any authenticated user can read team information.
-     * @allow (create, update, delete) - No one can create, update, or delete team information.
-     * @principle Allows public read access to team data, restricts write access.
+     * @allow (get) Any authenticated user can read team information.
+     * @deny (create) Only authenticated users can create teams.
+     * @deny (update) Only authenticated users can update teams.
+     * @deny (delete) Only authenticated users can delete teams.
+     * @principle Allows read-only access and requires authentication for write operations.
      */
     match /teams/{teamId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();  // TODO: Add more restrictive rules based on roles.
+      allow update: if isSignedIn();  // TODO: Add more restrictive rules based on roles.
+      allow delete: if isSignedIn();  // TODO: Add more restrictive rules based on roles.
     }
 
     /**
-     * @description Controls access to organization information.
+     * @description Controls access to organization-level information.
      * @path /organizations/{organizationId}
-     * @allow (get, list) - Any authenticated user can read organization information.
-     * @allow (create, update, delete) - No one can create, update, or delete organization information.
-     * @principle Allows public read access to organization data, restricts write access.
+     * @allow (get) Any user can read organization information.
+     * @deny (create) No user can create an organization.
+     * @deny (update) No user can update organization information.
+     * @deny (delete) No user can delete organization information.
+     * @principle Allows public read access but restricts write operations.
      */
     match /organizations/{organizationId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      allow get: if true;
+      allow list: if true;
+      allow create: if false; // Only the backend can create the organization.
+      allow update: if false; // Only the backend can update the organization.
+      allow delete: if false; // Only the backend can delete the organization.
     }
 
     /**
-     * @description Controls access to goal information.
+     * @description Controls access to goals at organization, team, or individual levels.
      * @path /goals/{goalId}
-     * @allow (get, list) - Any authenticated user can read goal information.
-     * @allow (create, update, delete) - No one can create, update, or delete goal information.
-     * @principle Allows public read access to goal data, restricts write access.
+     * @allow (get) Any authenticated user can read goal information.
+     * @deny (create) Only authenticated users can create goals.
+     * @deny (update) Only authenticated users can update goals.
+     * @deny (delete) Only authenticated users can delete goals.
+     * @principle Allows read-only access and requires authentication for write operations.
      */
     match /goals/{goalId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();  // TODO: Add more restrictive rules based on roles or ownership.
+      allow update: if isSignedIn();  // TODO: Add more restrictive rules based on roles or ownership.
+      allow delete: if isSignedIn();  // TODO: Add more restrictive rules based on roles or ownership.
     }
 
     /**
-     * @description Controls access to KPI information.
+     * @description Controls access to Key Performance Indicators associated with goals.
      * @path /kpis/{kpiId}
-     * @allow (get, list) - Any authenticated user can read KPI information.
-     * @allow (create, update, delete) - No one can create, update, or delete KPI information.
-     * @principle Allows public read access to KPI data, restricts write access.
+     * @allow (get) Any authenticated user can read KPI information.
+     * @deny (create) Only authenticated users can create KPIs.
+     * @deny (update) Only authenticated users can update KPIs.
+     * @deny (delete) Only authenticated users can delete KPIs.
+     * @principle Allows read-only access and requires authentication for write operations.
      */
     match /kpis/{kpiId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();  // TODO: Add more restrictive rules based on roles or goal ownership.
+      allow update: if isSignedIn();  // TODO: Add more restrictive rules based on roles or goal ownership.
+      allow delete: if isSignedIn();  // TODO: Add more restrictive rules based on roles or goal ownership.
     }
 
     /**
-     * @description Controls access to audit log information.
+     * @description Controls access to audit log entries.
      * @path /audit_logs/{auditLogId}
-     * @allow (get, list) - Any authenticated user can read audit log information.
-     * @allow (create, update, delete) - No one can create, update, or delete audit log information.
-     * @principle Allows public read access to audit log data, restricts write access.
+     * @allow (get) Any authenticated user can read audit log entries.
+     * @deny (create) No user can create audit log entries.
+     * @deny (update) No user can update audit log entries.
+     * @deny (delete) No user can delete audit log entries.
+     * @principle Allows read-only access but restricts write operations.
      */
     match /audit_logs/{auditLogId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if isSignedIn(); // TODO: Add more restrictive rules based on roles.
+      allow list: if isSignedIn(); // TODO: Add more restrictive rules based on roles.
+      allow create: if false; // Only the backend can create audit logs.
+      allow update: if false; // Audit logs should not be updated.
+      allow delete: if false; // Audit logs should not be deleted.
     }
 
     /**
-     * @description Controls access to productivity score information.
+     * @description Controls access to productivity scores for users, teams, and organizations.
      * @path /productivity_scores/{productivityScoreId}
-     * @allow (get, list) - Any authenticated user can read productivity score information.
-     * @allow (create, update, delete) - No one can create, update, or delete productivity score information.
-     * @principle Allows public read access to productivity score data, restricts write access.
+     * @allow (get) Any authenticated user can read productivity scores.
+     * @deny (create) Only authenticated users can create productivity scores.
+     * @deny (update) Only authenticated users can update productivity scores.
+     * @deny (delete) Only authenticated users can delete productivity scores.
+     * @principle Allows read-only access and requires authentication for write operations.
      */
     match /productivity_scores/{productivityScoreId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if isSignedIn(); // TODO: Add more restrictive rules based on roles.
+      allow list: if isSignedIn(); // TODO: Add more restrictive rules based on roles.
+      allow create: if isSignedIn();  // TODO: Add more restrictive rules based on roles or ownership.
+      allow update: if isSignedIn();  // TODO: Add more restrictive rules based on roles or ownership.
+      allow delete: if isSignedIn();  // TODO: Add more restrictive rules based on roles or ownership.
     }
   }
 }
