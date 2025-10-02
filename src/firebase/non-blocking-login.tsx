@@ -32,8 +32,7 @@ export function initiateEmailSignUp(authInstance: Auth, email: string, password:
 export function initiateEmailSignIn(authInstance: Auth, email: string, password: string): void {
   // CRITICAL: Call signInWithEmailAndPassword directly. Do NOT use 'await signInWithEmailAndPassword(...)'.
   signInWithEmailAndPassword(authInstance, email, password).catch(error => {
-    console.error("Sign-in error:", error);
-    // Dispatch a custom event with the error details
+    // Dispatch a custom event with the error details for the UI to handle.
     window.dispatchEvent(new CustomEvent('auth-error', { detail: error }));
   });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
