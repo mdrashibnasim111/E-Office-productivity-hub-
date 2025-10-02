@@ -10,7 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Logo from '@/components/icons/logo';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { useAuth, useUser, initiateEmailSignIn } from '@/firebase'; // Using full import path
+import { useAuth, useUser } from '@/firebase';
+import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
@@ -27,8 +28,33 @@ export default function LoginPage() {
     }
   }, [user, isUserLoading, router]);
 
+  useEffect(() => {
+    const handleAuthError = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: customEvent.detail.message,
+      });
+    };
+
+    window.addEventListener('auth-error', handleAuthError);
+
+    return () => {
+      window.removeEventListener('auth-error', handleAuthError);
+    };
+  }, [toast]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!auth) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Authentication service is not available.',
+      });
+      return;
+    }
     if (!email || !password) {
       toast({
         variant: 'destructive',
