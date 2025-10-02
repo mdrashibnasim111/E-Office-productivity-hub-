@@ -101,7 +101,7 @@ export default function LoginPage() {
             <header className="border-b border-border-dark">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-[#46EBEB] rounded-full flex items-center justify-center">
                             <span className="material-symbols-outlined text-primary-accent">
                                 workspaces
                             </span>
@@ -189,5 +189,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-    
