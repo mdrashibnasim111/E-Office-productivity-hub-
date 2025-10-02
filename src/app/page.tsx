@@ -15,7 +15,7 @@ import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('manager@example.gov');
+  const [email, setEmail] = useState('user@example.com');
   const [password, setPassword] = useState('password');
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
