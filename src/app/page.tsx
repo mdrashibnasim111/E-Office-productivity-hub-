@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -31,13 +32,21 @@ export default function LoginPage() {
   useEffect(() => {
     const handleAuthError = (event: Event) => {
       const customEvent = event as CustomEvent;
+      const error = customEvent.detail;
       setIsSigningIn(false);
-      // If login fails with specific errors, it no longer automatically tries to sign up.
-      // This is now handled by the explicit "Sign up" button.
+
+      let title = authAction === 'signIn' ? 'Login Failed' : 'Sign-up Failed';
+      let description = error?.message || 'An unknown error occurred.';
+
+      if (error?.code === 'auth/email-already-in-use') {
+        title = 'Sign-up Failed';
+        description = 'This email is already in use. Please sign in instead.';
+      }
+
       toast({
         variant: 'destructive',
-        title: authAction === 'signIn' ? 'Login Failed' : 'Sign-up Failed',
-        description: customEvent.detail?.message || 'An unknown error occurred.',
+        title: title,
+        description: description,
       });
     };
 
@@ -99,7 +108,7 @@ export default function LoginPage() {
 
   if (isUserLoading || (!isUserLoading && user) || isSigningIn) {
     return (
-      <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] text-foreground">
+      <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0E1A25] text-foreground">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-accent" />
           <p>Loading...</p>
@@ -109,7 +118,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="font-display bg-[#0F1822] text-text-light">
+    <div className="font-display bg-[#0E1A25] text-text-light">
         <div className="flex flex-col min-h-screen">
             <header className="border-b border-border-dark">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
