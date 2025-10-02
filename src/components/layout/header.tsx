@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -20,6 +21,7 @@ import {
   ClipboardCheck,
   Moon,
   Sun,
+  MessageSquare,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,6 +47,7 @@ const baseNavItems = [
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
   { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
+  { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
 ];
 
 const managerNavItems = [

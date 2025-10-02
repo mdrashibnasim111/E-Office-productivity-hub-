@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Target, ListTodo, Users, MoreHorizontal, Loader2 } from 'lucide-react';
+import { LayoutDashboard, Target, ListTodo, Users, MoreHorizontal, Loader2, MessageSquare } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,7 @@ import { doc } from 'firebase/firestore';
 const baseNavItems = [
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
   { href: '/dashboard/goals', icon: Target, label: 'Goals' },
+  { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
 ];
 
@@ -25,10 +26,11 @@ const managerNavItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/dashboard/goals', icon: Target, label: 'Goals' },
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
-  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
 ];
 
 const managerMoreNavItems = [
+    { href: '/dashboard/team', icon: Users, label: 'Team' },
     { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
     { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
     { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
@@ -59,7 +61,7 @@ export function BottomNavBar() {
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
         ) : (
-            <div className={`grid h-full max-w-lg mx-auto font-medium grid-cols-${isManager ? '5' : '3'}`}>
+            <div className={`grid h-full max-w-lg mx-auto font-medium grid-cols-${isManager ? '5' : '4'}`}>
                 {navItems.map((item) => (
                 <Link
                     key={item.label}

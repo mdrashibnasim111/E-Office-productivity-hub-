@@ -15,6 +15,7 @@ import {
   Trophy,
   Users,
   ClipboardCheck,
+  MessageSquare,
 } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { useUser, useDoc, useFirestore, useMemoFirebase, useAuth } from '@/firebase';
@@ -27,6 +28,7 @@ const baseNavItems = [
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
   { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
+  { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
 ];
 
 const managerNavItems = [
