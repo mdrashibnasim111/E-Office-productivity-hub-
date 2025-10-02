@@ -66,12 +66,12 @@ const individualGoals = [
 export default function GoalsPage() {
   return (
     <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
+        <header className="flex flex-col items-start mb-8">
             <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Goals and KPIs</h2>
             <p className="text-gray-500 dark:text-gray-400 mt-1">Set and track team and individual goals to enhance productivity and performance.</p>
             </div>
-            <button className="bg-primary text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2">
+            <button className="bg-primary text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 mt-4">
             <span className="material-symbols-outlined">add</span>
             <span>Create New Goal</span>
             </button>
