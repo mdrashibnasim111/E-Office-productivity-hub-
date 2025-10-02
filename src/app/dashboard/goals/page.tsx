@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from "@/components/ui/progress";
 
@@ -82,10 +82,10 @@ export default function GoalsPage() {
             <h2 className="text-3xl font-bold text-card-foreground">Goals and KPIs</h2>
             <p className="text-muted-foreground mt-1">Set and track team and individual goals to enhance productivity and performance.</p>
             </div>
-            <button className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium flex items-center gap-2 mt-4">
-            <span className="material-symbols-outlined">add</span>
-            <span>Create New Goal</span>
-            </button>
+            <Button className="mt-4">
+                <Plus className="mr-2 h-4 w-4" />
+                Create New Goal
+            </Button>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
