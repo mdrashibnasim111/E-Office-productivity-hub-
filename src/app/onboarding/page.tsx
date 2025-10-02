@@ -16,6 +16,8 @@ import { saveOnboardingData } from '@/firebase/firestore/mutations';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Stepper, { Step } from '@/components/ui/stepper';
+
 
 const departments = ['Finance', 'HR', 'IT', 'Public Works', 'Health', 'Education', 'Operations'];
 const designations: Record<string, Record<string, string[]>> = {
@@ -95,7 +97,7 @@ export default function OnboardingPage() {
         title: "Error",
         description: "User not authenticated or Firestore not available.",
       });
-      return;
+      return false; // Indicate failure
     }
     
     saveOnboardingData(firestore, user, data);
@@ -105,12 +107,12 @@ export default function OnboardingPage() {
       description: "Your profile has been saved.",
     });
 
-    router.push('/dashboard');
+    return true; // Indicate success
   };
 
   if (isUserLoading || !user) {
     return (
-      <div className="w-full min-h-screen grid place-items-center p-4 bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+      <div className="w-full min-h-screen grid place-items-center p-4 bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <p>Verifying authentication...</p>
@@ -120,9 +122,9 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+    <div className="bg-background font-display text-foreground">
         <div className="flex flex-col min-h-screen">
-            <header className="bg-background-light dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-10 border-b border-subtle-light dark:border-subtle-dark">
+            <header className="bg-card/80 backdrop-blur-sm sticky top-0 z-10 border-b">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center gap-4">
@@ -133,8 +135,8 @@ export default function OnboardingPage() {
                         </div>
                         <div className="flex items-center gap-4">
                             <div className="relative">
-                                <button className="flex items-center justify-center size-10 rounded-full bg-subtle-light dark:bg-subtle-dark">
-                                    <span className="material-symbols-outlined text-text-light dark:text-text-dark">notifications</span>
+                                <button className="flex items-center justify-center size-10 rounded-full bg-muted">
+                                    <span className="material-symbols-outlined text-foreground">notifications</span>
                                 </button>
                             </div>
                             <button className="flex items-center gap-2">
@@ -145,146 +147,174 @@ export default function OnboardingPage() {
                 </div>
             </header>
             <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="w-full max-w-md space-y-8">
-                    <div className="text-center">
-                        <h2 className="text-3xl font-bold tracking-tight">Complete Your Profile</h2>
-                        <p className="mt-2 text-sm text-placeholder-light dark:text-placeholder-dark">
-                            Please provide the following information to set up your account.
-                        </p>
-                    </div>
-                    <div className="bg-background-light dark:bg-subtle-dark p-8 shadow-sm border border-subtle-light dark:border-subtle-dark rounded-lg space-y-6">
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                <FormField
-                                    control={form.control}
-                                    name="role"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="block text-sm font-medium">Role</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <div className="w-full max-w-2xl">
+                 <Stepper
+                    initialStep={0}
+                    onFinalStepCompleted={() => router.push('/dashboard')}
+                    backButtonText="Previous"
+                    nextButtonText="Next"
+                    onStepChange={(step) => console.log(step)}
+                    validateStep={async (step) => {
+                      if (step === 1) {
+                         const isValid = await form.trigger();
+                         if(isValid) {
+                            return onSubmit(form.getValues());
+                         }
+                         return false;
+                      }
+                      return true;
+                    }}
+                >
+                    <Step>
+                        <div className="text-center">
+                            <h2 className="text-3xl font-bold tracking-tight">Welcome to the E-Office!</h2>
+                            <p className="mt-2 text-muted-foreground">
+                                Let's get your profile set up. It'll only take a minute.
+                            </p>
+                        </div>
+                    </Step>
+                    <Step>
+                        <div className="text-center mb-8">
+                            <h2 className="text-3xl font-bold tracking-tight">Complete Your Profile</h2>
+                            <p className="mt-2 text-sm text-muted-foreground">
+                                Please provide the following information to set up your account.
+                            </p>
+                        </div>
+                        <div className="bg-card p-8 shadow-sm border rounded-lg">
+                            <Form {...form}>
+                                <form className="space-y-6">
+                                    <FormField
+                                        control={form.control}
+                                        name="role"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Role</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Role" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        <SelectItem value="Employee">Employee</SelectItem>
+                                                        <SelectItem value="Manager">Manager</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="department"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Department</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedRole}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Department" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {departments.map(dept => <SelectItem key={dept} value={dept}>{dept}</SelectItem>)}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="designation"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Designation</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedRole || !selectedDepartment}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Designation" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {selectedRole && selectedDepartment && designations[selectedRole]?.[selectedDepartment]?.map(desig => (
+                                                            <SelectItem key={desig} value={desig}>{desig}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                      <FormField
+                                          control={form.control}
+                                          name="employeeId"
+                                          render={({ field }) => (
+                                              <FormItem>
+                                                  <FormLabel>Employee ID</FormLabel>
+                                                  <FormControl>
+                                                      <Input
+                                                          type="text"
+                                                          placeholder="e.g., E12345"
+                                                          {...field}
+                                                      />
+                                                  </FormControl>
+                                                  <FormMessage />
+                                              </FormItem>
+                                          )}
+                                      />
+                                      <FormField
+                                          control={form.control}
+                                          name="fullName"
+                                          render={({ field }) => (
+                                              <FormItem>
+                                                  <FormLabel>Full Name</FormLabel>
+                                                  <FormControl>
+                                                      <Input
+                                                          type="text"
+                                                          placeholder="Enter your full name"
+                                                          {...field}
+                                                      />
+                                                  </FormControl>
+                                                  <FormMessage />
+                                              </FormItem>
+                                          )}
+                                      />
+                                    </div>
+                                    <FormField
+                                        control={form.control}
+                                        name="contactPhone"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Contact Phone</FormLabel>
                                                 <FormControl>
-                                                    <SelectTrigger className="mt-1 block w-full px-3 py-2 bg-background-light dark:bg-background-dark border border-subtle-light dark:border-subtle-dark rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm text-text-light dark:text-text-dark">
-                                                        <SelectValue placeholder="Select Role" />
-                                                    </SelectTrigger>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="Enter your phone number"
+                                                        {...field}
+                                                    />
                                                 </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="Employee">Employee</SelectItem>
-                                                    <SelectItem value="Manager">Manager</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="department"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="block text-sm font-medium">Department</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedRole}>
-                                                <FormControl>
-                                                    <SelectTrigger className="mt-1 block w-full px-3 py-2 bg-background-light dark:bg-background-dark border border-subtle-light dark:border-subtle-dark rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm text-text-light dark:text-text-dark">
-                                                        <SelectValue placeholder="Select Department" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {departments.map(dept => <SelectItem key={dept} value={dept}>{dept}</SelectItem>)}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="designation"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="block text-sm font-medium">Designation</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedRole || !selectedDepartment}>
-                                                <FormControl>
-                                                     <SelectTrigger className="mt-1 block w-full px-3 py-2 bg-background-light dark:bg-background-dark border border-subtle-light dark:border-subtle-dark rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-sm text-text-light dark:text-text-dark">
-                                                        <SelectValue placeholder="Select Designation" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                     {selectedRole && selectedDepartment && designations[selectedRole]?.[selectedDepartment]?.map(desig => (
-                                                        <SelectItem key={desig} value={desig}>{desig}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="employeeId"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="block text-sm font-medium">Employee ID</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="e.g., E12345"
-                                                    className="mt-1 block w-full px-3 py-2 bg-background-light dark:bg-background-dark border border-subtle-light dark:border-subtle-dark rounded-md shadow-sm placeholder-placeholder-light dark:placeholder-placeholder-dark focus:outline-none focus:ring-primary focus:border-primary text-sm text-text-light dark:text-text-dark"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="fullName"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="block text-sm font-medium">Full Name</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Enter your full name"
-                                                    className="mt-1 block w-full px-3 py-2 bg-background-light dark:bg-background-dark border border-subtle-light dark:border-subtle-dark rounded-md shadow-sm placeholder-placeholder-light dark:placeholder-placeholder-dark focus:outline-none focus:ring-primary focus:border-primary text-sm text-text-light dark:text-text-dark"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="contactPhone"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="block text-sm font-medium">Contact Phone</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Enter your phone number"
-                                                    className="mt-1 block w-full px-3 py-2 bg-background-light dark:bg-background-dark border border-subtle-light dark:border-subtle-dark rounded-md shadow-sm placeholder-placeholder-light dark:placeholder-placeholder-dark focus:outline-none focus:ring-primary focus:border-primary text-sm text-text-light dark:text-text-dark"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <div>
-                                    <Button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark">
-                                        Submit
-                                    </Button>
-                                </div>
-                            </form>
-                        </Form>
-                    </div>
-                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </form>
+                            </Form>
+                        </div>
+                    </Step>
+                    <Step>
+                      <div className="text-center">
+                          <h2 className="text-3xl font-bold tracking-tight">All Set!</h2>
+                          <p className="mt-2 text-muted-foreground">
+                              You're ready to go. Click the button below to proceed to your dashboard.
+                          </p>
+                      </div>
+                    </Step>
+                </Stepper>
+              </div>
             </main>
         </div>
     </div>
   );
 }
-
-    
