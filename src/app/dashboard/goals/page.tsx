@@ -1,4 +1,9 @@
 
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Progress } from "@/components/ui/progress";
 
 const teamGoals = [
@@ -64,8 +69,14 @@ const individualGoals = [
 ]
 
 export default function GoalsPage() {
+  const router = useRouter();
+
   return (
     <main className="flex-1 p-8">
+        <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Go Back
+        </Button>
         <header className="flex flex-col items-start mb-8">
             <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Goals and KPIs</h2>
