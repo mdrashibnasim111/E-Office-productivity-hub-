@@ -103,7 +103,7 @@ export default function LoginPage() {
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                            <span className="material-symbols-outlined text-white">
+                            <span className="material-symbols-outlined text-primary-accent">
                                 workspaces
                             </span>
                         </div>
@@ -190,5 +190,7 @@ export default function LoginPage() {
     </div>
   );
 }
+
+    
 
     
