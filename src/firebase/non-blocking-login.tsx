@@ -24,15 +24,6 @@ export function initiateEmailSignUp(authInstance: Auth, email: string, password:
 /** Initiate email/password sign-in (non-blocking). */
 export function initiateEmailSignIn(authInstance: Auth, email: string, password: string): void {
   // CRITICAL: Call signInWithEmailAndPassword directly. Do NOT use 'await signInWithEmailAndPassword(...)'.
-  signInWithEmailAndPassword(authInstance, email, password)
-    .catch((error) => {
-        let message = "An unknown error occurred.";
-        if (error.code === 'auth/invalid-credential') {
-            message = "Incorrect email or password. Please try again.";
-        }
-        // Dispatch a global event with the error message
-        const event = new CustomEvent('auth-error', { detail: { message } });
-        window.dispatchEvent(event);
-    });
+  signInWithEmailAndPassword(authInstance, email, password);
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
 }

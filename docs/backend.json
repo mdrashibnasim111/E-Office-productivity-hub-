@@ -1,74 +1,105 @@
 {
   "entities": {
-    "UserStreak": {
-      "title": "UserStreak",
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
       "type": "object",
-      "description": "Represents a user's streak data for tracking daily engagement.",
+      "description": "Represents a user within the e-Office Productivity Hub application.",
       "properties": {
-        "userId": {
+        "id": {
           "type": "string",
-          "description": "The unique identifier of the user associated with this streak."
+          "description": "Unique identifier for the user entity."
         },
-        "currentStreak": {
-          "type": "number",
-          "description": "The user's current streak in days."
-        },
-        "longestStreak": {
-          "type": "number",
-          "description": "The user's longest streak ever achieved in days."
-        },
-        "lastActiveDate": {
+        "employeeId": {
           "type": "string",
-          "format": "date-time",
-          "description": "The ISO 8601 timestamp of the user's last recorded activity."
+          "description": "The employee's identification number."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "The user's full name."
+        },
+        "designation": {
+          "type": "string",
+          "description": "The user's job title or position."
+        },
+        "contactEmail": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "contactPhone": {
+          "type": "string",
+          "description": "The user's phone number."
+        },
+        "roleId": {
+          "type": "string",
+          "description": "Reference to Role. (Relationship: Role 1:N User)"
+        },
+        "departmentId": {
+          "type": "string",
+          "description": "Reference to Department. (Relationship: Department 1:N User)"
         }
       },
-      "required": ["userId", "currentStreak", "longestStreak", "lastActiveDate"]
+      "required": [
+        "id",
+        "employeeId",
+        "fullName",
+        "designation",
+        "contactEmail",
+        "contactPhone",
+        "roleId",
+        "departmentId"
+      ]
     },
-    "PerformanceReview": {
-      "title": "PerformanceReview",
+    "Role": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Role",
       "type": "object",
-      "description": "Stores a user's performance review, either a self-assessment or manager feedback.",
+      "description": "Represents the role of a user within the application (e.g., Admin, Manager, Employee).",
       "properties": {
-        "userId": {
+        "id": {
           "type": "string",
-          "description": "The ID of the user being reviewed."
+          "description": "Unique identifier for the role entity."
         },
-        "reviewerId": {
+        "name": {
           "type": "string",
-          "description": "The ID of the user who wrote the review."
+          "description": "The name of the role (e.g., Admin, Manager, Employee)."
         },
-        "type": {
+        "description": {
           "type": "string",
-          "enum": ["self-assessment", "manager-feedback"],
-          "description": "The type of the review."
-        },
-        "ratings": {
-          "type": "object",
-          "description": "The ratings for a self-assessment.",
-          "properties": {
-            "quality": { "type": "number" },
-            "timeliness": { "type": "number" },
-            "communication": { "type": "number" },
-            "collaboration": { "type": "number" },
-            "initiative": { "type": "number" }
-          }
-        },
-        "comments": {
-          "type": "string",
-          "description": "Additional comments for a self-assessment."
-        },
-        "feedback": {
-          "type": "string",
-          "description": "Feedback provided by a manager."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the review was submitted."
+          "description": "A description of the role and its permissions."
         }
       },
-      "required": ["userId", "reviewerId", "type", "createdAt"]
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "Department": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Department",
+      "type": "object",
+      "description": "Represents a department within the government office.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the department entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the department (e.g., Finance, HR, IT)."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the department and its functions."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
     }
   },
   "auth": {
@@ -78,13 +109,56 @@
     ]
   },
   "firestore": {
-    "/userStreaks/{userStreakId}": {
-      "schema": { "$ref": "#/entities/UserStreak" },
-      "description": "Stores individual user streak data. The document ID should be the same as the user's UID for easy lookup."
-    },
-    "/performanceReviews/{reviewId}": {
-      "schema": { "$ref": "#/entities/PerformanceReview" },
-      "description": "Stores performance review documents."
-    }
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information. Includes denormalized 'roleId' and 'departmentId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, matching the Firebase Auth UID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles/{roleId}",
+        "definition": {
+          "entityName": "Role",
+          "schema": {
+            "$ref": "#/backend/entities/Role"
+          },
+          "description": "Stores role definitions (e.g., Admin, Manager, Employee).",
+          "params": [
+            {
+              "name": "roleId",
+              "description": "The unique identifier for the role."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/departments/{departmentId}",
+        "definition": {
+          "entityName": "Department",
+          "schema": {
+            "$ref": "#/backend/entities/Department"
+          },
+          "description": "Stores department information (e.g., Finance, HR, IT).",
+          "params": [
+            {
+              "name": "departmentId",
+              "description": "The unique identifier for the department."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support role-based access control and efficient data retrieval for the e-Office Productivity Hub. It leverages structural segregation to isolate user data and role/department assignments, and denormalization to ensure authorization independence. Path-based ownership is used for user-specific data, simplifying security rules. A roles collection stores roles, a departments collection stores department data, and a users collection stores user profiles with references to their role and department. This design facilitates secure and scalable data management while adhering to the core design principles and strategy mandates.\n\nAuthorization Independence is achieved by storing the roleId and departmentId directly within the user document. This eliminates the need for `get()` calls in security rules to determine a user's role or department, enabling atomic operations. The structure also supports QAPs by segregating user data into its own collection and using role and department collections, allowing for efficient list operations with appropriate security constraints. The roleId and departmentId can be used to determine which documents a user has access to without having to filter on the data itself. By using path-based ownership for user-owned data (/users/{userId}), we ensure that listing operations are secure, as rules can efficiently check if request.auth.uid matches the userId."
   }
 }
