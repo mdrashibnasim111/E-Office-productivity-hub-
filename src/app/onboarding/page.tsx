@@ -114,7 +114,7 @@ export default function OnboardingPage() {
     return (
       <div className="w-full min-h-screen grid place-items-center p-4 bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <Loader2 className="h-12 w-12 animate-spin text-accent" />
           <p>Verifying authentication...</p>
         </div>
       </div>
@@ -128,7 +128,7 @@ export default function OnboardingPage() {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center gap-4">
-                            <div className="text-primary">
+                            <div className="text-accent">
                                 <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20q-.825 0-1.413-.588T2 18V6q0-.825.588-1.413T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.588 1.413T20 20H4Zm8-4.3l8-5.7v-2l-8 5.7l-8-5.7v2l8 5.7Z"></path></svg>
                             </div>
                             <h1 className="text-xl font-bold">e-Office</h1>
@@ -136,7 +136,7 @@ export default function OnboardingPage() {
                         <div className="flex items-center gap-4">
                             <div className="relative">
                                 <button className="flex items-center justify-center size-10 rounded-full bg-muted">
-                                    <span className="material-symbols-outlined text-foreground">notifications</span>
+                                    <span className="material-symbols-outlined text-accent">notifications</span>
                                 </button>
                             </div>
                             <button className="flex items-center gap-2">

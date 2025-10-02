@@ -31,6 +31,7 @@ const getScoreColor = (value: number) => {
 const chartConfig = {
   score: {
     label: 'Score',
+    color: '#46EBEB'
   },
 };
 
@@ -58,7 +59,7 @@ export function StatsCards() {
     <>
       <TooltipProvider>
       <Card 
-        className="flex flex-col justify-between cursor-pointer hover:border-primary/50 transition-all shadow-dynamic"
+        className="flex flex-col justify-between cursor-pointer hover:border-accent/50 transition-all shadow-dynamic"
         onClick={() => setIsProductivityDialogOpen(true)}
         style={{ '--shadow-color': scoreColor } as React.CSSProperties}
       >
@@ -133,8 +134,8 @@ export function StatsCards() {
       </Card>
       
       <Card 
-        className="shadow-dynamic cursor-pointer hover:border-primary/50 transition-all"
-        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}
+        className="shadow-dynamic cursor-pointer hover:border-accent/50 transition-all"
+        style={{ '--shadow-color': 'hsl(var(--accent) / 0.4)' } as React.CSSProperties}
         onClick={() => setIsCompletedTasksDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -161,8 +162,8 @@ export function StatsCards() {
       </Card>
 
       <Card 
-        className="shadow-dynamic cursor-pointer hover:border-primary/50 transition-all" 
-        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}
+        className="shadow-dynamic cursor-pointer hover:border-accent/50 transition-all" 
+        style={{ '--shadow-color': 'hsl(var(--accent) / 0.4)' } as React.CSSProperties}
         onClick={() => setIsPendingTasksDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -188,8 +189,8 @@ export function StatsCards() {
         </CardContent>
       </Card>
       <Card 
-        className="shadow-dynamic cursor-pointer hover:border-primary/50 transition-all"
-        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}
+        className="shadow-dynamic cursor-pointer hover:border-accent/50 transition-all"
+        style={{ '--shadow-color': 'hsl(var(--accent) / 0.4)' } as React.CSSProperties}
         onClick={() => setIsGoalsDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

@@ -62,7 +62,7 @@ export function Recommendations() {
       <CardContent className="space-y-4">
         <div className="grid w-full gap-1.5">
           <Label htmlFor="kpis">Team KPIs</Label>
-          <ElectricBorder color="hsl(var(--primary))" className="rounded-lg">
+          <ElectricBorder color="hsl(var(--accent))" className="rounded-lg">
             <Textarea 
               placeholder="e.g., Reduce average task completion time by 15%, Increase citizen satisfaction score to 95%" 
               id="kpis"
@@ -74,7 +74,7 @@ export function Recommendations() {
         </div>
         <div className="grid w-full gap-1.5">
           <Label htmlFor="context">Organizational Context</Label>
-          <ElectricBorder color="hsl(var(--primary))" className="rounded-lg">
+          <ElectricBorder color="hsl(var(--accent))" className="rounded-lg">
             <Textarea 
               placeholder="e.g., Currently undergoing a digital transformation initiative to improve public service delivery." 
               id="context"

@@ -88,7 +88,7 @@ export default function LoginPage() {
     return (
       <div className="w-full min-h-screen grid place-items-center p-4 bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <Loader2 className="h-12 w-12 animate-spin text-accent" />
           <p>Loading...</p>
         </div>
       </div>
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-[#46EBEB] rounded-full flex items-center justify-center">
-                            <span className="material-symbols-outlined text-primary-accent">
+                            <span className="material-symbols-outlined text-black">
                                 workspaces
                             </span>
                         </div>
@@ -130,7 +130,7 @@ export default function LoginPage() {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    className="form-input appearance-none rounded-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm rounded-t-lg"
+                                    className="form-input appearance-none rounded-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-t-lg"
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -144,7 +144,7 @@ export default function LoginPage() {
                                     type="password"
                                     autoComplete="current-password"
                                     required
-                                    className="form-input appearance-none rounded-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm rounded-b-lg"
+                                    className="form-input appearance-none rounded-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-b-lg"
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -153,7 +153,7 @@ export default function LoginPage() {
                         </div>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-primary focus:ring-primary border-input-border-dark rounded bg-input-dark" />
+                                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-accent focus:ring-accent border-input-border-dark rounded bg-input-dark" />
                                 <Label htmlFor="remember-me" className="ml-2 block text-sm text-text-light">
                                     Remember me
                                 </Label>
@@ -176,7 +176,7 @@ export default function LoginPage() {
                         <div className="flex-grow border-t border-border-dark"></div>
                     </div>
                     <div>
-                        <button onClick={handleGoogleSignIn} type="button" className="w-full inline-flex justify-center items-center py-3 px-4 border border-border-dark rounded-lg shadow-sm bg-input-dark text-sm font-medium text-text-light hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary">
+                        <button onClick={handleGoogleSignIn} type="button" className="w-full inline-flex justify-center items-center py-3 px-4 border border-border-dark rounded-lg shadow-sm bg-input-dark text-sm font-medium text-text-light hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-accent">
                              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 5.234c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.577.688.482A10.001 10.001 0 0020 10c0-5.523-4.477-10-10-10z" clipRule="evenodd"></path>
                             </svg>

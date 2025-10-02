@@ -21,8 +21,8 @@ export default {
       },
       colors: {
         "background-light": "#f6f7f8",
-        "background-dark": "#1A202C",
-        "card-dark": "#2D3748",
+        "background-dark": "#0F1822",
+        "card-dark": "#162531",
         "text-light": "#E2E8F0",
         "text-medium": "#A0AEC0",
         "border-dark": "#4A5568",
@@ -32,7 +32,7 @@ export default {
         "subtle-dark": "#1f2937",
         "placeholder-light": "#6b7280",
         "placeholder-dark": "#9ca3af",
-        "primary-accent": "#11d8d9",
+        "primary-accent": "#46EBEB",
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

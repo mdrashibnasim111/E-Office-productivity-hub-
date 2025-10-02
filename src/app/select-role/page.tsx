@@ -49,7 +49,7 @@ export default function SelectRolePage() {
   return (
     <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] text-foreground">
       <div className="flex flex-col items-center gap-4">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <Loader2 className="h-12 w-12 animate-spin text-accent" />
         <p>Routing...</p>
       </div>
     </div>
