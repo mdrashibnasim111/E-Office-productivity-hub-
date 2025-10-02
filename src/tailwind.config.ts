@@ -16,8 +16,11 @@ export default {
         body: ['"PT Sans"', 'sans-serif'],
         headline: ['"Playfair Display"', 'serif'],
         code: ['monospace'],
+        display: ['"Public Sans"'],
       },
       colors: {
+        "background-light": "#f6f7f8",
+        "background-dark": "#101922",
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
