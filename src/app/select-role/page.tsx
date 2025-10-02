@@ -7,12 +7,15 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Briefcase, HardHat, Users, Building, ChevronRight, ArrowLeft, User, PenTool, Database, Laptop, FileText, Wrench, Microscope, BriefcaseBusiness, UserCog, Building2 } from 'lucide-react';
+import { ChevronRight, ArrowLeft, User, FileText, Database, PenTool, Wrench, Laptop, Microscope, HardHat, BriefcaseBusiness, UserCog, Building2, Building, Briefcase } from 'lucide-react';
 import type { LucideProps } from 'lucide-react';
+import ClericalIllustration from '@/components/illustrations/clerical-illustration';
+import TechnicalIllustration from '@/components/illustrations/technical-illustration';
+import SupervisoryIllustration from '@/components/illustrations/supervisory-illustration';
+import ManagerialIllustration from '@/components/illustrations/managerial-illustration';
+import AdministrativeIllustration from '@/components/illustrations/administrative-illustration';
 
 type Designation = {
   name: string;
@@ -21,15 +24,14 @@ type Designation = {
 
 type Category = {
   name: string;
-  icon: React.ComponentType<LucideProps>;
+  illustration: React.ComponentType<LucideProps>;
   designations: Designation[];
 };
-
 
 const categories: Category[] = [
   {
     name: 'Clerical / Support',
-    icon: Users,
+    illustration: ClericalIllustration,
     designations: [
       { name: 'Office Assistant', icon: User },
       { name: 'Clerk', icon: FileText },
@@ -40,7 +42,7 @@ const categories: Category[] = [
   },
   {
     name: 'Technical / Professional',
-    icon: HardHat,
+    illustration: TechnicalIllustration,
     designations: [
       { name: 'Junior Engineer (JE)', icon: Wrench },
       { name: 'Assistant Engineer (AE)', icon: Wrench },
@@ -51,7 +53,7 @@ const categories: Category[] = [
   },
   {
     name: 'Supervisory / Field',
-    icon: Users,
+    illustration: SupervisoryIllustration,
     designations: [
       { name: 'Field Inspector', icon: User },
       { name: 'Site Supervisor', icon: HardHat },
@@ -62,7 +64,7 @@ const categories: Category[] = [
   },
   {
     name: 'Managerial / Officers',
-    icon: Briefcase,
+    illustration: ManagerialIllustration,
     designations: [
       { name: 'Section Officer (SO)', icon: BriefcaseBusiness },
       { name: 'Project Manager', icon: Briefcase },
@@ -73,7 +75,7 @@ const categories: Category[] = [
   },
   {
     name: 'Administrative / Executive',
-    icon: Building,
+    illustration: AdministrativeIllustration,
     designations: [
       { name: 'Under Secretary', icon: Building2 },
       { name: 'Deputy Secretary', icon: Building2 },
@@ -118,15 +120,13 @@ export default function SelectRolePage() {
               <Card
                 key={category.name}
                 onClick={() => setSelectedCategory(category)}
-                className="flex flex-col overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out cursor-pointer group bg-[#182531]"
+                className="flex flex-col items-center text-center overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out cursor-pointer group bg-[#182531] p-6"
               >
-                <CardHeader className="flex-1 p-6">
-                  <div className="flex justify-between items-start">
-                    <category.icon className="h-10 w-10 mb-4 text-[#11E0E0]" />
-                    <ChevronRight className="h-6 w-6 text-muted-foreground transition-transform group-hover:translate-x-1" />
-                  </div>
+                <category.illustration className="h-20 w-20 mb-4 text-primary" />
+                <CardHeader className="p-0">
                   <CardTitle className="font-headline text-xl">{category.name}</CardTitle>
                 </CardHeader>
+                <ChevronRight className="h-6 w-6 text-muted-foreground transition-transform group-hover:translate-x-1 mt-auto" />
               </Card>
             ))}
           </div>

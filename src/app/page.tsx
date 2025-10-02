@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import Logo from '@/components/icons/logo';
+import LoginIllustration from '@/components/illustrations/login-illustration';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
@@ -67,12 +67,12 @@ export default function LoginPage() {
 
   return (
     <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] relative overflow-hidden">
-      <div className="w-full max-w-[300px] rounded-lg bg-card/30 border border-primary/20 backdrop-blur-lg p-8 shadow-2xl text-foreground flex flex-col items-center text-center z-10">
+      <div className="w-full max-w-sm rounded-lg bg-card/30 border border-primary/20 backdrop-blur-lg p-8 shadow-2xl text-foreground flex flex-col items-center text-center z-10">
         <div className="mx-auto flex w-full flex-col items-center text-center">
-          <Logo className="h-[74px] w-[74px] text-primary mb-4" />
+          <LoginIllustration className="h-28 w-28 text-primary mb-6" />
           <div className="grid gap-1.5 text-center mb-6">
-              <h2 className="text-2xl font-medium font-headline">Welcome to e-Office</h2>
-              <h3 className="text-muted-foreground text-xs font-medium">Lightning quick productivity!</h3>
+              <h2 className="text-3xl font-medium font-headline">e-Office Hub</h2>
+              <h3 className="text-muted-foreground text-sm font-medium">Lightning quick productivity!</h3>
           </div>
           <form className="grid gap-3 w-full mb-6" onSubmit={handleLogin}>
             <Button type="submit" className="relative w-full bg-primary text-lg text-primary-foreground font-semibold h-[56px] py-3 px-5 rounded-lg transition-all duration-300 ease-in-out hover:bg-primary/80 mt-2 overflow-hidden group">
