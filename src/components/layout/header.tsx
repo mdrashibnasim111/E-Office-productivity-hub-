@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import Logo from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { tasks } from '@/lib/data';
@@ -68,6 +68,7 @@ export function Header() {
   const router = useRouter();
   const { user } = useUser();
   const firestore = useFirestore();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const userDocRef = useMemoFirebase(
     () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
@@ -117,7 +118,7 @@ export function Header() {
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:px-6 sticky top-0 z-30">
-       <Sheet>
+       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 lg:hidden">
             <Menu className="h-5 w-5" />
@@ -125,6 +126,10 @@ export function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
+            <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+            <SheetDescription className="sr-only">
+                A list of links to navigate the application.
+            </SheetDescription>
           <nav className="grid gap-2 text-lg font-medium">
              <SheetClose asChild>
                 <Link
