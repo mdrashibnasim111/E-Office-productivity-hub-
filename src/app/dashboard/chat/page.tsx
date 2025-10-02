@@ -1,102 +1,383 @@
 'use client';
-
-import { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Paperclip, Send } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-interface Message {
-  id: number;
-  author: string;
-  avatar: string;
-  text: string;
-  timestamp: string;
-  isCurrentUser: boolean;
-}
-
-const currentUser = {
-    name: 'Jane Doe',
-    avatar: PlaceHolderImages.find(i => i.id === 'avatar-manager')?.imageUrl || '',
-};
-
-const initialMessages: Message[] = [
-    { id: 1, author: 'Sarah Lee', avatar: PlaceHolderImages.find(i => i.id === 'avatar-1')?.imageUrl || '', text: "Hey everyone, just a reminder that the Q3 financial report is due next week.", timestamp: "10:30 AM", isCurrentUser: false },
-    { id: 2, author: 'Jane Doe', avatar: currentUser.avatar, text: "Thanks for the reminder, Sarah. I've reviewed the draft and left some comments.", timestamp: "10:32 AM", isCurrentUser: true },
-    { id: 3, author: 'David Chen', avatar: PlaceHolderImages.find(i => i.id === 'avatar-2')?.imageUrl || '', text: "Got it. I'll get the HR stats over to you by EOD.", timestamp: "10:35 AM", isCurrentUser: false },
-];
-
-
 export default function ChatPage() {
-    const [messages, setMessages] = useState<Message[]>(initialMessages);
-    const [newMessage, setNewMessage] = useState('');
+    const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
+    const avatar1 = PlaceHolderImages.find(i => i.id === 'avatar-1');
+    const avatar2 = PlaceHolderImages.find(i => i.id === 'avatar-2');
+    const avatar3 = PlaceHolderImages.find(i => i.id === 'avatar-3');
+    const avatar4 = PlaceHolderImages.find(i => i.id === 'avatar-4');
+    const avatar5 = PlaceHolderImages.find(i => i.id === 'avatar-5');
 
-    const handleSendMessage = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (newMessage.trim() === '') return;
-
-        const message: Message = {
-            id: messages.length + 1,
-            author: currentUser.name,
-            avatar: currentUser.avatar,
-            text: newMessage,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            isCurrentUser: true
-        };
-
-        setMessages([...messages, message]);
-        setNewMessage('');
-    };
-
-    return (
-    <>
-      <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
-        Team Chat
-      </h1>
-      <div className="flex flex-col h-[calc(100vh-200px)] bg-card border rounded-lg shadow-sm">
-        <ScrollArea className="flex-1 p-6">
-            <div className="space-y-6">
-                {messages.map(msg => (
-                    <div key={msg.id} className={`flex items-start gap-4 ${msg.isCurrentUser ? 'flex-row-reverse' : ''}`}>
-                        <Avatar className="h-10 w-10">
-                            <AvatarImage src={msg.avatar} />
-                            <AvatarFallback>{msg.author.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div className={`flex flex-col gap-1 ${msg.isCurrentUser ? 'items-end' : ''}`}>
-                             <div className={`rounded-lg p-3 max-w-xs md:max-w-md ${msg.isCurrentUser ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                                <p className="text-sm">{msg.text}</p>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <span>{msg.author}</span>
-                                <span>&middot;</span>
-                                <span>{msg.timestamp}</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+  return (
+    <div className="bg-background font-display text-foreground">
+      <div className="flex h-screen w-full flex-col">
+        <header className="flex h-16 shrink-0 items-center justify-between border-b border-border px-6">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-foreground">
+              <svg
+                className="h-6 w-6 text-primary"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clipRule="evenodd"
+                  d="M12 2H2V8.33333V14.6667H12V22H22V14.6667V8.33333H12V2Z"
+                  fillRule="evenodd"
+                ></path>
+              </svg>
+              <h1 className="text-lg font-bold">e-Office</h1>
             </div>
-        </ScrollArea>
-        <div className="p-4 border-t bg-background">
-            <form onSubmit={handleSendMessage} className="flex items-center gap-4">
-                <Input
-                    placeholder="Type a message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    className="flex-1"
+            <nav className="hidden items-center gap-6 text-sm font-medium lg:flex">
+              <a
+                className="text-muted-foreground hover:text-primary"
+                href="#"
+              >
+                Dashboard
+              </a>
+              <a
+                className="text-muted-foreground hover:text-primary"
+                href="#"
+              >
+                Documents
+              </a>
+              <a
+                className="text-muted-foreground hover:text-primary"
+                href="#"
+              >
+                Meetings
+              </a>
+              <a
+                className="text-muted-foreground hover:text-primary"
+                href="#"
+              >
+                Tasks
+              </a>
+              <a
+                className="text-muted-foreground hover:text-primary"
+                href="#"
+              >
+                Calendar
+              </a>
+            </nav>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="relative hidden md:block">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                search
+              </span>
+              <input
+                className="w-full rounded-lg border-0 bg-muted py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                placeholder="Search"
+                type="text"
+              />
+            </div>
+            <button className="rounded-full p-2 text-muted-foreground hover:bg-muted/50 hover:text-primary">
+              <span className="material-symbols-outlined"> notifications </span>
+            </button>
+            <div
+              className="h-10 w-10 rounded-full bg-cover bg-center"
+              style={{
+                backgroundImage:
+                  `url("${managerAvatar?.imageUrl || ''}")`,
+              }}
+            ></div>
+          </div>
+        </header>
+        <div className="flex flex-1 overflow-hidden">
+          <aside className="flex w-80 flex-col border-r border-border bg-card">
+            <div className="p-4">
+              <h2 className="text-xl font-bold text-foreground">Chats</h2>
+              <div className="relative mt-4">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  search
+                </span>
+                <input
+                  className="w-full rounded-lg border-0 bg-background py-2.5 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="Search chats"
+                  type="text"
                 />
-                 <Button type="button" variant="ghost" size="icon">
-                    <Paperclip className="h-5 w-5" />
-                    <span className="sr-only">Attach file</span>
-                </Button>
-                <Button type="submit" size="icon">
-                    <Send className="h-5 w-5" />
-                    <span className="sr-only">Send message</span>
-                </Button>
-            </form>
+              </div>
+            </div>
+            <nav className="flex-1 space-y-1 overflow-y-auto px-2 pb-4">
+              <a
+                className="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-3 text-primary"
+                href="#"
+              >
+                <div className="relative h-12 w-12 shrink-0">
+                  <div
+                    className="h-full w-full rounded-full bg-cover bg-center"
+                    style={{
+                      backgroundImage:
+                        `url("https://lh3.googleusercontent.com/aida-public/AB6AXuBuECpvgUOYds-ngkBYHdFIHkgyEbiKC-2TvnTks1qCKhNmo2E8qNkmS488Tqv3A8p4MOeZLyBRnB2EPupkQ-g9QkL1Hh4JuszJWe1CTZX8JN-A_5f4yAjWhetpk0Njn3GNh4L-Lb9sNRzeyzd_wAWO889nsFeqq624i0wP1WD_bHN21E2JE7WWry5G3nAxgngKj6pni_vhEzATp1RGbk6yUOsnDAdQ68VIHV_9myWnJVYwUvDxIQKKTvn3Iihoz4mIkrSqewEIvWQ")`,
+                    }}
+                  ></div>
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-semibold">Team Alpha</p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    Last message: 2h ago
+                  </p>
+                </div>
+              </a>
+              <a
+                className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-muted"
+                href="#"
+              >
+                <div
+                  className="h-12 w-12 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("https://lh3.googleusercontent.com/aida-public/AB6AXuBDohtpXToQMYDJtNZn1vAZGOXDS8QFpmbobyC_E-q35RlZl58uPOQc8sv2UNkq07Z28AJBW8FG6T5i19QZQuAtlVNd_AuFu9AzwAikwwKiG-x1QeDj13Z35uLYjR8H0ShuZExYVasPlYOi9Mr5TjdRaMg2SlSYxiMvUlU3HSFXg6VYVSFLV0qrQjigveGs0X9OnulNoTZBSDYEdjv10W688l98qsX5-TVGyutZQFC6P9LmXKRCtN5TiFtZwG4ILEyVVlSf0o7Bc94")`,
+                  }}
+                ></div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-medium text-foreground">
+                    Project X
+                  </p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    Last message: 1d ago
+                  </p>
+                </div>
+              </a>
+              <a
+                className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-muted"
+                href="#"
+              >
+                <div
+                  className="h-12 w-12 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar1?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-medium text-foreground">
+                    Sarah Chen
+                  </p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    Last message: 30m ago
+                  </p>
+                </div>
+              </a>
+              <a
+                className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-muted"
+                href="#"
+              >
+                <div
+                  className="h-12 w-12 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar2?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-medium text-foreground">
+                    Michael Lee
+                  </p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    Last message: 2d ago
+                  </p>
+                </div>
+              </a>
+              <a
+                className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-muted"
+                href="#"
+              >
+                <div
+                  className="h-12 w-12 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar3?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-medium text-foreground">
+                    HR Department
+                  </p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    Last message: 1w ago
+                  </p>
+                </div>
+              </a>
+              <a
+                className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-muted"
+                href="#"
+              >
+                <div
+                  className="h-12 w-12 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar4?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="font-medium text-foreground">
+                    David Kim
+                  </p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    Last message: 5m ago
+                  </p>
+                </div>
+              </a>
+            </nav>
+          </aside>
+          <main className="flex flex-1 flex-col">
+            <div className="border-b border-border bg-card p-4">
+              <h2 className="text-2xl font-bold text-foreground">
+                Sarah Chen
+              </h2>
+              <p className="text-sm text-muted-foreground">Online</p>
+            </div>
+            <div className="flex-1 space-y-6 overflow-y-auto p-6">
+              <div className="text-center text-sm text-muted-foreground">
+                Today
+              </div>
+              <div className="flex items-end gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar1?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="max-w-md space-y-1">
+                  <p className="text-sm font-medium text-foreground">
+                    Sarah Chen
+                  </p>
+                  <div className="rounded-lg rounded-bl-none bg-muted p-3 text-foreground">
+                    Hi there, I've reviewed the document you shared. It looks
+                    great!
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-row-reverse items-end gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${managerAvatar?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="max-w-md space-y-1">
+                  <p className="text-right text-sm font-medium text-foreground">
+                    You
+                  </p>
+                  <div className="rounded-lg rounded-br-none bg-primary p-3 text-primary-foreground">
+                    Thanks, Sarah! I'm glad you like it. Any suggestions for
+                    improvements?
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-end gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar1?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="max-w-md space-y-1">
+                  <p className="text-sm font-medium text-foreground">
+                    Sarah Chen
+                  </p>
+                  <div className="rounded-lg rounded-bl-none bg-muted p-3 text-foreground">
+                    Just a minor point on section 3. Could you elaborate on the
+                    budget allocation?
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-row-reverse items-end gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${managerAvatar?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="max-w-md space-y-1">
+                  <p className="text-right text-sm font-medium text-foreground">
+                    You
+                  </p>
+                  <div className="rounded-lg rounded-br-none bg-primary p-3 text-primary-foreground">
+                    Sure, I'll add more details. I'll send you an updated
+                    version by tomorrow.
+                  </div>
+                </div>
+              </div>
+              <div className="text-center text-sm text-muted-foreground">
+                Yesterday
+              </div>
+              <div className="flex items-end gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${avatar1?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="max-w-md space-y-1">
+                  <p className="text-sm font-medium text-foreground">
+                    Sarah Chen
+                  </p>
+                  <div className="rounded-lg rounded-bl-none bg-muted p-3 text-foreground">
+                    Hi, can you share the latest project report with me?
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-row-reverse items-end gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      `url("${managerAvatar?.imageUrl || ''}")`,
+                  }}
+                ></div>
+                <div className="max-w-md space-y-2">
+                  <p className="text-right text-sm font-medium text-foreground">
+                    You
+                  </p>
+                  <div className="rounded-lg rounded-br-none bg-primary p-3 text-primary-foreground">
+                    Yes, I'm attaching it here.
+                  </div>
+                  <div
+                    className="aspect-video w-full max-w-sm rounded-lg bg-cover bg-center"
+                    style={{
+                      backgroundImage:
+                        `url("${PlaceHolderImages.find(i => i.id === 'login-image')?.imageUrl || ''}")`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div className="border-t border-border bg-card p-4">
+              <div className="relative flex items-center">
+                <input
+                  className="w-full rounded-full border-input bg-muted py-3 pl-5 pr-28 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="Type a message"
+                  type="text"
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                  <button className="rounded-full p-2 text-muted-foreground hover:bg-muted/50">
+                    <span className="material-symbols-outlined text-xl">
+                      attach_file
+                    </span>
+                  </button>
+                  <button className="rounded-full p-2 text-muted-foreground hover:bg-muted/50">
+                    <span className="material-symbols-outlined text-xl">
+                      image
+                    </span>
+                  </button>
+                  <button className="ml-2 rounded-full bg-primary p-2 text-primary-foreground hover:bg-primary/90">
+                    <span className="material-symbols-outlined"> send </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
       </div>
-    </>
+    </div>
   );
 }
