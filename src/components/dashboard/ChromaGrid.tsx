@@ -1,138 +1,207 @@
 'use client';
-import { useRef, useEffect } from 'react';
-import { motion, useAnimation, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-interface Item {
+import React, { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import './ChromaGrid.css';
+
+export interface ChromaItem {
   image: string;
   title: string;
   subtitle: string;
-  handle: string;
-  borderColor: string;
-  gradient: string;
-  url: string;
+  handle?: string;
+  location?: string;
+  borderColor?: string;
+  gradient?: string;
+  url?: string;
 }
 
-interface ChromaGridProps {
-  items: Item[];
+export interface ChromaGridProps {
+  items?: ChromaItem[];
+  className?: string;
   radius?: number;
+  columns?: number;
+  rows?: number;
   damping?: number;
   fadeOut?: number;
   ease?: string;
 }
 
-const ChromaGrid = ({ items, radius = 200, damping = 0.3, fadeOut = 0.5 }: ChromaGridProps) => {
-  const gridRef = useRef<HTMLDivElement>(null);
+type SetterFn = (v: number | string) => void;
 
-  return (
-    <div ref={gridRef} className="relative w-full h-full">
-      {items.map((item, i) => (
-        <GridItem
-          key={i}
-          containerRef={gridRef}
-          item={item}
-          radius={radius}
-          damping={damping}
-          fadeOut={fadeOut}
-        />
-      ))}
-    </div>
-  );
-};
+export const ChromaGrid: React.FC<ChromaGridProps> = ({
+  items,
+  className = '',
+  radius = 300,
+  columns = 3,
+  rows = 2,
+  damping = 0.45,
+  fadeOut = 0.6,
+  ease = 'power3.out'
+}) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const fadeRef = useRef<HTMLDivElement>(null);
+  const setX = useRef<SetterFn | null>(null);
+  const setY = useRef<SetterFn | null>(null);
+  const pos = useRef({ x: 0, y: 0 });
 
-const GridItem = ({ containerRef, item, radius, damping, fadeOut }: { containerRef: React.RefObject<HTMLDivElement>, item: Item, radius: number, damping: number, fadeOut: number }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const springX = useSpring(x, { stiffness: 300, damping: 30 });
-  const springY = useSpring(y, { stiffness: 300, damping: 30 });
-
-  const controls = useAnimation();
+  const demo: ChromaItem[] = [
+    {
+      image: 'https://i.pravatar.cc/300?img=8',
+      title: 'Alex Rivera',
+      subtitle: 'Full Stack Developer',
+      handle: '@alexrivera',
+      borderColor: '#4F46E5',
+      gradient: 'linear-gradient(145deg, #4F46E5, #000)',
+      url: 'https://github.com/'
+    },
+    {
+      image: 'https://i.pravatar.cc/300?img=11',
+      title: 'Jordan Chen',
+      subtitle: 'DevOps Engineer',
+      handle: '@jordanchen',
+      borderColor: '#10B981',
+      gradient: 'linear-gradient(210deg, #10B981, #000)',
+      url: 'https://linkedin.com/in/'
+    },
+    {
+      image: 'https://i.pravatar.cc/300?img=3',
+      title: 'Morgan Blake',
+      subtitle: 'UI/UX Designer',
+      handle: '@morganblake',
+      borderColor: '#F59E0B',
+      gradient: 'linear-gradient(165deg, #F59E0B, #000)',
+      url: 'https://dribbble.com/'
+    },
+    {
+      image: 'https://i.pravatar.cc/300?img=16',
+      title: 'Casey Park',
+      subtitle: 'Data Scientist',
+      handle: '@caseypark',
+      borderColor: '#EF4444',
+      gradient: 'linear-gradient(195deg, #EF4444, #000)',
+      url: 'https://kaggle.com/'
+    },
+    {
+      image: 'https://i.pravatar.cc/300?img=25',
+      title: 'Sam Kim',
+      subtitle: 'Mobile Developer',
+      handle: '@thesamkim',
+      borderColor: '#8B5CF6',
+      gradient: 'linear-gradient(225deg, #8B5CF6, #000)',
+      url: 'https://github.com/'
+    },
+    {
+      image: 'https://i.pravatar.cc/300?img=60',
+      title: 'Tyler Rodriguez',
+      subtitle: 'Cloud Architect',
+      handle: '@tylerrod',
+      borderColor: '#06B6D4',
+      gradient: 'linear-gradient(135deg, #06B6D4, #000)',
+      url: 'https://aws.amazon.com/'
+    }
+  ];
+  const data = items?.length ? items : demo;
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
+    const el = rootRef.current;
+    if (!el) return;
+    setX.current = gsap.quickSetter(el, '--x', 'px') as SetterFn;
+    setY.current = gsap.quickSetter(el, '--y', 'px') as SetterFn;
+    const { width, height } = el.getBoundingClientRect();
+    pos.current = { x: width / 2, y: height / 2 };
+    if (setX.current) setX.current(pos.current.x);
+    if (setY.current) setY.current(pos.current.y);
+  }, []);
 
-      const itemRect = (e.target as HTMLElement).getBoundingClientRect();
-      const itemCenterX = itemRect.left + itemRect.width / 2 - rect.left;
-      const itemCenterY = itemRect.top + itemRect.height / 2 - rect.top;
-      
-      const dx = mouseX - itemCenterX;
-      const dy = mouseY - itemCenterY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+  const moveTo = (x: number, y: number) => {
+    gsap.to(pos.current, {
+      x,
+      y,
+      duration: damping,
+      ease,
+      onUpdate: () => {
+        setX.current?.(pos.current.x);
+        setY.current?.(pos.current.y);
+      },
+      overwrite: true
+    });
+  };
 
-      if (distance < radius) {
-        const force = (1 - distance / radius) * -radius * damping;
-        const angle = Math.atan2(dy, dx);
-        x.set(force * Math.cos(angle));
-        y.set(force * Math.sin(angle));
-      } else {
-        x.set(0);
-        y.set(0);
-      }
-    };
+  const handleMove = (e: React.PointerEvent) => {
+    const r = rootRef.current!.getBoundingClientRect();
+    moveTo(e.clientX - r.left, e.clientY - r.top);
+    gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
+  };
 
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
+  const handleLeave = () => {
+    const el = rootRef.current;
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    moveTo(width / 2, height / 2);
+    gsap.to(fadeRef.current, {
+      opacity: 1,
+      duration: fadeOut,
+      overwrite: true
+    });
+  };
+
+  const handleCardClick = (url?: string) => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
-    
-    const currentContainer = containerRef.current
-    currentContainer?.addEventListener('mousemove', handleMouseMove);
-    currentContainer?.addEventListener('mouseleave', handleMouseLeave);
+  };
 
-    return () => {
-      currentContainer?.removeEventListener('mousemove', handleMouseMove);
-      currentContainer?.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [containerRef, radius, damping, x, y]);
-
-  const opacity = useTransform(
-    [springX, springY],
-    ([newX, newY]) => {
-      const distance = Math.sqrt(newX * newX + newY * newY);
-      return Math.max(0, 1 - (distance / (radius * fadeOut)));
-    }
-  );
+  const handleCardMove: React.MouseEventHandler<HTMLElement> = e => {
+    const card = e.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  };
 
   return (
-    <motion.div
-      style={{
-        x: springX,
-        y: springY,
-        position: 'absolute',
-        left: `${Math.random() * 80}%`,
-        top: `${Math.random() * 80}%`,
-      }}
-      animate={controls}
+    <div
+      ref={rootRef}
+      className={`chroma-grid ${className}`}
+      style={
+        {
+          '--r': `${radius}px`,
+          '--cols': columns,
+          '--rows': rows
+        } as React.CSSProperties
+      }
+      onPointerMove={handleMove}
+      onPointerLeave={handleLeave}
     >
-      <motion.a
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-        style={{ opacity }}
-        whileHover={{ scale: 1.1 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-      >
-        <div 
-          className="relative w-28 h-28 rounded-full flex items-center justify-center overflow-hidden border-2" 
-          style={{ 
-            borderColor: item.borderColor,
-            background: item.gradient
-          }}
+      {data.map((c, i) => (
+        <article
+          key={i}
+          className="chroma-card"
+          onMouseMove={handleCardMove}
+          onClick={() => handleCardClick(c.url)}
+          style={
+            {
+              '--card-border': c.borderColor || 'transparent',
+              '--card-gradient': c.gradient,
+              cursor: c.url ? 'pointer' : 'default'
+            } as React.CSSProperties
+          }
         >
-          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white text-center p-2 opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <p className="text-xs font-bold">{item.title}</p>
-            <p className="text-[10px]">{item.subtitle}</p>
-            <p className="text-[9px] text-gray-300">{item.handle}</p>
+          <div className="chroma-img-wrapper">
+            <img src={c.image} alt={c.title} loading="lazy" />
           </div>
-        </div>
-      </motion.a>
-    </motion.div>
+          <footer className="chroma-info">
+            <h3 className="name">{c.title}</h3>
+            {c.handle && <span className="handle">{c.handle}</span>}
+            <p className="role">{c.subtitle}</p>
+            {c.location && <span className="location">{c.location}</span>}
+          </footer>
+        </article>
+      ))}
+      <div className="chroma-overlay" />
+      <div ref={fadeRef} className="chroma-fade" />
+    </div>
   );
 };
 
