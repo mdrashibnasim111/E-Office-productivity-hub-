@@ -91,6 +91,10 @@
   }
 }
 
+.custom-gradient-background {
+    background-image: linear-gradient(to top, #0e1a25, #1d3849, #2b5a6d, #387f91, #48a6b3, #48a6b3, #48a6b3, #48a6b3, #387f91, #2b5a6d, #1d3849, #0e1a25);
+}
+
 .ocean {
   height: 240px;
   width: 100%;
