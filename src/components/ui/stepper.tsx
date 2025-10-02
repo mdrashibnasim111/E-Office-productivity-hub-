@@ -91,7 +91,7 @@ const Stepper: React.FC<StepperProps> = ({
                 {index + 1}
               </div>
               {index < steps.length - 1 && (
-                <div className={`h-1 w-16 transition-colors duration-300 ${index < currentStep ? 'bg-primary' : 'bg-muted'}`} />
+                <div className={`h-1 w-16 transition-colors duration-300 ${index < currentStep ? 'bg-[#46EBEB]' : 'bg-muted'}`} />
               )}
             </React.Fragment>
           ))}
