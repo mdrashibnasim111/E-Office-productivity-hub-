@@ -1,4 +1,3 @@
-
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -60,9 +59,6 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-        'purple-900': {
-            '50': '#f4d6ff'
-        }
       },
       borderRadius: {
         lg: 'var(--radius)',
