@@ -50,28 +50,28 @@ export default function PerformancePage() {
         initiative: 5,
     });
     const [selfComments, setSelfComments] = useState('');
-    const [selectedEmployee, setSelectedEmployee] = useState(leaderboard[0].id);
+    const [selectedEmployee, setSelectedEmployee] = useState(leaderboard[0]?.id || '');
     const [managerFeedback, setManagerFeedback] = useState('');
 
     const selfReviewsQuery = useMemoFirebase(() => {
-        if (!firestore || !user) return null;
+        if (!firestore || !user?.uid) return null;
         return query(
             collection(firestore, 'performanceReviews'),
             where('userId', '==', user.uid),
             where('type', '==', 'self-assessment')
         );
-    }, [firestore, user]);
+    }, [firestore, user?.uid]);
 
     const { data: selfReviews, isLoading: isLoadingSelfReviews } = useCollection(selfReviewsQuery);
 
     const managerReviewsQuery = useMemoFirebase(() => {
-        if (!firestore || !user) return null;
+        if (!firestore || !user?.uid) return null;
         return query(
             collection(firestore, 'performanceReviews'),
             where('reviewerId', '==', user.uid),
             where('type', '==', 'manager-feedback')
         );
-    }, [firestore, user]);
+    }, [firestore, user?.uid]);
 
     const { data: managerReviews, isLoading: isLoadingManagerReviews } = useCollection(managerReviewsQuery);
 
