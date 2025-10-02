@@ -134,7 +134,7 @@ export function StatsCards() {
       
       <Card 
         className="shadow-dynamic cursor-pointer hover:border-primary/50 transition-all"
-        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)', backgroundImage: 'linear-gradient(to right bottom, #17222c, #26404f, #346173, #418596, #50abb7, #50abb7, #50abb7, #50abb7, #418596, #346173, #26404f, #17222c)' } as React.CSSProperties}
+        style={{ '--shadow-color': 'hsl(var(--primary) / 0.4)' } as React.CSSProperties}
         onClick={() => setIsCompletedTasksDialogOpen(true)}
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
