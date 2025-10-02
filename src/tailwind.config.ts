@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        dynamic: '0 20px 25px -5px var(--shadow-color), 0 8px 10px -6px var(--shadow-color)',
+        dynamic: '0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color)',
       },
       fontFamily: {
         body: ['"PT Sans"', 'sans-serif'],
@@ -20,9 +20,13 @@ export default {
       },
       colors: {
         "background-light": "#f6f7f8",
-        "background-dark": "#101922",
-        "text-light": "#0d141b",
-        "text-dark": "#e5e7eb",
+        "background-dark": "#1A202C",
+        "card-dark": "#2D3748",
+        "text-light": "#E2E8F0",
+        "text-medium": "#A0AEC0",
+        "border-dark": "#4A5568",
+        "input-dark": "#4A5568",
+        "input-border-dark": "#6B7280",
         "subtle-light": "#e7edf3",
         "subtle-dark": "#1f2937",
         "placeholder-light": "#6b7280",
@@ -102,3 +106,5 @@ export default {
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
+
+    

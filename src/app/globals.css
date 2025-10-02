@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Light Gray */
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 13% 97%; /* #f6f7f8 - A bit off-white */
+    --foreground: 215 28% 17%;
 
     --card: 0 0% 100%; /* White */
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 28% 17%;
  
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 28% 17%;
  
-    --primary: 180 89% 45%;
+    --primary: 217 91% 60%; /* #3B82F6 */
     --primary-foreground: 210 40% 98%;
  
     --secondary: 210 40% 96.1%;
@@ -22,7 +22,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
  
-    --accent: 180 89% 45%; /* Teal */
+    --accent: 217 91% 60%;
     --accent-foreground: 210 40% 98%;
  
     --destructive: 0 84.2% 60.2%;
@@ -32,53 +32,53 @@
  
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 180 89% 45%;
+    --ring: 217 91% 60%;
  
-    --chart-1: 180 89% 45%;
-    --chart-2: 180 70% 55%;
-    --chart-3: 180 60% 65%;
-    --chart-4: 180 50% 75%;
-    --chart-5: 180 40% 85%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 217 80% 65%;
+    --chart-3: 217 70% 70%;
+    --chart-4: 217 60% 75%;
+    --chart-5: 217 50% 80%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 209 47% 10%; /* #0F1822 */
-    --foreground: 210 40% 90%; /* Softer white */
+    --background: 220 29% 10%; /* #1A202C */
+    --foreground: 220 14% 90%; /* #E2E8F0 */
 
-    --card: 208 38% 14%; /* #182531 */
-    --card-foreground: 210 40% 90%; /* Softer white */
+    --card: 220 26% 16%; /* #2D3748 */
+    --card-foreground: 220 14% 90%;
 
-    --popover: 209 47% 10%;
-    --popover-foreground: 210 40% 90%; /* Softer white */
+    --popover: 220 29% 10%;
+    --popover-foreground: 220 14% 90%;
 
-    --primary: 180 80% 60%; /* More saturated teal */
-    --primary-foreground: 209 47% 10%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 208 38% 20%;
-    --secondary-foreground: 210 40% 90%; /* Softer white */
+    --secondary: 220 26% 25%;
+    --secondary-foreground: 220 14% 90%;
 
-    --muted: 208 38% 25%;
-    --muted-foreground: 210 40% 65%; /* Adjusted for readability */
+    --muted: 220 26% 25%;
+    --muted-foreground: 220 13% 64%; /* #A0AEC0 */
 
-    --accent: 180 80% 65%; /* More saturated, lighter teal */
-    --accent-foreground: 209 47% 10%;
+    --accent: 217 91% 65%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%; /* Amber */
 
-    --border: 208 38% 20%;
-    --input: 208 38% 18%;
-    --ring: 180 80% 60%; /* More saturated teal */
+    --border: 220 13% 30%; /* #4A5568 */
+    --input: 220 13% 30%; /* #4A5568 */
+    --ring: 217 91% 60%;
 
-    --chart-1: 180 80% 60%;
-    --chart-2: 180 70% 65%;
-    --chart-3: 180 60% 70%;
-    --chart-4: 180 50% 75%;
-    --chart-5: 180 40% 80%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 217 80% 65%;
+    --chart-3: 217 70% 70%;
+    --chart-4: 217 60% 75%;
+    --chart-5: 217 50% 80%;
   }
 }
 
@@ -88,58 +88,5 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-.custom-gradient-background {
-    background-image: linear-gradient(to bottom, #d8e8ec, #c6e6ec, #b3e4ea, #9ee1e7, #88dfe3, #88dfe3, #88dfe3, #88dfe3, #9ee1e7, #b3e4ea, #c6e6ec, #d8e8ec);
-}
-
-.dark .custom-gradient-background {
-    background-image: linear-gradient(to bottom, #0e1a25, #1d3849, #2b5a6d, #387f91, #48a6b3, #48a6b3, #48a6b3, #48a6b3, #387f91, #2b5a6d, #1d3849, #0e1a25);
-}
-
-.ocean {
-  height: 240px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.wave {
-  background: hsl(var(--primary) / 0.4);
-  border-radius: 1000% 1000% 0 0;
-  position: absolute;
-  width: 300%;
-  height: 100%;
-  animation: wave 7s -3s linear infinite;
-  transform: translate3d(0, 0, 0);
-  opacity: 0.8;
-  bottom: 0;
-  left: 0;
-}
-
-.wave:nth-of-type(2) {
-  bottom: 0;
-  animation: wave 12s linear reverse infinite;
-  opacity: 0.5;
-}
-
-.wave:nth-of-type(3) {
-  bottom: 0;
-  animation: wave 15s -1s linear infinite;
-  opacity: 0.3;
-}
-
-@keyframes wave {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0%);
   }
 }
