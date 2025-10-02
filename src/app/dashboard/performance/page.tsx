@@ -214,7 +214,7 @@ export default function PerformancePage() {
                             <Card key={review.id}>
                                 <CardHeader>
                                     <CardTitle className="text-xl font-headline">
-                                        Self-Assessment from {new Date(review.createdAt?.toDate()).toLocaleDateString()}
+                                        Self-Assessment from {review.createdAt?.toDate ? new Date(review.createdAt.toDate()).toLocaleDateString() : 'Invalid Date'}
                                     </CardTitle>
                                      <CardDescription>
                                         Submitted by {user?.displayName || user?.email}
@@ -305,7 +305,7 @@ export default function PerformancePage() {
                                         Feedback for {getEmployeeName(review.userId)}
                                     </CardTitle>
                                     <CardDescription>
-                                        Submitted on {new Date(review.createdAt?.toDate()).toLocaleDateString()}
+                                        Submitted on {review.createdAt?.toDate ? new Date(review.createdAt.toDate()).toLocaleDateString() : 'Invalid Date'}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
