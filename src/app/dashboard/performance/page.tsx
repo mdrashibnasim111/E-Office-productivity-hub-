@@ -124,7 +124,7 @@ export default function PerformancePage() {
         const reviewData = {
             type: 'manager-feedback' as const,
             feedback: managerFeedback,
-            reviewedUserId: employee.id,
+            reviewedUserId: selectedEmployee,
         };
 
         // The savePerformanceReview function will handle associating the manager's ID.

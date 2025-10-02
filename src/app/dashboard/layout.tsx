@@ -1,12 +1,11 @@
 import type { ReactNode } from 'react';
 import { Sidebar } from '@/components/layout/sidebar';
 import { Header } from '@/components/layout/header';
-import { FirebaseClientProvider } from '@/firebase';
 import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <FirebaseClientProvider>
+    <>
       <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
         <Sidebar />
         <div className="flex flex-col relative overflow-hidden custom-gradient-background">
@@ -17,6 +16,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
         <BottomNavBar />
       </div>
-    </FirebaseClientProvider>
+    </>
   );
 }
