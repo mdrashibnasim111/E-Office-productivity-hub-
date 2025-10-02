@@ -16,11 +16,17 @@ export default {
         body: ['"PT Sans"', 'sans-serif'],
         headline: ['"Playfair Display"', 'serif'],
         code: ['monospace'],
-        display: ['"Public Sans"'],
+        display: ['"Public Sans"', 'sans-serif'],
       },
       colors: {
         "background-light": "#f6f7f8",
         "background-dark": "#101922",
+        "text-light": "#0d141b",
+        "text-dark": "#e5e7eb",
+        "subtle-light": "#e7edf3",
+        "subtle-dark": "#1f2937",
+        "placeholder-light": "#6b7280",
+        "placeholder-dark": "#9ca3af",
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -96,3 +102,5 @@ export default {
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
+
+    
