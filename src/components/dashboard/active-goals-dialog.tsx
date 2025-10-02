@@ -50,7 +50,7 @@ export function ActiveGoalsDialog({ isOpen, onClose }: ActiveGoalsDialogProps) {
       <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="font-headline text-2xl flex items-center gap-2">
-            <Target className="text-primary" />
+            <Target className="text-accent" />
             Active Goals
           </DialogTitle>
           <DialogDescription>
@@ -64,7 +64,7 @@ export function ActiveGoalsDialog({ isOpen, onClose }: ActiveGoalsDialogProps) {
               <AccordionItem value="team-goals">
                 <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                   <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-muted-foreground" />
+                    <Users className="h-5 w-5 text-accent" />
                     Team Goals ({teamGoals.length})
                   </div>
                 </AccordionTrigger>
@@ -79,7 +79,7 @@ export function ActiveGoalsDialog({ isOpen, onClose }: ActiveGoalsDialogProps) {
               <AccordionItem value="individual-goals">
                 <AccordionTrigger className="text-lg font-semibold hover:no-underline">
                   <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-muted-foreground" />
+                    <User className="h-5 w-5 text-accent" />
                     Individual Goals ({individualGoals.length})
                   </div>
                 </AccordionTrigger>

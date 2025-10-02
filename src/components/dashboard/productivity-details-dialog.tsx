@@ -43,17 +43,17 @@ export function ProductivityDetailsDialog({ isOpen, onClose }: ProductivityDetai
               {/* Summary Section */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                 <div className="p-4 rounded-lg bg-muted/50">
-                    <CheckCircle className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <CheckCircle className="h-6 w-6 text-accent mx-auto mb-2" />
                     <p className="text-2xl font-bold font-headline">{completedTasks.length}</p>
                     <p className="text-xs text-muted-foreground">Tasks Completed</p>
                 </div>
                  <div className="p-4 rounded-lg bg-muted/50">
-                    <Clock className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <Clock className="h-6 w-6 text-accent mx-auto mb-2" />
                     <p className="text-2xl font-bold font-headline">{totalTimeSpent.toFixed(1)}</p>
                     <p className="text-xs text-muted-foreground">Hours Logged</p>
                 </div>
                  <div className="p-4 rounded-lg bg-muted/50">
-                    <Users className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <Users className="h-6 w-6 text-accent mx-auto mb-2" />
                     <p className="text-2xl font-bold font-headline">{teamMembers.length}</p>
                     <p className="text-xs text-muted-foreground">Contributors</p>
                 </div>

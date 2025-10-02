@@ -33,7 +33,7 @@ export function PendingTasksDialog({ isOpen, onClose }: PendingTasksDialogProps)
       <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="font-headline text-2xl flex items-center gap-2">
-            <Clock className="text-primary" />
+            <Clock className="text-accent" />
             Pending Tasks
           </DialogTitle>
           <DialogDescription>

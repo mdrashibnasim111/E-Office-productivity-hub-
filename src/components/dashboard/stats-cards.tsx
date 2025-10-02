@@ -65,7 +65,7 @@ export function StatsCards() {
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <Target className="h-4 w-4 text-accent" />
             Overall Productivity
           </CardTitle>
            <Tooltip>
@@ -140,7 +140,7 @@ export function StatsCards() {
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+            <CheckCircle2 className="h-4 w-4 text-accent" />
             Tasks Completed
           </CardTitle>
           <Tooltip>
@@ -168,7 +168,7 @@ export function StatsCards() {
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <ListTodo className="h-4 w-4 text-muted-foreground" />
+            <ListTodo className="h-4 w-4 text-accent" />
             Pending Tasks
           </CardTitle>
           <Tooltip>
@@ -195,7 +195,7 @@ export function StatsCards() {
       >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <Target className="h-4 w-4 text-accent" />
             Active Goals
           </CardTitle>
            <Tooltip>

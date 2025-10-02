@@ -45,7 +45,7 @@ export function CompletedTasksDialog({ isOpen, onClose }: CompletedTasksDialogPr
       <DialogContent className="max-w-2xl h-[80vh] flex flex-col bg-card">
         <DialogHeader>
           <DialogTitle className="font-headline text-2xl flex items-center gap-2">
-            <CheckCircle className="text-primary" />
+            <CheckCircle className="text-accent" />
             Completed Tasks
           </DialogTitle>
           <DialogDescription>

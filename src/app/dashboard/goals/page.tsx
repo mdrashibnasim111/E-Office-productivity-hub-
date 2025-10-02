@@ -91,7 +91,7 @@ export default function GoalsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <div className="bg-card rounded-lg shadow-sm p-6 flex flex-col items-start">
                 <div className="flex items-center justify-between w-full mb-4">
-                    <span className="material-symbols-outlined text-primary text-2xl">trophy</span>
+                    <span className="material-symbols-outlined text-accent text-2xl">trophy</span>
                     <span className="text-primary font-semibold">Overall Goal Progress</span>
                 </div>
                 <div className="flex items-baseline gap-2">
@@ -104,7 +104,7 @@ export default function GoalsPage() {
             </div>
             <div className="bg-card rounded-lg shadow-sm p-6 flex flex-col items-start">
                 <div className="flex items-center justify-between w-full mb-4">
-                    <span className="material-symbols-outlined text-orange-500 text-2xl">event_upcoming</span>
+                    <span className="material-symbols-outlined text-accent text-2xl">event_upcoming</span>
                     <span className="text-orange-500 font-semibold">Upcoming Deadlines</span>
                 </div>
                 <div className="flex items-baseline gap-2">
@@ -118,7 +118,7 @@ export default function GoalsPage() {
             </div>
             <div className="bg-card rounded-lg shadow-sm p-6 flex flex-col items-start">
                 <div className="flex items-center justify-between w-full mb-4">
-                    <span className="material-symbols-outlined text-green-500 text-2xl">groups</span>
+                    <span className="material-symbols-outlined text-accent text-2xl">groups</span>
                     <span className="text-green-500 font-semibold">Team Performance</span>
                 </div>
                 <div className="flex items-baseline gap-2">
