@@ -85,7 +85,7 @@ const Stepper: React.FC<StepperProps> = ({
             <React.Fragment key={index}>
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                  index === currentStep ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                  index === currentStep ? 'bg-[#46EBEB] text-black' : 'bg-muted text-muted-foreground'
                 }`}
               >
                 {index + 1}
