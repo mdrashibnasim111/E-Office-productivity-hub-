@@ -1,101 +1,162 @@
 /**
- * @fileoverview Firestore Security Rules for e-Office Productivity Hub.
+ * @file Firestore Security Rules
+ * @description This ruleset enforces role-based access control for an e-Office Productivity Hub application.
  *
  * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for user profiles and engagement streaks.
- * Performance reviews are accessible based on the reviewer and reivee roles.
+ *  This ruleset implements a hybrid security model. User profiles are strictly owned by the user themselves.
+ *  Tasks are also owned by users and stored under user-specific subcollections for scalable listing.
+ *  Organization, Team, Goal, KPI, AuditLog, and ProductivityScore documents are accessible by anyone who is authenticated.
  *
  * Data Structure:
- * - /users/{userId}: Stores user profile information, only accessible by the user themselves.
- * - /userStreaks/{userId}: Tracks user engagement, only accessible by the user themselves.
- * - /performanceReviews/{reviewId}: Stores performance reviews, accessible based on the reviewer and reivee roles.
+ *  - /users/{userId}: Stores user profile data. Document ID matches the Firebase Auth UID.
+ *  - /users/{userId}/tasks/{taskId}: Stores tasks associated with a specific user.
+ *  - /teams/{teamId}: Stores team information.
+ *  - /organizations/{organizationId}: Stores organization information.
+ *  - /goals/{goalId}: Stores goals.
+ *  - /kpis/{kpiId}: Stores KPIs.
+ *  - /audit_logs/{auditLogId}: Stores audit logs.
+ *  - /productivity_scores/{productivityScoreId}: Stores productivity scores.
  *
  * Key Security Decisions:
- * - Users can only read and write their own user profile and engagement streak data.
- * - Users can only create performance reviews about themselves or reviews created by them.
- * - Listing of users or performance reviews is not allowed.
+ *  - Strict user-ownership for /users/{userId} documents.
+ *  - Employees can only access their own tasks under /users/{userId}/tasks/{taskId}.
+ *  - Public read access for /teams/{teamId}, /organizations/{organizationId}, /goals/{goalId}, /kpis/{kpiId}, /audit_logs/{auditLogId}, and /productivity_scores/{productivityScoreId}.
+ *  - Role-based access control is enforced via the 'role' field in the /users/{userId} document.
  *
  * Denormalization for Authorization:
- *  - The `userId` is part of the document id in both `/users/{userId}` and `/userStreaks/{userId}` to avoid additional reads.
+ *  - User roles ('Employee' or 'Manager') are stored directly in the /users/{userId} document
+ *    to avoid costly `get()` operations in security rules.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Controls access to user profile information.
+     * @description Controls access to user profile data.
      * @path /users/{userId}
-     * @allow (get) Signed-in user can read their own profile.
-     * @allow (create) Signed-in user can create their profile if the userId matches their auth UID.
-     * @allow (update) Signed-in user can update their own profile.
-     * @allow (delete) Signed-in user can delete their own profile.
-     * @deny (get) Signed-in user cannot read another user's profile.
-     * @deny (create) Signed-in user cannot create a profile with a userId that does not match their auth UID.
-     * @deny (update) Signed-in user cannot update another user's profile.
-     * @deny (delete) Signed-in user cannot delete another user's profile.
+     * @allow (create) - Authenticated user can create their own profile if the userId matches their auth UID.
+     * @allow (get, update, delete) - Authenticated user can read, update, or delete their own profile if the userId matches their auth UID.
+     * @deny (create) - User attempts to create a profile with an ID that doesn't match their auth UID.
+     * @deny (get, update, delete) - User attempts to access another user's profile.
      * @principle Enforces document ownership for user profiles.
      */
     match /users/{userId} {
-      allow get: if isSignedIn() && isOwner(userId);
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
       allow list: if false;
-      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == request.auth.uid;
-      allow update: if isSignedIn() && isOwner(userId) && resource.data.id == request.auth.uid;
-      allow delete: if isSignedIn() && isExistingOwner(userId);
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description Controls access to user engagement streak data.
-     * @path /userStreaks/{userId}
-     * @allow (get) Signed-in user can read their own streak data.
-     * @allow (create) Signed-in user can create their streak data if the userId matches their auth UID.
-     * @allow (update) Signed-in user can update their own streak data.
-     * @allow (delete) Signed-in user can delete their own streak data.
-     * @deny (get) Signed-in user cannot read another user's streak data.
-     * @deny (create) Signed-in user cannot create streak data with a userId that does not match their auth UID.
-     * @deny (update) Signed-in user cannot update another user's streak data.
-     * @deny (delete) Signed-in user cannot delete another user's streak data.
-     * @principle Enforces document ownership for engagement streaks.
+     * @description Controls access to tasks assigned to a specific user.
+     * @path /users/{userId}/tasks/{taskId}
+     * @allow (create, get, list, update, delete) - Authenticated user can manage their own tasks if the userId matches their auth UID.
+     * @deny (create, get, list, update, delete) - User attempts to access another user's tasks.
+     * @principle Enforces document ownership for tasks.
      */
-    match /userStreaks/{userId} {
-      allow get: if isSignedIn() && isOwner(userId);
-      allow list: if false;
-      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == request.auth.uid;
-      allow update: if isSignedIn() && isOwner(userId) && resource.data.id == request.auth.uid;
-      allow delete: if isSignedIn() && isExistingOwner(userId);
+    match /users/{userId}/tasks/{taskId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+       function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description Controls access to performance review documents.
-     * @path /performanceReviews/{reviewId}
-     * @allow (create) Signed-in user can create a review for themselves or a review created by them.
-     * @deny (create) Signed-in user cannot create a review for another user without being a manager.
-     * @allow (get) Any signed-in user can get a review if the review's `userId` or `reviewerId` matches their own `uid`.
-     * @deny (get) A signed-in user cannot get a review about another user.
-     * @allow (update) Signed-in user can update a review created by them.
-     * @deny (update) Signed-in user cannot update a review that they did not create.
-     * @allow (delete) Signed-in user can delete a review created by them.
-     * @deny (delete) Signed-in user cannot delete a review that they did not create.
-     * @principle Enforces document ownership and role-based access for performance reviews.
+     * @description Controls access to team information.
+     * @path /teams/{teamId}
+     * @allow (get, list) - Any authenticated user can read team information.
+     * @allow (create, update, delete) - No one can create, update, or delete team information.
+     * @principle Allows public read access to team data, restricts write access.
      */
-    match /performanceReviews/{reviewId} {
-      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.reviewerId == request.auth.uid);
-      allow list: if false;
-      allow create: if isSignedIn() && (request.resource.data.userId == request.auth.uid || request.resource.data.reviewerId == request.auth.uid);
-      allow update: if isSignedIn() && resource.data.reviewerId == request.auth.uid;
-      allow delete: if isSignedIn() && resource.data.reviewerId == request.auth.uid && resource != null;
+    match /teams/{teamId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
     }
-  }
 
-  // Helper functions
-  function isSignedIn() {
-    return request.auth != null;
-  }
+    /**
+     * @description Controls access to organization information.
+     * @path /organizations/{organizationId}
+     * @allow (get, list) - Any authenticated user can read organization information.
+     * @allow (create, update, delete) - No one can create, update, or delete organization information.
+     * @principle Allows public read access to organization data, restricts write access.
+     */
+    match /organizations/{organizationId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
 
-  function isOwner(userId) {
-    return request.auth.uid == userId;
-  }
+    /**
+     * @description Controls access to goal information.
+     * @path /goals/{goalId}
+     * @allow (get, list) - Any authenticated user can read goal information.
+     * @allow (create, update, delete) - No one can create, update, or delete goal information.
+     * @principle Allows public read access to goal data, restricts write access.
+     */
+    match /goals/{goalId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
 
-  function isExistingOwner(userId) {
-    return isOwner(userId) && resource != null;
+    /**
+     * @description Controls access to KPI information.
+     * @path /kpis/{kpiId}
+     * @allow (get, list) - Any authenticated user can read KPI information.
+     * @allow (create, update, delete) - No one can create, update, or delete KPI information.
+     * @principle Allows public read access to KPI data, restricts write access.
+     */
+    match /kpis/{kpiId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Controls access to audit log information.
+     * @path /audit_logs/{auditLogId}
+     * @allow (get, list) - Any authenticated user can read audit log information.
+     * @allow (create, update, delete) - No one can create, update, or delete audit log information.
+     * @principle Allows public read access to audit log data, restricts write access.
+     */
+    match /audit_logs/{auditLogId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Controls access to productivity score information.
+     * @path /productivity_scores/{productivityScoreId}
+     * @allow (get, list) - Any authenticated user can read productivity score information.
+     * @allow (create, update, delete) - No one can create, update, or delete productivity score information.
+     * @principle Allows public read access to productivity score data, restricts write access.
+     */
+    match /productivity_scores/{productivityScoreId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
   }
 }

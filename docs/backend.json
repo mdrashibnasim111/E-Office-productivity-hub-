@@ -4,144 +4,448 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "User",
       "type": "object",
-      "description": "Represents a user within the e-Office Productivity Hub application.",
+      "description": "Represents a user in the e-Office Productivity Hub application.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the user entity, typically the Firebase Auth UID."
-        },
-        "employeeId": {
-          "type": "string",
-          "description": "The employee's identification number."
-        },
-        "fullName": {
-          "type": "string",
-          "description": "The user's full name."
-        },
-        "designation": {
-          "type": "string",
-          "description": "The user's job title or position."
-        },
-        "contactEmail": {
-          "type": "string",
-          "description": "The user's email address.",
-          "format": "email"
-        },
-        "contactPhone": {
-          "type": "string",
-          "description": "The user's phone number."
+          "description": "Unique identifier for the user entity."
         },
         "role": {
           "type": "string",
-          "enum": ["Employee", "Manager"],
-          "description": "The role of the user within the application."
+          "description": "The role of the user (Employee or Manager)."
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "The employee identifier for the user."
         },
         "department": {
           "type": "string",
           "description": "The department the user belongs to."
         },
-        "onboarded": {
-          "type": "boolean",
-          "description": "Flag to indicate if the user has completed the onboarding process."
+        "designation": {
+          "type": "string",
+          "description": "The job title or position of the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the user.",
+          "format": "email"
         }
       },
       "required": [
         "id",
-        "employeeId",
-        "fullName",
-        "designation",
-        "contactEmail",
         "role",
+        "employeeId",
         "department",
-        "onboarded"
+        "designation",
+        "email"
       ]
     },
-    "UserStreak": {
+    "Goal": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "UserStreak",
+      "title": "Goal",
       "type": "object",
-      "description": "Tracks user's daily engagement streak.",
+      "description": "Represents a goal or objective at the organization, team, or individual level.",
       "properties": {
-        "currentStreak": {
-          "type": "number",
-          "description": "The current consecutive days of activity."
-        },
-        "longestStreak": {
-          "type": "number",
-          "description": "The longest streak of consecutive activity."
-        },
-        "lastLogin": {
+        "id": {
           "type": "string",
-          "format": "date-time",
-          "description": "The timestamp of the last login."
-        }
-      },
-      "required": ["currentStreak", "longestStreak", "lastLogin"]
-    },
-    "PerformanceReview": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "PerformanceReview",
-      "type": "object",
-      "description": "Stores performance review data for users.",
-      "properties": {
+          "description": "Unique identifier for the goal entity."
+        },
         "userId": {
           "type": "string",
-          "description": "The ID of the user being reviewed."
+          "description": "Reference to User. (Relationship: User 1:N Goal) The user who created or is assigned the goal."
         },
-        "reviewerId": {
+        "teamId": {
           "type": "string",
-          "description": "The ID of the user who submitted the review."
+          "description": "Reference to Team. (Relationship: Team 1:N Goal) The team associated with the goal, if applicable."
         },
-        "type": {
+        "organizationId": {
           "type": "string",
-          "enum": ["self-assessment", "manager-feedback"],
-          "description": "The type of review."
+          "description": "Reference to Organization. (Relationship: Organization 1:N Goal) The organization-level goal, if applicable."
         },
-        "ratings": {
-          "type": "object",
-          "description": "Ratings for self-assessment.",
-          "properties": {
-            "quality": {"type": "number"},
-            "timeliness": {"type": "number"},
-            "communication": {"type": "number"},
-            "collaboration": {"type": "number"},
-            "initiative": {"type": "number"}
-          }
-        },
-        "comments": {
+        "description": {
           "type": "string",
-          "description": "Comments for self-assessment."
+          "description": "Detailed description of the goal."
         },
-        "feedback": {
+        "targetDate": {
           "type": "string",
-          "description": "Feedback from a manager."
+          "description": "The date by which the goal should be achieved.",
+          "format": "date-time"
         },
-        "createdAt": {
+        "status": {
           "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the review was created."
+          "description": "The current status of the goal (e.g., active, completed, pending)."
         }
       },
-      "required": ["userId", "reviewerId", "type", "createdAt"]
+      "required": [
+        "id",
+        "description",
+        "targetDate",
+        "status"
+      ]
+    },
+    "KPI": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "KPI",
+      "type": "object",
+      "description": "Represents a Key Performance Indicator used to measure progress and success.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the KPI entity."
+        },
+        "goalId": {
+          "type": "string",
+          "description": "Reference to Goal. (Relationship: Goal 1:N KPI) The goal this KPI is associated with."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name or title of the KPI."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of how the KPI is measured."
+        },
+        "targetValue": {
+          "type": "number",
+          "description": "The target value to be achieved for this KPI."
+        },
+        "currentValue": {
+          "type": "number",
+          "description": "The current value of the KPI."
+        },
+        "unitOfMeasurement": {
+          "type": "string",
+          "description": "The unit of measurement for the KPI (e.g., percentage, hours, count)."
+        }
+      },
+      "required": [
+        "id",
+        "goalId",
+        "name",
+        "description",
+        "targetValue",
+        "currentValue",
+        "unitOfMeasurement"
+      ]
+    },
+    "Task": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Task",
+      "type": "object",
+      "description": "Represents a task assigned to an employee.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the task entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Task) The user assigned to this task."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name or title of the task."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the task."
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "The date the task is due.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the task (e.g., pending, in-progress, completed)."
+        },
+        "priority": {
+          "type": "string",
+          "description": "The priority of the task (e.g., high, medium, low)."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "description",
+        "dueDate",
+        "status",
+        "priority"
+      ]
+    },
+    "Team": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Team",
+      "type": "object",
+      "description": "Represents a team within the organization.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the team entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the team."
+        },
+        "department": {
+          "type": "string",
+          "description": "The department the team belongs to."
+        },
+        "managerId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Team) The manager of this team."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "department",
+        "managerId"
+      ]
+    },
+    "Organization": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Organization",
+      "type": "object",
+      "description": "Represents the organization.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the organization entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the organization."
+        },
+        "description": {
+          "type": "string",
+          "description": "General description of the organization."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "AuditLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AuditLog",
+      "type": "object",
+      "description": "Represents an audit log entry for tracking actions within the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the audit log entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. The user who performed the action."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the action occurred.",
+          "format": "date-time"
+        },
+        "action": {
+          "type": "string",
+          "description": "Description of the action performed (e.g., task creation, update, login)."
+        },
+        "details": {
+          "type": "string",
+          "description": "Additional details about the action, such as changes made."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "timestamp",
+        "action",
+        "details"
+      ]
+    },
+    "ProductivityScore": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ProductivityScore",
+      "type": "object",
+      "description": "Represents the productivity score for a user, team, or organization.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the productivity score entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. The user associated with the score."
+        },
+        "teamId": {
+          "type": "string",
+          "description": "Reference to Team. The team associated with the score."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "Reference to Organization. The organization associated with the score."
+        },
+        "score": {
+          "type": "number",
+          "description": "The productivity score value."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The timestamp of when the score was calculated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "score",
+        "timestamp"
+      ]
     }
   },
   "auth": {
     "providers": [
-      "password"
+      "password",
+      "anonymous"
     ]
   },
   "firestore": {
-    "/users/{userId}": {
-      "schema": { "$ref": "#/entities/User" },
-      "description": "Stores user profile information after they complete the onboarding process."
-    },
-    "/userStreaks/{userId}": {
-      "schema": { "$ref": "#/entities/UserStreak" },
-      "description": "Stores engagement streak data for each user."
-    },
-    "/performanceReviews/{reviewId}": {
-      "schema": { "$ref": "#/entities/PerformanceReview" },
-      "description": "Stores performance review documents."
-    }
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information. The document ID is the Firebase Auth UID. Includes 'role', 'employeeId', and 'department' fields for role-based access control.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/tasks/{taskId}",
+        "definition": {
+          "entityName": "Task",
+          "schema": {
+            "$ref": "#/backend/entities/Task"
+          },
+          "description": "Stores tasks assigned to a specific user. This structure enables employees to only read their own tasks, and managers can query tasks for employees within their department.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user to whom the task is assigned."
+            },
+            {
+              "name": "taskId",
+              "description": "The unique identifier of the task."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/teams/{teamId}",
+        "definition": {
+          "entityName": "Team",
+          "schema": {
+            "$ref": "#/backend/entities/Team"
+          },
+          "description": "Stores team information. Managers are associated with a team via the 'managerId' field.",
+          "params": [
+            {
+              "name": "teamId",
+              "description": "The unique identifier of the team."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/organizations/{organizationId}",
+        "definition": {
+          "entityName": "Organization",
+          "schema": {
+            "$ref": "#/backend/entities/Organization"
+          },
+          "description": "Stores organization-level information.  There may be only one organization in the system.",
+          "params": [
+            {
+              "name": "organizationId",
+              "description": "The unique identifier of the organization. Should be a singleton."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/goals/{goalId}",
+        "definition": {
+          "entityName": "Goal",
+          "schema": {
+            "$ref": "#/backend/entities/Goal"
+          },
+          "description": "Stores goals at organization, team, or individual levels. Includes fields 'userId', 'teamId', and 'organizationId' to associate goals with respective entities.",
+          "params": [
+            {
+              "name": "goalId",
+              "description": "The unique identifier of the goal."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/kpis/{kpiId}",
+        "definition": {
+          "entityName": "KPI",
+          "schema": {
+            "$ref": "#/backend/entities/KPI"
+          },
+          "description": "Stores Key Performance Indicators associated with goals. The 'goalId' field links KPIs to specific goals.",
+          "params": [
+            {
+              "name": "kpiId",
+              "description": "The unique identifier of the KPI."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/audit_logs/{auditLogId}",
+        "definition": {
+          "entityName": "AuditLog",
+          "schema": {
+            "$ref": "#/backend/entities/AuditLog"
+          },
+          "description": "Stores audit log entries for tracking actions performed within the application.  Includes 'userId' to identify the user performing the action.",
+          "params": [
+            {
+              "name": "auditLogId",
+              "description": "The unique identifier of the audit log entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/productivity_scores/{productivityScoreId}",
+        "definition": {
+          "entityName": "ProductivityScore",
+          "schema": {
+            "$ref": "#/backend/entities/ProductivityScore"
+          },
+          "description": "Stores productivity scores for users, teams, and organizations.  Includes 'userId', 'teamId', and 'organizationId' to associate scores with respective entities.",
+          "params": [
+            {
+              "name": "productivityScoreId",
+              "description": "The unique identifier of the productivity score entry."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to ensure role-based access control, data separation, and efficient querying. It leverages path-based ownership for user-specific data and denormalization to maintain authorization independence. The core structure revolves around segregating data based on user roles (Employee/Manager) and departments to facilitate secure and scalable data access. The structure also ensures QAPs by segregating data based on access type, which will enable performant and secure `list` operations.\n\nSpecifically, authorization independence is achieved by storing user roles directly within the `/users/{uid}` document. This eliminates the need for security rules to perform `get()` operations to determine user roles, thus enabling atomic operations.\n\nQAPs are supported by ensuring that listing operations are always scoped to a specific user or a user's department. For example, managers can list team members within their department, and employees can only list their own tasks. This design prevents unrestricted listing of sensitive data."
   }
 }
