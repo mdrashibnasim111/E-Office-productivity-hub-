@@ -160,7 +160,7 @@ export default function LoginPage() {
                                 </Label>
                             </div>
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-primary hover:text-primary/80">
+                                <a href="#" className="font-medium text-[#46EBEB] hover:text-[#46EBEB]/80">
                                     Forgot your password?
                                 </a>
                             </div>
