@@ -57,8 +57,10 @@ export function Sidebar() {
   const navItems = isManager ? managerNavItems : baseNavItems;
 
   const handleLogout = async () => {
-    await signOut(auth);
-    router.push('/');
+    if(auth) {
+      await signOut(auth);
+      router.push('/');
+    }
   };
 
   return (
