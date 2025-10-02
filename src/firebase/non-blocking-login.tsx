@@ -10,20 +10,31 @@ import {
 /** Initiate anonymous sign-in (non-blocking). */
 export function initiateAnonymousSignIn(authInstance: Auth): void {
   // CRITICAL: Call signInAnonymously directly. Do NOT use 'await signInAnonymously(...)'.
-  signInAnonymously(authInstance);
+  signInAnonymously(authInstance).catch(error => {
+    // Even though we don't expect errors here often, it's good practice
+    console.error("Anonymous sign-in error:", error);
+    window.dispatchEvent(new CustomEvent('auth-error', { detail: error }));
+  });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
 }
 
 /** Initiate email/password sign-up (non-blocking). */
 export function initiateEmailSignUp(authInstance: Auth, email: string, password: string): void {
   // CRITICAL: Call createUserWithEmailAndPassword directly. Do NOT use 'await createUserWithEmailAndPassword(...)'.
-  createUserWithEmailAndPassword(authInstance, email, password);
+  createUserWithEmailAndPassword(authInstance, email, password).catch(error => {
+    console.error("Sign-up error:", error);
+    window.dispatchEvent(new CustomEvent('auth-error', { detail: error }));
+  });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
 }
 
 /** Initiate email/password sign-in (non-blocking). */
 export function initiateEmailSignIn(authInstance: Auth, email: string, password: string): void {
   // CRITICAL: Call signInWithEmailAndPassword directly. Do NOT use 'await signInWithEmailAndPassword(...)'.
-  signInWithEmailAndPassword(authInstance, email, password);
+  signInWithEmailAndPassword(authInstance, email, password).catch(error => {
+    console.error("Sign-in error:", error);
+    // Dispatch a custom event with the error details
+    window.dispatchEvent(new CustomEvent('auth-error', { detail: error }));
+  });
   // Code continues immediately. Auth state change is handled by onAuthStateChanged listener.
 }
