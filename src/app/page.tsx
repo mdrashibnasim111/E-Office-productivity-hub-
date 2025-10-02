@@ -97,7 +97,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="font-display bg-background text-text-light">
+    <div className="font-display bg-background-dark text-text-light">
         <div className="flex flex-col min-h-screen">
             <header className="border-b border-border-dark">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -190,7 +190,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-    
-
-    
