@@ -120,7 +120,7 @@ const Stepper: React.FC<StepperProps> = ({
             {backButtonText}
           </Button>
         )}
-        <Button onClick={handleNext} disabled={isLoading}>
+        <Button onClick={handleNext} disabled={isLoading} className="bg-[#46EBEB] text-black hover:bg-[#46EBEB]/90 focus:ring-[#46EBEB]">
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isLastStep ? finishButtonText : nextButtonText}
         </Button>
