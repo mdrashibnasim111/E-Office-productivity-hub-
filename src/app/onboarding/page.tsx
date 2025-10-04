@@ -164,11 +164,6 @@ export default function OnboardingPage() {
                             <h1 className="text-xl font-bold">e-Office</h1>
                         </div>
                         <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <button className="flex items-center justify-center size-10 rounded-full bg-muted">
-                                    <span className="material-symbols-outlined text-accent">notifications</span>
-                                </button>
-                            </div>
                             <button className="flex items-center gap-2">
                                 <div className="size-10 rounded-full bg-cover bg-center" style={{backgroundImage: `url("${user?.photoURL || managerAvatar?.imageUrl || ''}")`}}></div>
                             </button>
@@ -394,5 +389,3 @@ export default function OnboardingPage() {
     </div>
   );
 }
-
-    
