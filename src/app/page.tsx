@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
-import { initiateEmailSignIn, initiateEmailSignUp } from '@/firebase/non-blocking-login';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -29,34 +29,6 @@ export default function LoginPage() {
     }
   }, [user, isUserLoading, router]);
 
-  useEffect(() => {
-    const handleAuthError = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      const error = customEvent.detail;
-      setIsSigningIn(false);
-
-      let title = authAction === 'signIn' ? 'Login Failed' : 'Sign-up Failed';
-      let description = error?.message || 'An unknown error occurred.';
-
-      if (error?.code === 'auth/email-already-in-use') {
-        title = 'Sign-up Failed';
-        description = 'This email is already in use. Please sign in instead.';
-      }
-
-      toast({
-        variant: 'destructive',
-        title: title,
-        description: description,
-      });
-    };
-
-    window.addEventListener('auth-error', handleAuthError);
-
-    return () => {
-      window.removeEventListener('auth-error', handleAuthError);
-    };
-  }, [toast, authAction]);
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!auth) {
@@ -69,10 +41,18 @@ export default function LoginPage() {
     }
     setIsSigningIn(true);
     setAuthAction('signIn');
-    initiateEmailSignIn(auth, email, password);
+    signInWithEmailAndPassword(auth, email, password)
+        .catch((error) => {
+            setIsSigningIn(false);
+            toast({
+                variant: 'destructive',
+                title: 'Login Failed',
+                description: error.message || 'An unknown error occurred.',
+            });
+        });
   };
   
-  const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!auth) {
       toast({
@@ -84,7 +64,26 @@ export default function LoginPage() {
     }
     setIsSigningIn(true);
     setAuthAction('signUp');
-    initiateEmailSignUp(auth, email, password);
+    try {
+        await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+        setIsSigningIn(false);
+        if (error.code === 'auth/email-already-in-use') {
+            toast({
+                variant: 'destructive',
+                title: 'Sign-up Failed',
+                description: 'This email is already in use. Please sign in instead.',
+            });
+        } else {
+            console.error("Sign-up error:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Sign-up Failed',
+                description: error.message || 'An unknown error occurred during sign-up.',
+            });
+        }
+    }
+    // On success, isSigningIn will be handled by the useEffect redirecting the user
   };
 
   const handleGoogleSignIn = async () => {
@@ -214,3 +213,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+    
