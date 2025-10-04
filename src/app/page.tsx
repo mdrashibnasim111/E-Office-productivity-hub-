@@ -19,8 +19,9 @@ export default function LoginPage() {
   const { toast } = useToast();
   const [email, setEmail] = useState('user@example.com');
   const [password, setPassword] = useState('password');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const [authAction, setAuthAction] = useState<'signIn' | 'signUp'>('signIn');
+  const [authMode, setAuthMode] = useState<'signIn' | 'signUp'>('signIn');
 
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function LoginPage() {
     }
   }, [user, isUserLoading, router]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleAuthAction = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!auth) {
       toast({
@@ -39,51 +40,41 @@ export default function LoginPage() {
       });
       return;
     }
-    setIsSigningIn(true);
-    setAuthAction('signIn');
-    signInWithEmailAndPassword(auth, email, password)
-        .catch((error) => {
-            setIsSigningIn(false);
-            toast({
-                variant: 'destructive',
-                title: 'Login Failed',
-                description: error.message || 'An unknown error occurred.',
-            });
-        });
-  };
-  
-  const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (!auth) {
+    
+    if (authMode === 'signUp' && password !== confirmPassword) {
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Authentication service is not available.',
+        title: 'Sign-up Failed',
+        description: 'Passwords do not match.',
       });
       return;
     }
+
     setIsSigningIn(true);
-    setAuthAction('signUp');
+
     try {
-        await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-        setIsSigningIn(false);
-        if (error.code === 'auth/email-already-in-use') {
-            toast({
-                variant: 'destructive',
-                title: 'Sign-up Failed',
-                description: 'This email is already in use. Please sign in instead.',
-            });
+        if (authMode === 'signIn') {
+            await signInWithEmailAndPassword(auth, email, password);
         } else {
-            console.error("Sign-up error:", error);
-            toast({
-                variant: 'destructive',
-                title: 'Sign-up Failed',
-                description: error.message || 'An unknown error occurred during sign-up.',
-            });
+            await createUserWithEmailAndPassword(auth, email, password);
         }
+        // On success, the useEffect will handle the redirect.
+    } catch (error: any) {
+        let description = error.message || 'An unknown error occurred.';
+        if (error.code === 'auth/email-already-in-use') {
+            description = 'This email is already in use. Please sign in instead.';
+        } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            description = 'Invalid email or password. Please try again.';
+        }
+        
+        toast({
+            variant: 'destructive',
+            title: authMode === 'signIn' ? 'Sign-in Failed' : 'Sign-up Failed',
+            description,
+        });
+    } finally {
+        setIsSigningIn(false);
     }
-    // On success, isSigningIn will be handled by the useEffect redirecting the user
   };
 
   const handleGoogleSignIn = async () => {
@@ -135,14 +126,14 @@ export default function LoginPage() {
                 <div className="w-full max-w-md space-y-8 bg-[#162531] p-8 rounded-xl shadow-lg">
                     <div>
                         <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-                            Welcome to e-Office
+                            {authMode === 'signIn' ? 'Welcome Back' : 'Create an Account'}
                         </h2>
                         <p className="mt-2 text-center text-sm text-text-medium">
-                            Sign in or create an account to continue
+                            {authMode === 'signIn' ? 'Sign in to continue' : 'Enter your details to get started'}
                         </p>
                     </div>
-                    <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-                        <div className="rounded-md shadow-sm -space-y-px">
+                    <form className="mt-8 space-y-6" onSubmit={handleAuthAction}>
+                        <div className="rounded-md shadow-sm space-y-4">
                             <div>
                                 <Label htmlFor="email-address" className="sr-only">Email address</Label>
                                 <Input
@@ -151,7 +142,7 @@ export default function LoginPage() {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    className="form-input appearance-none rounded-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-t-lg"
+                                    className="form-input appearance-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-lg"
                                     placeholder="Email address"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -163,48 +154,74 @@ export default function LoginPage() {
                                     id="password"
                                     name="password"
                                     type="password"
-                                    autoComplete="current-password"
+                                    autoComplete={authMode === 'signIn' ? 'current-password' : 'new-password'}
                                     required
-                                    className="form-input appearance-none rounded-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-b-lg"
+                                    className="form-input appearance-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-lg"
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
+                            {authMode === 'signUp' && (
+                                <div>
+                                    <Label htmlFor="confirm-password"  className="sr-only">Confirm Password</Label>
+                                    <Input
+                                        id="confirm-password"
+                                        name="confirm-password"
+                                        type="password"
+                                        autoComplete="new-password"
+                                        required
+                                        className="form-input appearance-none relative block w-full px-3 py-3 border border-input-border-dark bg-input-dark text-white placeholder:text-text-medium focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm rounded-lg"
+                                        placeholder="Confirm Password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
+                                </div>
+                            )}
                         </div>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-accent focus:ring-accent border-input-border-dark rounded bg-input-dark" />
-                                <Label htmlFor="remember-me" className="ml-2 block text-sm text-text-light">
-                                    Remember me
-                                </Label>
+                        {authMode === 'signIn' && (
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-accent focus:ring-accent border-input-border-dark rounded bg-input-dark" />
+                                    <Label htmlFor="remember-me" className="ml-2 block text-sm text-text-light">
+                                        Remember me
+                                    </Label>
+                                </div>
+                                <div className="text-sm">
+                                    <a href="#" className="font-medium text-accent hover:text-accent/80">
+                                        Forgot your password?
+                                    </a>
+                                </div>
                             </div>
-                            <div className="text-sm">
-                                <a href="#" className="font-medium text-accent hover:text-accent/80">
-                                    Forgot your password?
-                                </a>
-                            </div>
-                        </div>
-                        <div className="flex gap-4">
+                        )}
+                        <div>
                             <Button type="submit" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-black bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-accent">
-                                Sign in
-                            </Button>
-                             <Button onClick={handleSignUp} variant="secondary" className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg">
-                                Sign up
+                                {authMode === 'signIn' ? 'Sign in' : 'Create Account'}
                             </Button>
                         </div>
                     </form>
-                    <div className="relative flex py-5 items-center">
+
+                     <div className="text-center text-sm">
+                        <span className="text-text-medium">
+                            {authMode === 'signIn' ? "Don't have an account? " : "Already have an account? "}
+                        </span>
+                        <button onClick={() => setAuthMode(authMode === 'signIn' ? 'signUp' : 'signIn')} className="font-medium text-accent hover:text-accent/80">
+                            {authMode === 'signIn' ? 'Sign up' : 'Sign in'}
+                        </button>
+                    </div>
+
+
+                    <div className="relative flex py-2 items-center">
                         <div className="flex-grow border-t border-border-dark"></div>
-                        <span className="flex-shrink mx-4 text-text-medium">Or continue with</span>
+                        <span className="flex-shrink mx-4 text-text-medium">Or</span>
                         <div className="flex-grow border-t border-border-dark"></div>
                     </div>
                     <div>
                         <button onClick={handleGoogleSignIn} type="button" className="w-full inline-flex justify-center items-center py-3 px-4 border border-border-dark rounded-lg shadow-sm bg-input-dark text-sm font-medium text-text-light hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-accent">
-                             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 5.234c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.577.688.482A10.001 10.001 0 0020 10c0-5.523-4.477-10-10-10z" clipRule="evenodd"></path>
+                            <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path><path d="M1 1h22v22H1z" fill="none"></path>
                             </svg>
-                            Sign in with Google
+                            Continue with Google
                         </button>
                     </div>
                 </div>
@@ -212,6 +229,5 @@ export default function LoginPage() {
         </div>
     </div>
   );
-}
 
     
