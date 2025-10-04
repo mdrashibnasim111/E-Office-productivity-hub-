@@ -42,6 +42,22 @@ const designations: Record<string, Record<string, string[]>> = {
     }
 };
 
+const languages = [
+    { value: 'en', label: 'English' },
+    { value: 'es', label: 'Español' },
+    { value: 'fr', label: 'Français' },
+    { value: 'de', label: 'Deutsch' },
+    { value: 'hi', label: 'हिन्दी (Hindi)' },
+    { value: 'zh', label: '中文 (Mandarin)' },
+    { value: 'ja', label: '日本語 (Japanese)' },
+    { value: 'ko', label: '한국어 (Korean)' },
+    { value: 'ru', label: 'Русский (Russian)' },
+    { value: 'pt', label: 'Português' },
+    { value: 'ar', label: 'العربية (Arabic)' },
+    { value: 'bn', label: 'বাংলা (Bengali)' },
+    { value: 'id', label: 'Bahasa Indonesia' },
+];
+
 const onboardingSchema = z.object({
   role: z.string().min(1, "Role is required."),
   department: z.string().min(1, "Department is required."),
@@ -199,11 +215,9 @@ export default function OnboardingPage() {
                                     <SelectValue placeholder="Select Language" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="en">English</SelectItem>
-                                    <SelectItem value="es">Español</SelectItem>
-                                    <SelectItem value="fr">Français</SelectItem>
-                                    <SelectItem value="de">Deutsch</SelectItem>
-                                    <SelectItem value="hi">हिन्दी</SelectItem>
+                                    {languages.map((lang) => (
+                                        <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
@@ -249,7 +263,7 @@ export default function OnboardingPage() {
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select Department" />
-                                                        </SelectTrigger>
+                                                        </Trigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         {departments.map(dept => <SelectItem key={dept} value={dept}>{dept}</SelectItem>)}
@@ -269,7 +283,7 @@ export default function OnboardingPage() {
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select Designation" />
-                                                        </SelectTrigger>
+                                                        </Trigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         {selectedRole && selectedDepartment && designations[selectedRole]?.[selectedDepartment]?.map(desig => (
@@ -353,5 +367,3 @@ export default function OnboardingPage() {
     </div>
   );
 }
-
-    
