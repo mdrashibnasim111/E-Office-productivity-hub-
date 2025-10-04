@@ -20,6 +20,8 @@ export default {
       },
       colors: {
         background: 'hsl(var(--background))',
+        'background-light': '#f6f8f8',
+        'background-dark': '#112121',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',

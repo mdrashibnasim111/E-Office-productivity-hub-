@@ -8,11 +8,11 @@ import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 
 const navItems = [
-  { href: '/dashboard', icon: Home, label: 'Home' },
-  { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
-  { href: '/dashboard/goals', icon: Target, label: 'Projects' },
-  { href: '/dashboard/team', icon: Users, label: 'Team' },
-  { href: '/dashboard/performance', icon: ProfileIcon, label: 'Profile' },
+  { href: '/dashboard', icon: 'home', label: 'Home' },
+  { href: '/dashboard/tasks', icon: 'task_alt', label: 'Tasks' },
+  { href: '/dashboard/goals', icon: 'business_center', label: 'Projects' },
+  { href: '/dashboard/team', icon: 'group', label: 'Team' },
+  { href: '/dashboard/performance', icon: 'person', label: 'Profile' },
 ];
 
 
@@ -30,7 +30,7 @@ export function BottomNavBar() {
   const isLoading = isUserLoading || isUserDocLoading;
 
   return (
-    <footer className="sticky bottom-0 border-t border-border bg-card/80 backdrop-blur-sm z-50 lg:hidden">
+    <footer className="sticky bottom-0 border-t border-border-divider bg-navbar/80 backdrop-blur-sm z-50 lg:hidden">
         {isLoading ? (
             <div className="grid h-full place-items-center py-2">
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
@@ -43,11 +43,11 @@ export function BottomNavBar() {
                     href={item.href}
                     className={`flex flex-col items-center justify-end gap-1 ${
                     pathname === item.href
-                        ? 'text-primary'
-                        : 'text-muted-foreground hover:text-primary'
+                        ? 'text-info'
+                        : 'text-text-secondary hover:text-info'
                     }`}
                 >
-                    <item.icon className="w-6 h-6" />
+                    <span className="material-symbols-outlined">{item.icon}</span>
                     <p className="text-xs font-medium">{item.label}</p>
                 </Link>
                 ))}

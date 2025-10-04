@@ -54,15 +54,19 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-lg border border-border-divider bg-card p-4 shadow">
                     <h3 className="text-base font-medium text-text-heading mb-4">Project Progress</h3>
-                     <div className="h-48">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={projectProgressData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
-                                <XAxis dataKey="name" tick={{ fill: 'hsl(var(--text-secondary))', fontSize: 12 }} tickLine={false} axisLine={false} />
-                                <YAxis tick={{ fill: 'hsl(var(--text-secondary))', fontSize: 12 }} tickLine={false} axisLine={false} />
-                                <Tooltip cursor={{fill: 'hsl(var(--card))'}} contentStyle={{backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border-divider))' }}/>
-                                <Bar dataKey="progress" fill="hsl(var(--success))" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                     <div className="grid grid-flow-col gap-6 grid-rows-[1fr_auto] items-end justify-items-center h-48 px-3">
+                        <div className="w-full bg-border-divider rounded-t-lg">
+                            <div className="bg-success rounded-t-lg" style={{height: "50%"}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-text-secondary">Project A</p>
+                        <div className="w-full bg-border-divider rounded-t-lg">
+                            <div className="bg-success rounded-t-lg" style={{height: "100%"}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-text-secondary">Project B</p>
+                        <div className="w-full bg-border-divider rounded-t-lg">
+                            <div className="bg-success rounded-t-lg" style={{height: "60%"}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-text-secondary">Project C</p>
                     </div>
                 </div>
                 <div className="rounded-lg border border-border-divider bg-card p-4 shadow">

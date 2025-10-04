@@ -40,6 +40,7 @@ export function Header() {
 
 
   const toggleTheme = () => {
+    document.documentElement.classList.toggle('dark');
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }
 
@@ -51,51 +52,49 @@ export function Header() {
   };
 
   return (
-    <header className="flex h-16 items-center justify-between bg-card p-4 shadow-sm sticky top-0 z-30">
+    <header className="flex items-center justify-between bg-navbar p-4 shadow-sm">
        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="shrink-0 lg:hidden">
+          <Button variant="ghost" size="icon" className="shrink-0 lg:hidden text-text-primary">
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col">
+        <SheetContent side="left" className="flex flex-col bg-navbar">
             <Link href="#" className="flex items-center gap-2 text-lg font-semibold mb-4">
                 <Logo className="h-6 w-6 text-primary" />
-                <span className="font-headline text-lg">e-Office Hub</span>
+                <span className="font-headline text-lg text-text-heading">e-Office Hub</span>
             </Link>
           {/* Mobile Nav Links Here if needed */}
         </SheetContent>
       </Sheet>
 
-      <div className="w-full flex-1">
-        <h1 className="text-lg font-bold text-card-foreground text-center">Manager Dashboard</h1>
-      </div>
+      <div className="hidden lg:block w-10"></div>
+
+      <h1 className="text-lg font-bold text-text-heading text-center flex-1">Manager Dashboard</h1>
 
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={toggleTheme} className="shrink-0">
-            <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
-        </Button>
+        <button className="text-text-primary" onClick={toggleTheme}>
+            <span className="material-symbols-outlined text-3xl hidden dark:inline">light_mode</span>
+            <span className="material-symbols-outlined text-3xl dark:hidden">dark_mode</span>
+        </button>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <button className="text-text-primary">
                 <span className="material-symbols-outlined text-3xl">
                     account_circle
                 </span>
-                <span className="sr-only">Toggle user menu</span>
-            </Button>
+            </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuContent align="end" className="bg-card border-border-divider">
+            <DropdownMenuLabel className="text-text-heading">My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-border-divider"/>
+            <DropdownMenuItem className="text-text-primary focus:bg-primary/20">
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+            <DropdownMenuSeparator className="bg-border-divider" />
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-text-primary focus:bg-primary/20">
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
             </DropdownMenuItem>
