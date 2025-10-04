@@ -101,11 +101,11 @@ export default function OnboardingPage() {
   }, [user, isUserLoading, router]);
   
   useEffect(() => {
-    if (user) {
+    if (user && !isUserLoading) {
       setValue('fullName', user.displayName || '');
       setValue('contactPhone', user.phoneNumber || '');
     }
-  }, [user, setValue]);
+  }, [user, isUserLoading, setValue]);
 
 
   const onSubmit = (data: OnboardingFormValues) => {

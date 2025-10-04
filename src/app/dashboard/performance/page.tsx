@@ -196,7 +196,7 @@ export default function PerformancePage() {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button onClick={handleSelfSubmit}>Submit Self-Assessment</Button>
+                    <Button onClick={handleSelfSubmit} disabled={isLoadingSelfReviews}>Submit Self-Assessment</Button>
                 </CardFooter>
             </Card>
 
@@ -284,7 +284,7 @@ export default function PerformancePage() {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button onClick={handleManagerSubmit}>Submit Feedback</Button>
+                    <Button onClick={handleManagerSubmit} disabled={isLoadingManagerReviews}>Submit Feedback</Button>
                 </CardFooter>
             </Card>
 
@@ -323,5 +323,3 @@ export default function PerformancePage() {
     </>
   );
 }
-
-    
