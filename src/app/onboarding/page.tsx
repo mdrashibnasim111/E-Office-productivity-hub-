@@ -306,7 +306,7 @@ export default function OnboardingPage() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Designation</FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedRole || !selectedDepartment}>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedRole || !selectedDepartment || selectedDepartment === 'Other'}>
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select Designation" />
