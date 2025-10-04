@@ -70,14 +70,18 @@ const onboardingSchema = z.object({
 type OnboardingFormValues = z.infer<typeof onboardingSchema>;
 
 const StepIndicator = ({ currentStep, totalSteps }: { currentStep: number, totalSteps: number }) => (
-    <div className="flex justify-center items-center space-x-3 mb-16">
+    <div className="flex items-center justify-center space-x-6 py-8 mb-8">
         {Array.from({ length: totalSteps }).map((_, index) => (
-            <div
-                key={index}
-                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                    index === currentStep ? 'bg-primary' : 'bg-primary/30'
-                }`}
-            ></div>
+             <div className="flex items-center" key={index}>
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full font-semibold transition-colors duration-300 ${
+                    index === currentStep ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                }`}>
+                    {index + 1}
+                </div>
+                {index < totalSteps - 1 && (
+                    <div className="w-12 h-[2px] bg-border ml-6" />
+                )}
+            </div>
         ))}
     </div>
 );
