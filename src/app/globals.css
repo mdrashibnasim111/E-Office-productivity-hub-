@@ -4,17 +4,17 @@
 
 @layer base {
   :root {
-    --background: 220 13% 97%; /* #f6f7f8 - A bit off-white */
+    --background: 220 13% 97%;
     --foreground: 215 28% 17%;
 
-    --card: 0 0% 100%; /* White */
+    --card: 0 0% 100%;
     --card-foreground: 215 28% 17%;
  
     --popover: 0 0% 100%;
     --popover-foreground: 215 28% 17%;
  
-    --primary: 180 81% 62%; /* #46EBEB */
-    --primary-foreground: 222 47% 11%;
+    --primary: 180 81% 62%;
+    --primary-foreground: 212 43% 11%;
  
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -22,13 +22,13 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
  
-    --accent: 180 81% 62%; /* #46EBEB */
-    --accent-foreground: 222 47% 11%;
+    --accent: 180 81% 62%;
+    --accent-foreground: 212 43% 11%;
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --warning: 38 92% 50%; /* Amber */
+    --warning: 38 92% 50%;
  
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -44,33 +44,33 @@
   }
 
   .dark {
-    --background: 212 43% 11%; /* #0F172A */
-    --foreground: 218 83% 95%; /* #F1F5F9 */
+    --background: 212 43% 11%;      /* main-background: #0F172A */
+    --foreground: 218 83% 95%;      /* text-primary: #F1F5F9 */
 
-    --card: 213 39% 18%; /* #1E293B */
-    --card-foreground: 215 25% 95%; /* #E2E8F0 */
+    --card: 213 39% 18%;             /* card-background: #1E293B */
+    --card-foreground: 215 25% 95%; /* text-heading: #E2E8F0 */
 
     --popover: 212 43% 11%;
     --popover-foreground: 218 83% 95%;
 
-    --primary: 180 81% 62%; /* #46EBEB */
-    --primary-foreground: 212 43% 11%;
+    --primary: 180 81% 62%;         /* btn-normal / accent-highlight: #46EBEB */
+    --primary-foreground: 212 43% 11%; /* btn-text: #0F172A */
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 212 43% 11%;
 
     --muted: 213 39% 18%;
-    --muted-foreground: 215 20% 65%; /* #94A3B8 */
+    --muted-foreground: 215 20% 65%; /* text-secondary: #94A3B8 */
 
-    --accent: 180 81% 62%; /* #46EBEB */
+    --accent: 180 81% 62%;           /* accent-highlight: #46EBEB */
     --accent-foreground: 212 43% 11%;
 
-    --destructive: 0 72% 51%; /* #F87171 */
+    --destructive: 0 72% 51%;       /* accent-error: #F87171 */
     --destructive-foreground: 218 83% 95%;
 
-    --warning: 43 96% 56%; /* #FBBF24 */
+    --warning: 43 96% 56%;          /* accent-warning: #FBBF24 */
 
-    --border: 216 15% 27%; /* #334155 */
+    --border: 216 15% 27%;           /* border-divider: #334155 */
     --input: 216 15% 27%;
     --ring: 180 81% 62%;
 

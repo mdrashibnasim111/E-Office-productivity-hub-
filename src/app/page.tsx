@@ -100,7 +100,7 @@ export default function LoginPage() {
     return (
       <div className="w-full min-h-screen grid place-items-center p-4 bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-accent" />
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <p>Loading...</p>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default function LoginPage() {
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">mail</span>
                 <Input
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-background border focus:ring-2 focus:ring-accent focus:border-accent placeholder:text-muted-foreground transition duration-150 ease-in-out"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-background border focus:ring-2 focus:ring-primary focus:border-primary placeholder:text-muted-foreground transition duration-150 ease-in-out"
                   id="email"
                   placeholder="you@example.gov"
                   type="email"
@@ -138,7 +138,7 @@ export default function LoginPage() {
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">lock</span>
                 <Input
-                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-background border focus:ring-2 focus:ring-accent focus:border-accent placeholder:text-muted-foreground transition duration-150 ease-in-out"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-background border focus:ring-2 focus:ring-primary focus:border-primary placeholder:text-muted-foreground transition duration-150 ease-in-out"
                   id="password"
                   placeholder="••••••••"
                   type="password"
@@ -154,7 +154,7 @@ export default function LoginPage() {
                     <div className="relative">
                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">lock</span>
                         <Input
-                            className="w-full pl-10 pr-4 py-3 rounded-lg bg-background border focus:ring-2 focus:ring-accent focus:border-accent placeholder:text-muted-foreground transition duration-150 ease-in-out"
+                            className="w-full pl-10 pr-4 py-3 rounded-lg bg-background border focus:ring-2 focus:ring-primary focus:border-primary placeholder:text-muted-foreground transition duration-150 ease-in-out"
                             id="confirm-password"
                             placeholder="••••••••"
                             type="password"
@@ -200,7 +200,7 @@ export default function LoginPage() {
 
           <div className="text-center text-sm text-muted-foreground">
             {authMode === 'signIn' ? "Don't have an account? " : 'Already have an account? '}
-            <button onClick={() => setAuthMode(authMode === 'signIn' ? 'signUp' : 'signIn')} className="font-semibold text-accent hover:underline">
+            <button onClick={() => setAuthMode(authMode === 'signIn' ? 'signUp' : 'signIn')} className="font-semibold text-primary hover:underline">
               {authMode === 'signIn' ? 'Sign Up' : 'Sign In'}
             </button>
           </div>
