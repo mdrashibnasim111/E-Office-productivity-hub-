@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -75,6 +76,7 @@ export type OnboardingData = {
   contactPhone: string;
   role: string;
   department: string;
+  otherDepartment?: string;
 }
 
 export function saveOnboardingData(
@@ -83,11 +85,13 @@ export function saveOnboardingData(
   onboardingData: OnboardingData
 ) {
   const userRef = doc(firestore, 'users', user.uid);
+  
+  const { otherDepartment, ...rest } = onboardingData;
 
   const dataToSave = {
     id: user.uid,
     contactEmail: user.email,
-    ...onboardingData,
+    ...rest,
     onboarded: true,
   };
 
@@ -101,3 +105,5 @@ export function saveOnboardingData(
       errorEmitter.emit('permission-error', permissionError);
     });
 }
+
+    

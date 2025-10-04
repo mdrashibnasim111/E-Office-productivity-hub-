@@ -19,7 +19,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Stepper, { Step } from '@/components/ui/stepper';
 import { Label } from '@/components/ui/label';
 
-const departments = ['Finance', 'HR', 'IT', 'Public Works', 'Health', 'Education', 'Operations'];
+const departments = ['Finance', 'HR', 'IT', 'Public Works', 'Health', 'Education', 'Operations', 'Other'];
 const designations: Record<string, Record<string, string[]>> = {
     'Manager': {
         'Finance': ['Finance Manager', 'Accounts Manager'],
@@ -60,10 +60,19 @@ const languages = [
 const onboardingSchema = z.object({
   role: z.string().min(1, "Role is required."),
   department: z.string().min(1, "Department is required."),
+  otherDepartment: z.string().optional(),
   employeeId: z.string().min(1, "Employee ID is required."),
   fullName: z.string().min(1, "Full Name is required."),
   designation: z.string().min(1, "Designation is required."),
   contactPhone: z.string().min(1, "Contact phone is required."),
+}).refine(data => {
+    if (data.department === 'Other') {
+        return !!data.otherDepartment && data.otherDepartment.length > 0;
+    }
+    return true;
+}, {
+    message: "Please specify your department",
+    path: ["otherDepartment"],
 });
 
 type OnboardingFormValues = z.infer<typeof onboardingSchema>;
@@ -81,6 +90,7 @@ export default function OnboardingPage() {
     defaultValues: {
       role: '',
       department: '',
+      otherDepartment: '',
       employeeId: '',
       fullName: '',
       designation: '',
@@ -115,7 +125,12 @@ export default function OnboardingPage() {
       return false; // Indicate failure
     }
     
-    saveOnboardingData(firestore, user, data);
+    const finalData = {
+        ...data,
+        department: data.department === 'Other' ? data.otherDepartment! : data.department
+    };
+
+    saveOnboardingData(firestore, user, finalData);
     
     toast({
       title: "Onboarding Complete!",
@@ -270,6 +285,21 @@ export default function OnboardingPage() {
                                             </FormItem>
                                         )}
                                     />
+                                    {selectedDepartment === 'Other' && (
+                                        <FormField
+                                            control={form.control}
+                                            name="otherDepartment"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Please Specify Department</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="Enter your department" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    )}
                                     <FormField
                                         control={form.control}
                                         name="designation"
@@ -364,3 +394,5 @@ export default function OnboardingPage() {
     </div>
   );
 }
+
+    
