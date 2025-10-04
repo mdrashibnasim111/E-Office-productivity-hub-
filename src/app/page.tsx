@@ -98,7 +98,7 @@ export default function LoginPage() {
 
   if (isUserLoading || (!isUserLoading && user) || isSigningIn) {
     return (
-      <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0E1A25] text-foreground">
+      <div className="w-full min-h-screen grid place-items-center p-4 bg-[#112121] text-foreground">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-accent" />
           <p>Loading...</p>
@@ -108,7 +108,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="font-display bg-[#0E1A25] text-text-light">
+    <div className="font-display bg-[#112121] text-text-light">
         <div className="flex flex-col min-h-screen">
             <header className="border-b border-border-dark">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-between">
