@@ -8,14 +8,33 @@ import { Recommendations } from "@/components/dashboard/recommendations";
 import { OfflineSummary } from "@/components/dashboard/offline-summary";
 import { StreaksCard } from "@/components/dashboard/streaks-card";
 import GradientText from "@/components/ui/gradient-text";
+import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardPage() {
+  const { user, isUserLoading } = useUser();
+  const firestore = useFirestore();
+
+  const userDocRef = useMemoFirebase(
+    () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
+    [firestore, user]
+  );
+  
+  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
+
+  const isLoading = isUserLoading || isUserDocLoading;
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         <div className="md:col-span-2">
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline">
-              <GradientText>Welcome back, Rashib!</GradientText>
+              {isLoading ? (
+                <Skeleton className="h-10 w-64" />
+              ) : (
+                <GradientText>Welcome back, {userData?.fullName || 'User'}!</GradientText>
+              )}
             </h1>
             <p className="text-muted-foreground">Let’s get productive.</p>
         </div>
