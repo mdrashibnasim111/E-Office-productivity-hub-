@@ -25,18 +25,19 @@ import { signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 
 const baseNavItems = [
+  { href: '/dashboard', icon: Home, label: 'Home' },
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
-  { href: '/dashboard/goals', icon: Target, label: 'Goals & KPIs' },
-  { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
-  { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
+  { href: '/dashboard/goals', icon: Target, label: 'Projects' },
+  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Profile' },
 ];
 
 const managerNavItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  ...baseNavItems,
-  { href: '/dashboard/team', icon: Users, label: 'Team' },
-  { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
-  { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
+    { href: '/dashboard', icon: Home, label: 'Home' },
+    { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
+    { href: '/dashboard/goals', icon: Target, label: 'Projects' },
+    { href: '/dashboard/team', icon: Users, label: 'Team' },
+    { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Profile' },
 ];
 
 
@@ -70,7 +71,7 @@ export function Sidebar() {
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-16 items-center border-b px-4 lg:h-20 lg:px-6">
           <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-            <Logo className="h-6 w-6 text-accent" />
+            <Logo className="h-6 w-6 text-primary" />
             <span className="font-headline text-lg">e-Office Hub</span>
           </Link>
         </div>
@@ -88,8 +89,8 @@ export function Sidebar() {
                 <Link
                     key={index}
                     href={item.href}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-accent ${
-                    pathname === item.href ? 'bg-muted text-accent' : ''
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
+                    pathname === item.href ? 'bg-muted text-primary' : ''
                     }`}
                 >
                     <item.icon className="h-4 w-4" />
@@ -101,17 +102,10 @@ export function Sidebar() {
         </div>
         <div className="mt-auto p-4">
           <nav className="grid items-start text-sm font-medium">
-            <Link
-              href="#"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-accent"
-            >
-              <Settings className="h-4 w-4" />
-              Settings
-            </Link>
             <Button
               variant="ghost"
               onClick={handleLogout}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-accent justify-start w-full"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary justify-start w-full"
             >
               <LogOut className="h-4 w-4" />
               Logout
