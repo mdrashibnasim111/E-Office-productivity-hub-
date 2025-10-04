@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useUser, useFirestore } from '@/firebase';
 import { saveOnboardingData } from '@/firebase/firestore/mutations';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Languages } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Stepper, { Step } from '@/components/ui/stepper';
@@ -59,6 +59,7 @@ export default function OnboardingPage() {
   const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
+  const [language, setLanguage] = useState('');
 
   const form = useForm<OnboardingFormValues>({
     resolver: zodResolver(onboardingSchema),
@@ -155,12 +156,22 @@ export default function OnboardingPage() {
                     nextButtonText="Next"
                     onStepChange={(step) => console.log(step)}
                     validateStep={async (step) => {
-                      if (step === 1) {
+                      if (step === 2) {
                          const isValid = await form.trigger();
                          if(isValid) {
                             return onSubmit(form.getValues());
                          }
                          return false;
+                      }
+                      if (step === 1) {
+                        if (!language) {
+                            toast({
+                                variant: 'destructive',
+                                title: 'Language Required',
+                                description: 'Please select a language to continue.'
+                            });
+                            return false;
+                        }
                       }
                       return true;
                     }}
@@ -171,6 +182,31 @@ export default function OnboardingPage() {
                             <p className="mt-2 text-muted-foreground">
                                 Let's get your profile set up. It'll only take a minute.
                             </p>
+                        </div>
+                    </Step>
+                    <Step>
+                        <div className="text-center mb-8">
+                            <h2 className="text-3xl font-bold tracking-tight">Select Your Language</h2>
+                            <p className="mt-2 text-sm text-muted-foreground">
+                                Choose your preferred language for the application interface.
+                            </p>
+                        </div>
+                        <div className="bg-card p-8 shadow-sm border rounded-lg max-w-sm mx-auto">
+                            <FormLabel>Language</FormLabel>
+                            <Select onValueChange={setLanguage} value={language}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Language" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="en">English</SelectItem>
+                                    <SelectItem value="es">Español</SelectItem>
+                                    <SelectItem value="fr">Français</SelectItem>
+                                    <SelectItem value="de">Deutsch</SelectItem>
+                                    <SelectItem value="hi">हिन्दी</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </Step>
                     <Step>
@@ -318,3 +354,5 @@ export default function OnboardingPage() {
     </div>
   );
 }
+
+    
