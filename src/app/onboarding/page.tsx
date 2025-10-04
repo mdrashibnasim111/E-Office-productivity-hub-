@@ -17,6 +17,7 @@ import { Loader2, Languages } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Stepper, { Step } from '@/components/ui/stepper';
+import { Label } from '@/components/ui/label';
 
 
 const departments = ['Finance', 'HR', 'IT', 'Public Works', 'Health', 'Education', 'Operations'];
@@ -191,14 +192,12 @@ export default function OnboardingPage() {
                                 Choose your preferred language for the application interface.
                             </p>
                         </div>
-                        <div className="bg-card p-8 shadow-sm border rounded-lg max-w-sm mx-auto">
-                            <FormLabel>Language</FormLabel>
+                        <div className="bg-card p-8 shadow-sm border rounded-lg max-w-sm mx-auto space-y-2">
+                            <Label>Language</Label>
                             <Select onValueChange={setLanguage} value={language}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select Language" />
-                                    </SelectTrigger>
-                                </FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Language" />
+                                </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="en">English</SelectItem>
                                     <SelectItem value="es">Español</SelectItem>
