@@ -36,7 +36,7 @@ export default function SelectRolePage() {
       if (userData.role === 'Manager') {
         router.push('/dashboard');
       } else {
-        // Default to employee view (tasks page)
+        // Default to employee view (tasks page) for any other role.
         router.push('/dashboard/tasks');
       }
     } else {
@@ -47,9 +47,9 @@ export default function SelectRolePage() {
 
   // Display a loading indicator while we determine the user's status.
   return (
-    <div className="w-full min-h-screen grid place-items-center p-4 bg-[#0F1822] text-foreground">
+    <div className="w-full min-h-screen grid place-items-center p-4 bg-background text-foreground">
       <div className="flex flex-col items-center gap-4">
-        <Loader2 className="h-12 w-12 animate-spin text-accent" />
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
         <p>Routing...</p>
       </div>
     </div>
