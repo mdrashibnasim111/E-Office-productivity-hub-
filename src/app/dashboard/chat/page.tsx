@@ -8,7 +8,7 @@ export default function ChatPage() {
     const avatar2 = PlaceHolderImages.find(i => i.id === 'avatar-2');
     const avatar3 = PlaceHolderImages.find(i => i.id === 'avatar-3');
     const avatar4 = PlaceHolderImages.find(i => i.id === 'avatar-4');
-    const avatar5 = PlaceHolderImages.find(i => i.id === 'avatar-5');
+    const loginImage = PlaceHolderImages.find(i => i.id === 'login-image');
 
   return (
     <div className="bg-background font-display text-foreground">
@@ -273,7 +273,7 @@ export default function ChatPage() {
                     className="aspect-video w-full max-w-sm rounded-lg bg-cover bg-center"
                     style={{
                       backgroundImage:
-                        `url("${PlaceHolderImages.find(i => i.id === 'login-image')?.imageUrl || ''}")`,
+                        `url("${loginImage?.imageUrl || ''}")`,
                     }}
                   ></div>
                 </div>
@@ -309,3 +309,5 @@ export default function ChatPage() {
     </div>
   );
 }
+
+    

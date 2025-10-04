@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -79,11 +80,11 @@ export default function PerformancePage() {
     };
     
     const handleSelfSubmit = () => {
-        if (!user || !firestore) {
+        if (!user || !firestore || isLoadingSelfReviews) {
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: 'You must be logged in to submit a review.',
+                description: 'Cannot submit right now. Please wait or log in.',
             });
             return;
         }
@@ -111,11 +112,11 @@ export default function PerformancePage() {
     };
 
     const handleManagerSubmit = () => {
-        if (!user || !firestore) {
+        if (!user || !firestore || isLoadingManagerReviews) {
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: 'You must be logged in to submit feedback.',
+                description: 'Cannot submit right now. Please wait or log in.',
             });
             return;
         }
@@ -323,3 +324,5 @@ export default function PerformancePage() {
     </>
   );
 }
+
+    

@@ -13,12 +13,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useUser, useFirestore } from '@/firebase';
 import { saveOnboardingData } from '@/firebase/firestore/mutations';
-import { Loader2, Languages } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Stepper, { Step } from '@/components/ui/stepper';
 import { Label } from '@/components/ui/label';
-
 
 const departments = ['Finance', 'HR', 'IT', 'Public Works', 'Health', 'Education', 'Operations'];
 const designations: Record<string, Record<string, string[]>> = {
@@ -70,7 +69,6 @@ const onboardingSchema = z.object({
 type OnboardingFormValues = z.infer<typeof onboardingSchema>;
 const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
 
-
 export default function OnboardingPage() {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
@@ -106,7 +104,6 @@ export default function OnboardingPage() {
       setValue('contactPhone', user.phoneNumber || '');
     }
   }, [user, isUserLoading, setValue]);
-
 
   const onSubmit = (data: OnboardingFormValues) => {
     if (!user || !firestore) {
