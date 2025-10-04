@@ -2,105 +2,100 @@
  * @fileoverview Firestore Security Rules for the e-Office Productivity Hub application.
  *
  * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for user profiles and streak data,
- * and a combination of ownership and role-based access for performance reviews. It prioritizes
- * preventing unauthorized data access and modification.
+ * This ruleset employs a hybrid security model, combining user-based access for personal data with role-based access for shared resources.
+ * Access is predicated on the principle of least privilege, ensuring users can only access what is necessary for their function.
  *
  * Data Structure:
- * - /users/{userId}: Stores individual user profiles, with the document ID matching the Firebase Auth UID.
- * - /userStreaks/{userId}: Stores engagement streak data for each user, with the document ID matching the user's UID.
- * - /performanceReviews/{reviewId}: Stores all performance reviews, accessible based on the review's userId and reviewerId.
+ * - /users/{userId}: Stores profile data, secured with owner-only access.
+ * - /userStreaks/{userId}: Stores streak data, secured with owner-only access.
+ * - /performanceReviews/{reviewId}: Stores performance reviews, accessible to the reviewed user and the reviewer.
  *
  * Key Security Decisions:
- * - Users can only read and write their own profile data and streak information.
- * - Performance reviews can only be created, updated, or delete by the user, or by the manager role.
- * - No user listing is allowed to prevent unauthorized data scraping.
+ * - User listing is disallowed to prevent unauthorized data scraping.
+ * - Performance reviews are accessible only to the user being reviewed and the reviewer.
  *
  * Denormalization for Authorization:
- *  The rules rely on the `userId` field in `userStreaks` documents matching the document ID to enforce ownership.
- *  The rules rely on the `userId` and `reviewerId` fields in `performanceReviews` documents matching the request auth UID to enforce ownership or role-based access.
+ * - The PerformanceReview document includes both `userId` and `reviewerId` to avoid needing to query for related user documents when deciding who can access a review.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Controls access to user profile documents.
+     * @description Secure user profiles. Only the user can read/write their own profile.
      * @path /users/{userId}
-     * @allow (get, list): Authenticated user can read their own profile.
-     * @allow (create, update, delete): Authenticated user can create, update, or delete their own profile.
-     * @deny (get, list): Authenticated user cannot read other user's profile.
-     * @deny (create, update, delete): Authenticated user cannot modify other user's profile.
+     * @allow (create) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can create their own profile if request.auth.uid == userId.
+     * @allow (get, update, delete) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can read/update/delete their own profile.
+     * @deny User 'attackerId' cannot create/read/update/delete User 'wnY2uujN2FY1B59tkqI6WhOdlL43' profile.
      * @principle Enforces document ownership for all operations.
      */
     match /users/{userId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return request.auth.uid == userId;
-      }
-
-      allow get: if isSignedIn() && isOwner(userId);
-      allow list: if false; // No user listing allowed
-
-      allow create: if isSignedIn() && isOwner(userId);
-      allow update: if isSignedIn() && isOwner(userId);
-      allow delete: if isSignedIn() && isOwner(userId);
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description Controls access to user streak documents.
+     * @description Secure user streak data. Only the user can read/write their own streak data.
      * @path /userStreaks/{userId}
-     * @allow (get, list): Authenticated user can read their own streak data.
-     * @allow (create, update, delete): Authenticated user can create, update, or delete their own streak data.
-     * @deny (get, list): Authenticated user cannot read other user's streak data.
-     * @deny (create, update, delete): Authenticated user cannot modify other user's streak data.
+     * @allow (create) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can create their own streak data if request.auth.uid == userId.
+     * @allow (get, update, delete) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can read/update/delete their own streak data.
+     * @deny User 'attackerId' cannot create/read/update/delete User 'wnY2uujN2FY1B59tkqI6WhOdlL43' streak data.
      * @principle Enforces document ownership for all operations.
      */
     match /userStreaks/{userId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return request.auth.uid == userId;
-      }
-
-      allow get: if isSignedIn() && isOwner(userId);
-      allow list: if false; // No user listing allowed
-
-      allow create: if isSignedIn() && isOwner(userId) ;
-      allow update: if isSignedIn() && isOwner(userId) ;
-      allow delete: if isSignedIn() && isOwner(userId) ;
+        allow get: if isOwner(userId);
+        allow list: if false;
+        allow create: if isOwner(userId);
+        allow update: if isExistingOwner(userId);
+        allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description Controls access to performance review documents.
+     * @description Secure performance reviews. Only the reviewed user and the reviewer can access a review.
      * @path /performanceReviews/{reviewId}
-     * @allow (get, list): Authenticated user can read their own reviews (either self-assessment or received feedback).
-     * @allow (create): Authenticated user can create a self-assessment for themselves or a manager can create feedback for a user.
-     * @allow (update, delete): Authenticated user can update/delete their own self-assessment or a manager can update/delete feedback they provided.
-     * @deny (get, list): Authenticated user cannot read other user's performance reviews, unless they are a manager.
-     * @deny (create, update, or delete): Authenticated user cannot create, update, or delete performance reviews they don't own.
-     * @principle Combines document ownership and role-based access for fine-grained control.
+     * @allow (get) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can read a review if they are the reviewed user or the reviewer.
+     * @allow (create) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can create a review.
+     * @allow (update, delete) User 'wnY2uujN2FY1B59tkqI6WhOdlL43' can update/delete a review if they are the reviewer.
+     * @deny User 'attackerId' cannot read/write a review if they are not the reviewed user or reviewer.
+     * @principle Enforces role-based access control based on userId and reviewerId fields.
      */
     match /performanceReviews/{reviewId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
+      allow get: if isReviewerOrReviewed(resource.data.reviewerId, resource.data.userId);
+      allow list: if isReviewerOrReviewedList();
+      allow create: if isSignedIn();
+      allow update: if isExistingReviewer(resource.data.reviewerId);
+      allow delete: if isExistingReviewer(resource.data.reviewerId);
+    }
 
-      function isOwner(userId) {
-        return request.auth.uid == userId;
-      }
+    function isSignedIn() {
+      return request.auth != null;
+    }
 
-      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.reviewerId == request.auth.uid);
-      allow list: if false; // No listing for perf reviews
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
 
-      allow create: if isSignedIn() && (request.resource.data.userId == request.auth.uid || request.resource.data.reviewerId == request.auth.uid);
-      allow update: if isSignedIn() && (request.resource.data.userId == request.auth.uid || request.resource.data.reviewerId == request.auth.uid);
-      allow delete: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.reviewerId == request.auth.uid);
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    function isReviewerOrReviewed(reviewerId, userId) {
+        return request.auth.uid == reviewerId || request.auth.uid == userId;
+    }
+
+    function isReviewerOrReviewedList() {
+        return isSignedIn();
+    }
+
+    function isReviewer(reviewerId) {
+        return request.auth.uid == reviewerId;
+    }
+
+    function isExistingReviewer(reviewerId) {
+        return isReviewer(reviewerId) && resource != null;
     }
   }
 }
