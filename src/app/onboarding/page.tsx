@@ -185,13 +185,13 @@ export default function OnboardingPage() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <main className="flex-grow flex flex-col justify-center px-6">
+            <main className="flex-1 flex flex-col justify-center px-6 pt-8">
                 <div className="text-center mb-10">
                     <h1 className="text-2xl font-bold text-card-foreground">e-Office</h1>
                 </div>
                 <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
                 <AnimatePresence mode="wait">
-                    <div key={currentStep}>
+                    <div key={currentStep} className="mb-8">
                         {currentStep === 0 && (
                             <StepLayout title="Welcome to e-Office" description="Let's get your profile set up. It'll only take a minute." />
                         )}
@@ -272,7 +272,7 @@ export default function OnboardingPage() {
                     </div>
                 </AnimatePresence>
             </main>
-            <div className="px-6 pb-8">
+            <div className="px-6 pb-8 mt-auto">
                 <Button onClick={handleNext} disabled={isLoading} className="w-full bg-primary text-primary-foreground font-bold py-4 px-5 rounded-lg text-lg hover:bg-primary/90 active:bg-primary/80 transition-colors">
                     {isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
                     {currentStep === 0 ? "Get Started" : currentStep === 3 ? "Go to Dashboard" : "Continue"}
