@@ -260,7 +260,7 @@ export default function OnboardingPage() {
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select Department" />
-                                                        </Trigger>
+                                                        </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         {departments.map(dept => <SelectItem key={dept} value={dept}>{dept}</SelectItem>)}
@@ -280,7 +280,7 @@ export default function OnboardingPage() {
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select Designation" />
-                                                        </Trigger>
+                                                        </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         {selectedRole && selectedDepartment && designations[selectedRole]?.[selectedDepartment]?.map(desig => (
