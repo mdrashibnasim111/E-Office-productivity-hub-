@@ -1,8 +1,10 @@
 
 'use client';
 
+import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { CompletedProjectsDialog } from '@/components/dashboard/completed-projects-dialog';
 
 const projectProgressData = [
   { name: 'Project A', progress: 50 },
@@ -23,7 +25,10 @@ const employeePerformance = [
 ]
 
 export default function DashboardPage() {
+    const [isProjectsDialogOpen, setIsProjectsDialogOpen] = useState(false);
+
   return (
+    <>
     <main className="p-0 m-0">
         <section className="mb-6">
             <div className="relative">
@@ -39,7 +44,10 @@ export default function DashboardPage() {
                     <p className="text-sm font-medium text-text-secondary">Overall Score</p>
                     <p className="text-3xl font-bold text-success">85%</p>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow">
+                <div 
+                    className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => setIsProjectsDialogOpen(true)}
+                >
                     <p className="text-sm font-medium text-text-secondary">Projects Completed</p>
                     <p className="text-3xl font-bold text-success">12</p>
                 </div>
@@ -100,5 +108,7 @@ export default function DashboardPage() {
             </div>
         </section>
     </main>
+    <CompletedProjectsDialog isOpen={isProjectsDialogOpen} onClose={() => setIsProjectsDialogOpen(false)} />
+    </>
   );
 }
