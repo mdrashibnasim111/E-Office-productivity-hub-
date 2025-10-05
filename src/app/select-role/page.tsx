@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import { useUser, useDoc, useFirestore, useMemoFirebase, type AppUser } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Loader2 } from 'lucide-react';
 
@@ -32,8 +32,8 @@ export default function SelectRolePage() {
     }
 
     if (userData && userData.onboarded) {
-      // User is onboarded, redirect based on role.
-      if (userData.role === 'Manager') {
+      // User is onboarded, redirect based on role from custom claim.
+      if ((user as AppUser).role === 'Manager') {
         router.push('/dashboard');
       } else {
         // Default to employee view (tasks page) for any other role.

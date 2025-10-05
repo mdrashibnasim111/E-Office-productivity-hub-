@@ -3,8 +3,13 @@
 import React, { DependencyList, createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
 import { FirebaseApp } from 'firebase/app';
 import { Firestore } from 'firebase/firestore';
-import { Auth, User, onAuthStateChanged } from 'firebase/auth';
+import { Auth, User, onAuthStateChanged, IdTokenResult } from 'firebase/auth';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
+
+// Add a 'role' to the User interface for our app context
+export interface AppUser extends User {
+  role?: string;
+}
 
 interface FirebaseProviderProps {
   children: ReactNode;
@@ -15,7 +20,7 @@ interface FirebaseProviderProps {
 
 // Internal state for user authentication
 interface UserAuthState {
-  user: User | null;
+  user: AppUser | null;
   isUserLoading: boolean;
   userError: Error | null;
 }
@@ -27,7 +32,7 @@ export interface FirebaseContextState {
   firestore: Firestore | null;
   auth: Auth | null; // The Auth service instance
   // User authentication state
-  user: User | null;
+  user: AppUser | null;
   isUserLoading: boolean; // True during initial auth check
   userError: Error | null; // Error from auth listener
 }
@@ -37,14 +42,14 @@ export interface FirebaseServicesAndUser {
   firebaseApp: FirebaseApp;
   firestore: Firestore;
   auth: Auth;
-  user: User | null;
+  user: AppUser | null;
   isUserLoading: boolean;
   userError: Error | null;
 }
 
 // Return type for useUser() - specific to user auth state
 export interface UserHookResult { // Renamed from UserAuthHookResult for consistency if desired, or keep as UserAuthHookResult
-  user: User | null;
+  user: AppUser | null;
   isUserLoading: boolean;
   userError: Error | null;
 }
@@ -78,8 +83,18 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
 
     const unsubscribe = onAuthStateChanged(
       auth,
-      (firebaseUser) => { // Auth state determined
-        setUserAuthState({ user: firebaseUser, isUserLoading: false, userError: null });
+      async (firebaseUser) => { // Auth state determined
+        if (firebaseUser) {
+            const idTokenResult: IdTokenResult = await firebaseUser.getIdTokenResult();
+            const appUser: AppUser = {
+                ...firebaseUser,
+                // @ts-ignore
+                role: idTokenResult.claims.role || 'employee',
+            };
+            setUserAuthState({ user: appUser, isUserLoading: false, userError: null });
+        } else {
+            setUserAuthState({ user: null, isUserLoading: false, userError: null });
+        }
       },
       (error) => { // Auth listener error
         console.error("FirebaseProvider: onAuthStateChanged error:", error);

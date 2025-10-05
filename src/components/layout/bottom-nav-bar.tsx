@@ -4,8 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, ListTodo, Target, Users, User as ProfileIcon, Loader2 } from 'lucide-react';
-import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useUser, type AppUser } from '@/firebase';
 
 const navItems = [
   { href: '/dashboard', icon: 'home', label: 'Home' },
@@ -19,15 +18,8 @@ const navItems = [
 export function BottomNavBar() {
   const pathname = usePathname();
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
-
-  const userDocRef = useMemoFirebase(
-    () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
-    [firestore, user]
-  );
-  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
   
-  const isLoading = isUserLoading || isUserDocLoading;
+  const isLoading = isUserLoading;
 
   return (
     <footer className="sticky bottom-0 border-t border-border-divider bg-navbar/80 backdrop-blur-sm z-50 lg:hidden">

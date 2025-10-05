@@ -18,7 +18,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import Logo from '@/components/icons/logo';
-import { useUser, useDoc, useFirestore, useMemoFirebase, useAuth } from '@/firebase';
+import { useUser, useDoc, useFirestore, useMemoFirebase, useAuth, type AppUser } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { signOut } from 'firebase/auth';
@@ -44,19 +44,10 @@ const managerNavItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const auth = useAuth();
   const router = useRouter();
 
-  const userDocRef = useMemoFirebase(
-    () => (user && firestore ? doc(firestore, 'users', user.uid) : null),
-    [firestore, user]
-  );
-  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
-  
-  const isLoading = isUserLoading || isUserDocLoading;
-
-  const isManager = userData?.role === 'Manager';
+  const isManager = (user as AppUser)?.role === 'Manager';
   const navItems = isManager ? managerNavItems : baseNavItems;
 
   const handleLogout = async () => {
@@ -77,7 +68,7 @@ export function Sidebar() {
         </div>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-            {isLoading ? (
+            {isUserLoading ? (
                 <div className="space-y-2 pt-2">
                     <Skeleton className="h-8 w-full bg-card" />
                     <Skeleton className="h-8 w-full bg-card" />
