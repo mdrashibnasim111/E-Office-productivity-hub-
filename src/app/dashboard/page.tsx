@@ -2,10 +2,12 @@
 'use client';
 
 import { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { CompletedProjectsDialog } from '@/components/dashboard/completed-projects-dialog';
 import { PendingTasksDialog } from '@/components/dashboard/pending-tasks-dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Hand } from 'lucide-react';
 
 const projectProgressData = [
   { name: 'Project A', progress: 50 },
@@ -41,26 +43,42 @@ export default function DashboardPage() {
 
         <section className="mb-6">
             <h2 className="text-xl font-bold text-text-heading mb-4">Team Performance</h2>
+            <TooltipProvider>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow">
                     <p className="text-sm font-medium text-text-secondary">Overall Score</p>
                     <p className="text-3xl font-bold text-primary">85%</p>
                 </div>
-                <div 
-                    className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow cursor-pointer hover:bg-muted/50 transition-colors"
-                    onClick={() => setIsProjectsDialogOpen(true)}
-                >
-                    <p className="text-sm font-medium text-text-secondary">Projects Completed</p>
-                    <p className="text-3xl font-bold text-primary">12</p>
-                </div>
-                <div 
-                    className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow col-span-2 sm:col-span-1 cursor-pointer hover:bg-muted/50 transition-colors"
-                    onClick={() => setIsPendingTasksDialogOpen(true)}
-                >
-                    <p className="text-sm font-medium text-text-secondary">Tasks Delayed</p>
-                    <p className="text-3xl font-bold text-destructive">3</p>
-                </div>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div 
+                            className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow cursor-pointer hover:bg-muted/50 transition-colors"
+                            onClick={() => setIsProjectsDialogOpen(true)}
+                        >
+                            <p className="text-sm font-medium text-text-secondary">Projects Completed</p>
+                            <p className="text-3xl font-bold text-primary">12</p>
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p className="flex items-center gap-1"><Hand className="h-4 w-4" /> Click here</p>
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div 
+                            className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow col-span-2 sm:col-span-1 cursor-pointer hover:bg-muted/50 transition-colors"
+                            onClick={() => setIsPendingTasksDialogOpen(true)}
+                        >
+                            <p className="text-sm font-medium text-text-secondary">Tasks Delayed</p>
+                            <p className="text-3xl font-bold text-destructive">3</p>
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p className="flex items-center gap-1"><Hand className="h-4 w-4" /> Click here</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
+            </TooltipProvider>
         </section>
 
         <section className="mb-6">
