@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { CompletedProjectsDialog } from '@/components/dashboard/completed-projects-dialog';
+import { PendingTasksDialog } from '@/components/dashboard/pending-tasks-dialog';
 
 const projectProgressData = [
   { name: 'Project A', progress: 50 },
@@ -26,6 +27,7 @@ const employeePerformance = [
 
 export default function DashboardPage() {
     const [isProjectsDialogOpen, setIsProjectsDialogOpen] = useState(false);
+    const [isPendingTasksDialogOpen, setIsPendingTasksDialogOpen] = useState(false);
 
   return (
     <>
@@ -51,7 +53,10 @@ export default function DashboardPage() {
                     <p className="text-sm font-medium text-text-secondary">Projects Completed</p>
                     <p className="text-3xl font-bold text-primary">12</p>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow col-span-2 sm:col-span-1">
+                <div 
+                    className="flex flex-col items-center justify-center gap-1 rounded-lg bg-card p-4 shadow col-span-2 sm:col-span-1 cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => setIsPendingTasksDialogOpen(true)}
+                >
                     <p className="text-sm font-medium text-text-secondary">Tasks Delayed</p>
                     <p className="text-3xl font-bold text-destructive">3</p>
                 </div>
@@ -109,6 +114,7 @@ export default function DashboardPage() {
         </section>
     </main>
     <CompletedProjectsDialog isOpen={isProjectsDialogOpen} onClose={() => setIsProjectsDialogOpen(false)} />
+    <PendingTasksDialog isOpen={isPendingTasksDialogOpen} onClose={() => setIsPendingTasksDialogOpen(false)} />
     </>
   );
 }
