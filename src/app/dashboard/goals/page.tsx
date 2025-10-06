@@ -3,17 +3,17 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Plus, ArrowLeft, ArrowRight, Hand } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CreateGoalDialog } from '@/components/dashboard/create-goal-dialog';
 import Link from 'next/link';
 import { Sidebar } from '@/components/layout/sidebar';
 import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 export default function GoalsPage() {
   const router = useRouter();
   const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
-  const [isTeamPerformanceOpen, setIsTeamPerformanceOpen] = useState(false);
 
   return (
     <>
@@ -99,12 +99,26 @@ export default function GoalsPage() {
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <TooltipProvider>
               <section className="bg-card p-4 rounded-xl shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-card-foreground">Team Performance</h2>
-                    <Link href="/dashboard/team" className="text-primary hover:text-primary/80">
-                        <ArrowRight className="h-5 w-5" />
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                    <Hand className="h-4 w-4" />
+                                    <span>click here</span>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                            <p>Click to view details</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Link href="/dashboard/team" className="text-primary hover:text-primary/80">
+                            <ArrowRight className="h-5 w-5" />
+                        </Link>
+                    </div>
                 </div>
                 <div className="space-y-2">
                   <Link href="/dashboard/team" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
@@ -121,6 +135,7 @@ export default function GoalsPage() {
                   </Link>
                 </div>
               </section>
+              </TooltipProvider>
               <section className="bg-card p-4 rounded-xl shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-card-foreground">Individual Performance</h2>
@@ -176,3 +191,5 @@ export default function GoalsPage() {
     </>
   );
 }
+
+    
