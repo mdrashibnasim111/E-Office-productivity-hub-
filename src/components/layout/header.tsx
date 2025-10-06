@@ -36,6 +36,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { doc } from 'firebase/firestore';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
 const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
 
@@ -115,7 +116,7 @@ export function Header() {
       </Sheet>
 
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4 justify-end">
-        <h1 className="flex-1 text-lg font-bold text-text-heading">{pageTitle}</h1>
+        
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
