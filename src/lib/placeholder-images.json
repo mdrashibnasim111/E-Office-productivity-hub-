@@ -41,6 +41,30 @@
       "description": "Avatar for the manager, Jane Doe",
       "imageUrl": "https://images.unsplash.com/photo-1581065178047-8ee15951ede6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MHx8fHwxNzU5MjUzMDkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "woman professional"
+    },
+    {
+      "id": "avatar-ananya",
+      "description": "Avatar for Ananya Sharma",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "avatar-rohan",
+      "description": "Avatar for Rohan Verma",
+      "imageUrl": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "man smiling"
+    },
+    {
+      "id": "avatar-priya",
+      "description": "Avatar for Priya Singh",
+      "imageUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "avatar-karan",
+      "description": "Avatar for Karan Gupta",
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "man portrait"
     }
   ]
 }
