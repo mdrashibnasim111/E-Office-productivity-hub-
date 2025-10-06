@@ -36,6 +36,9 @@ const designations: Record<string, Record<string, string[]>> = {
         'Health': ['Nurse', 'Health Educator'],
         'Education': ['Teacher', 'Admissions Officer'],
         'Operations': ['Operations Associate']
+    },
+    'Admin': {
+        'IT': ['System Administrator', 'Database Administrator', 'Network Administrator']
     }
 };
 
@@ -222,7 +225,11 @@ export default function OnboardingPage() {
                                                         <FormLabel>Role</FormLabel>
                                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                             <FormControl><SelectTrigger><SelectValue placeholder="Select Role" /></SelectTrigger></FormControl>
-                                                            <SelectContent><SelectItem value="Employee">Employee</SelectItem><SelectItem value="Manager">Manager</SelectItem></SelectContent>
+                                                            <SelectContent>
+                                                                <SelectItem value="Employee">Employee</SelectItem>
+                                                                <SelectItem value="Manager">Manager</SelectItem>
+                                                                <SelectItem value="Admin">Admin</SelectItem>
+                                                            </SelectContent>
                                                         </Select><FormMessage />
                                                     </FormItem>
                                                 )}/>
