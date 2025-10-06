@@ -258,3 +258,5 @@ const Message = ({ author, avatar, time, isYou, children }: { author: string, av
         </div>
     )
 }
+
+    
