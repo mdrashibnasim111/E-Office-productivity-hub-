@@ -17,8 +17,8 @@ const performanceData = [
         score: 95,
         completion: 98,
         avgTime: 1.8,
-        borderColor: 'border-accent-highlight',
-        bgColor: 'bg-accent-highlight',
+        borderColor: 'border-primary',
+        bgColor: 'bg-primary',
     },
     {
         id: 'user-002',
