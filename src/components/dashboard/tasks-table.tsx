@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -8,6 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableCaption,
 } from '@/components/ui/table';
 import {
   Card,
@@ -17,7 +19,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { tasks, Task } from '@/lib/data';
+import { Task } from '@/lib/data';
 import { TaskDetailsDialog } from '@/components/dashboard/task-details-dialog';
 import { ChevronsRightLeft } from 'lucide-react';
 
@@ -27,7 +29,12 @@ const statusStyles: { [key: string]: string } = {
   'Pending': 'bg-amber-500/20 text-amber-400 border-amber-500/30 shadow-sm shadow-amber-500/50',
 };
 
-export function TasksTable() {
+interface TasksTableProps {
+    tasks: Task[];
+    caption: string;
+}
+
+export function TasksTable({ tasks, caption }: TasksTableProps) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const handleRowClick = (task: Task) => {
@@ -41,19 +48,14 @@ export function TasksTable() {
   return (
     <>
       <Card>
-        <CardHeader>
-          <CardTitle className="font-headline">Recent Tasks</CardTitle>
-          <CardDescription>
-            A list of recently updated tasks in your team.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="relative group">
              <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-card to-transparent pointer-events-none opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-end">
                 <ChevronsRightLeft className="h-6 w-6 text-muted-foreground animate-pulse mr-2" />
             </div>
             <div className="overflow-x-auto">
               <Table>
+                <TableCaption>{caption}</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Task ID</TableHead>
