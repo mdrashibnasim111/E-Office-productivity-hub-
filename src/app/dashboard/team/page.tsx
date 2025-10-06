@@ -68,11 +68,9 @@ export default function TeamPerformancePage() {
                     <h2 className="text-lg font-bold text-card-foreground mb-4">Performance Trend</h2>
                     <div className="h-48">
                         <div className="w-full h-full flex items-end justify-between space-x-2">
-                            {performanceTrend.map(item => (
+                            {performanceTrend.map((item, index) => (
                                 <div key={item.month} className="flex flex-col items-center space-y-1 w-full">
-                                    <div className="w-full bg-muted rounded-t-lg flex items-end" style={{ height: '100%'}}>
-                                        <div className="w-full bg-primary rounded-t-sm" style={{ height: item.height }}></div>
-                                    </div>
+                                    <div className={`w-6 rounded-t-sm ${index === 2 ? 'bg-primary' : 'bg-sky-400'}`} style={{ height: item.height }}></div>
                                     <span className="text-xs text-muted-foreground">{item.month}</span>
                                 </div>
                             ))}
