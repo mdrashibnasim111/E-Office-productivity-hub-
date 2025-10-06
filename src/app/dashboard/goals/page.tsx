@@ -7,14 +7,12 @@ import { Plus, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CreateGoalDialog } from '@/components/dashboard/create-goal-dialog';
 import Link from 'next/link';
-import { TeamPerformanceDialog } from '@/components/dashboard/team-performance-dialog';
 import { Sidebar } from '@/components/layout/sidebar';
 import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 
 export default function GoalsPage() {
   const router = useRouter();
   const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
-  const [isTeamPerformanceOpen, setIsTeamPerformanceOpen] = useState(false);
 
   return (
     <>
@@ -103,7 +101,7 @@ export default function GoalsPage() {
               <section className="bg-card p-4 rounded-xl shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-card-foreground">Team Performance</h2>
-                    <Button variant="ghost" size="icon" onClick={() => setIsTeamPerformanceOpen(true)} className="text-primary hover:text-primary/80">
+                    <Button variant="ghost" size="icon" disabled className="text-primary hover:text-primary/80">
                         <ArrowRight className="h-5 w-5" />
                     </Button>
                 </div>
@@ -174,7 +172,6 @@ export default function GoalsPage() {
       </div>
       <BottomNavBar />
       <CreateGoalDialog isOpen={isCreateGoalOpen} onClose={() => setIsCreateGoalOpen(false)} />
-      <TeamPerformanceDialog isOpen={isTeamPerformanceOpen} onClose={() => setIsTeamPerformanceOpen(false)} />
     </>
   );
 }
