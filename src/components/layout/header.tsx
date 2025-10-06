@@ -114,7 +114,7 @@ export function Header() {
 
       <div className="hidden lg:block w-10"></div>
 
-      <h1 className="text-lg font-bold text-text-heading text-center flex-1">{pageTitle}</h1>
+      <div className="flex-1"></div>
 
       <div className="flex items-center gap-2">
         <button className="text-text-primary" onClick={toggleTheme}>
