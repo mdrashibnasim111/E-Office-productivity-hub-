@@ -6,97 +6,116 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Progress } from '@/components/ui/progress';
-import { teamGoals, Goal, tasks, Task } from '@/lib/data';
-import { Users, Target, Calendar, ListChecks, Clock } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { ArrowLeft, Filter } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface TeamPerformanceDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const statusStyles: { [key: string]: string } = {
-  'In Progress': 'bg-sky-500/20 text-sky-400 border-sky-500/30',
-  'Completed': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  'Pending': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-};
+const performanceTrend = [
+    { month: 'Apr', height: '60%' },
+    { month: 'May', height: '75%' },
+    { month: 'Jun', height: '90%' },
+    { month: 'Jul', height: '80%' },
+    { month: 'Aug', height: '85%' },
+]
 
-const teams = [...new Set(tasks.map(task => task.team))];
+const teamMembers = [
+    { name: 'Anil Kapoor', initials: 'AK', title: 'Senior Accountant', score: 98 },
+    { name: 'Bhavna Gupta', initials: 'BG', title: 'Junior Accountant', score: 91 },
+    { name: 'Chirag Verma', initials: 'CV', title: 'Auditor', score: 85 },
+]
 
-const TeamSection = ({ team }: { team: string }) => {
-    const teamTasks = tasks.filter(t => t.team === team);
-    const completedTasks = teamTasks.filter(t => t.status === 'Completed').length;
-    const onTimeCompletion = (completedTasks / (teamTasks.length || 1)) * 100;
-    const teamSpecificGoals = teamGoals.filter(g => g.title.toLowerCase().includes(team.toLowerCase()));
-
-    return (
-        <div className="mb-6 rounded-lg border p-4">
-            <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
-                <Users className="h-5 w-5" />
-                {team}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <div className="bg-muted/50 p-3 rounded-md">
-                    <p className="text-sm font-medium text-muted-foreground flex items-center gap-2"><ListChecks className="h-4 w-4" /> Tasks Completed</p>
-                    <p className="text-2xl font-bold">{completedTasks}</p>
-                </div>
-                <div className="bg-muted/50 p-3 rounded-md">
-                    <p className="text-sm font-medium text-muted-foreground flex items-center gap-2"><Clock className="h-4 w-4" /> On-time Completion</p>
-                    <p className="text-2xl font-bold">{onTimeCompletion.toFixed(0)}%</p>
-                </div>
-            </div>
-            
-            {teamSpecificGoals.length > 0 && (
-                <div>
-                    <h4 className="font-semibold text-md mb-2">Team Goals</h4>
-                    <div className="space-y-3">
-                        {teamSpecificGoals.map(goal => (
-                            <div key={goal.id} className="bg-card p-3 rounded-md border">
-                                <div className="flex justify-between items-start">
-                                    <p className="font-medium flex-1 pr-2">{goal.title}</p>
-                                    <div className="text-right">
-                                        <div className="font-bold">{goal.progress}%</div>
-                                        <div className="text-xs text-muted-foreground flex items-center gap-1 justify-end">
-                                            <Calendar className="h-3 w-3" />
-                                            <span>{goal.deadline}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Progress value={goal.progress} className="h-1 mt-2" />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </div>
-    )
+const getScoreColor = (score: number) => {
+    if (score > 95) return 'text-primary';
+    if (score > 89) return 'text-sky-400';
+    return 'text-yellow-500';
 }
 
 export function TeamPerformanceDialog({ isOpen, onClose }: TeamPerformanceDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl h-[85vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle className="font-headline text-2xl flex items-center gap-2">
-            <Users className="text-accent" />
-            Team Performance Details
-          </DialogTitle>
-          <DialogDescription>
-            An overview of each team's performance metrics and goals.
-          </DialogDescription>
+      <DialogContent className="max-w-md h-screen md:h-[90vh] flex flex-col p-0 gap-0">
+        <DialogHeader className="flex-row items-center justify-between p-4 border-b sticky top-0 bg-background z-10">
+          <Button variant="ghost" size="icon" onClick={onClose}>
+            <ArrowLeft />
+          </Button>
+          <DialogTitle className="font-headline text-lg text-center flex-1">Team Performance</DialogTitle>
+          <Button variant="ghost" size="icon">
+            <Filter />
+          </Button>
         </DialogHeader>
         
-        <div className="flex-1 overflow-hidden">
-          <ScrollArea className="h-full pr-6">
-            {teams.map(team => (
-                <TeamSection key={team} team={team} />
-            ))}
-          </ScrollArea>
-        </div>
+        <ScrollArea className="flex-1">
+            <div className="p-4 space-y-6">
+                <Card>
+                    <CardContent className="p-4">
+                        <h2 className="text-base font-semibold text-muted-foreground mb-2">Finance Department</h2>
+                        <div className="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <p className="text-2xl font-bold text-primary">92%</p>
+                                <p className="text-xs text-muted-foreground">KPI Score</p>
+                            </div>
+                            <div>
+                                <p className="text-2xl font-bold text-sky-400">85%</p>
+                                <p className="text-xs text-muted-foreground">Projects</p>
+                            </div>
+                            <div>
+                                <p className="text-2xl font-bold text-yellow-500">95%</p>
+                                <p className="text-xs text-muted-foreground">Tasks</p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardContent className="p-4">
+                        <h2 className="text-lg font-bold text-card-foreground mb-4">Performance Trend</h2>
+                        <div className="h-48">
+                            <div className="w-full h-full flex items-end justify-between space-x-2">
+                                {performanceTrend.map(item => (
+                                    <div key={item.month} className="flex flex-col items-center space-y-1 w-full">
+                                        <div className="w-6 bg-sky-400 rounded-t-sm" style={{ height: item.height }}></div>
+                                        <span className="text-xs text-muted-foreground">{item.month}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <section>
+                    <h2 className="text-lg font-bold mb-3 text-card-foreground">Team Members</h2>
+                    <div className="space-y-3">
+                        {teamMembers.map(member => (
+                             <Card key={member.name}>
+                                <CardContent className="p-4 flex items-center justify-between">
+                                    <div className="flex items-center space-x-3">
+                                        <Avatar>
+                                            <AvatarFallback>{member.initials}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="font-semibold text-foreground">{member.name}</p>
+                                            <p className="text-sm text-muted-foreground">{member.title}</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className={`text-lg font-bold ${getScoreColor(member.score)}`}>{member.score}%</p>
+                                        <p className="text-xs text-muted-foreground">KPI Score</p>
+                                    </div>
+                                </CardContent>
+                             </Card>
+                        ))}
+                    </div>
+                </section>
+            </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
