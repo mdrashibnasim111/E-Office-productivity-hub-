@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useMemo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -99,6 +100,22 @@ const ChatListItem = ({ chat }: { chat: typeof teamGroups[0] | typeof individual
 }
 
 export default function ChatListPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTeamGroups = useMemo(() =>
+    teamGroups.filter(chat =>
+      chat.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ), [searchQuery]
+  );
+
+  const filteredIndividualChats = useMemo(() =>
+    individualChats.filter(chat =>
+      chat.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ), [searchQuery]
+  );
+
+  const noResults = filteredTeamGroups.length === 0 && filteredIndividualChats.length === 0;
+
   return (
     <div className="flex flex-col h-screen justify-between bg-background">
       <div className="flex-grow overflow-y-auto">
@@ -115,22 +132,36 @@ export default function ChatListPage() {
                 className="w-full bg-card border border-border rounded-lg py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary" 
                 placeholder="Search conversations..." 
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </header>
         <main className="p-4 space-y-6">
-          <div>
-            <h2 className="text-lg font-bold mb-3 text-card-foreground">Team Groups</h2>
-            <div className="space-y-2">
-              {teamGroups.map(chat => <ChatListItem key={chat.id} chat={chat} />)}
-            </div>
-          </div>
-          <div>
-            <h2 className="text-lg font-bold mb-3 text-card-foreground">Individual</h2>
-            <div className="space-y-2">
-              {individualChats.map(chat => <ChatListItem key={chat.id} chat={chat} />)}
-            </div>
-          </div>
+          {noResults && searchQuery ? (
+              <div className="text-center py-10">
+                <p className="text-muted-foreground">No results found for "{searchQuery}"</p>
+              </div>
+          ) : (
+            <>
+              {filteredTeamGroups.length > 0 && (
+                <div>
+                  <h2 className="text-lg font-bold mb-3 text-card-foreground">Team Groups</h2>
+                  <div className="space-y-2">
+                    {filteredTeamGroups.map(chat => <ChatListItem key={chat.id} chat={chat} />)}
+                  </div>
+                </div>
+              )}
+              {filteredIndividualChats.length > 0 && (
+                <div>
+                  <h2 className="text-lg font-bold mb-3 text-card-foreground">Individual</h2>
+                  <div className="space-y-2">
+                    {filteredIndividualChats.map(chat => <ChatListItem key={chat.id} chat={chat} />)}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </main>
       </div>
       <BottomNavBar />
