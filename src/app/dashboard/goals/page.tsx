@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/layout/sidebar';
 import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import ElectricBorder from '@/components/ui/electric-border';
 
 export default function GoalsPage() {
   const router = useRouter();
@@ -139,9 +140,11 @@ export default function GoalsPage() {
               <section className="bg-card p-4 rounded-xl shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-card-foreground">Individual Performance</h2>
-                    <Link href="/dashboard/performance" className="text-primary hover:text-primary/80">
-                        <ArrowRight className="h-5 w-5" />
-                    </Link>
+                    <ElectricBorder color="hsl(var(--accent))" className="rounded-full">
+                        <Link href="/dashboard/performance" className="text-primary hover:text-primary/80 p-1 block">
+                            <ArrowRight className="h-5 w-5" />
+                        </Link>
+                    </ElectricBorder>
                 </div>
                 <div className="space-y-2">
                   <Link href="/dashboard/performance" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
