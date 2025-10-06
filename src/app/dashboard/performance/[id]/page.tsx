@@ -79,9 +79,9 @@ const employeeData = {
     }
 };
 
-export default function PerformanceDetailPage({ params }: { params: { id: string } }) {
+export default function PerformanceDetailPage({ params: { id } }: { params: { id: string } }) {
     const router = useRouter();
-    const employee = employeeData[params.id as keyof typeof employeeData];
+    const employee = employeeData[id as keyof typeof employeeData];
 
     if (!employee) {
         return <div className="p-4">Employee not found.</div>;
