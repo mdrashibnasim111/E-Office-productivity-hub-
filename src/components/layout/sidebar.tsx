@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useEffect, useState } from 'react';
 
 const baseNavItems = [
   { href: '/dashboard', icon: Home, label: 'Home' },
@@ -60,6 +61,11 @@ export function Sidebar() {
   const auth = useAuth();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isManager = (user as AppUser)?.role === 'Manager';
   const navItems = isManager ? managerNavItems : baseNavItems;
@@ -140,7 +146,7 @@ export function Sidebar() {
                   onClick={toggleTheme}
                   className="text-text-secondary hover:text-text-primary"
                 >
-                  {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                  {mounted && (theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />)}
                   <span className="sr-only">Toggle theme</span>
               </Button>
               <Button

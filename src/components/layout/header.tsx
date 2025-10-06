@@ -68,8 +68,12 @@ export function Header() {
   const pathname = usePathname();
   const { user } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pageTitle = getTitleFromPathname(pathname);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleTheme = () => {
     document.documentElement.classList.toggle('dark');
@@ -134,7 +138,7 @@ export function Header() {
                 <span>Profile</span>
             </DropdownMenuItem>
              <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer text-text-primary focus:bg-primary/20">
-                {theme === 'dark' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
+                {mounted && (theme === 'dark' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />)}
                 <span>Toggle Theme</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-border-divider" />
