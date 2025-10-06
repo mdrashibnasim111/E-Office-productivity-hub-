@@ -30,7 +30,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import Logo from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
@@ -51,16 +51,6 @@ const navItems = [
   { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
 
-const getTitleFromPathname = (pathname: string): string => {
-    if (pathname === '/dashboard') return 'Manager Dashboard';
-    if (pathname.startsWith('/dashboard/performance/')) return 'Performance Details';
-    if (pathname.startsWith('/dashboard/chat/detail')) return 'Chat';
-    if (pathname.startsWith('/dashboard/chat')) return 'Chat';
-    
-    const matchedItem = navItems.find(item => pathname.startsWith(item.href));
-    return matchedItem ? matchedItem.label : 'Dashboard';
-}
-
 export function Header() {
   const { theme, setTheme } = useTheme();
   const auth = useAuth();
@@ -69,7 +59,6 @@ export function Header() {
   const { user } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const pageTitle = getTitleFromPathname(pathname);
 
   useEffect(() => {
     setMounted(true);
@@ -97,6 +86,10 @@ export function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col bg-navbar">
+            <SheetHeader className="sr-only">
+              <SheetTitle>Navigation Menu</SheetTitle>
+              <SheetDescription>Main navigation links for the application.</SheetDescription>
+            </SheetHeader>
             <Link href="/dashboard" className="flex items-center gap-2 text-lg font-semibold mb-4">
                 <Logo className="h-6 w-6 text-primary" />
                 <span className="font-headline text-lg text-text-heading">e-Office Hub</span>
