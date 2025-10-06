@@ -50,6 +50,14 @@ const navItems = [
   { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
 
+const getTitleFromPathname = (pathname: string): string => {
+    if (pathname === '/dashboard') return 'Manager Dashboard';
+    if (pathname.startsWith('/dashboard/performance/')) return 'Performance Details';
+    
+    const matchedItem = navItems.find(item => pathname.startsWith(item.href));
+    return matchedItem ? matchedItem.label : 'Dashboard';
+}
+
 export function Header() {
   const { theme, setTheme } = useTheme();
   const auth = useAuth();
@@ -57,6 +65,7 @@ export function Header() {
   const pathname = usePathname();
   const { user } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const pageTitle = getTitleFromPathname(pathname);
 
 
   const toggleTheme = () => {
@@ -105,7 +114,7 @@ export function Header() {
 
       <div className="hidden lg:block w-10"></div>
 
-      <h1 className="text-lg font-bold text-text-heading text-center flex-1">Manager Dashboard</h1>
+      <h1 className="text-lg font-bold text-text-heading text-center flex-1">{pageTitle}</h1>
 
       <div className="flex items-center gap-2">
         <button className="text-text-primary" onClick={toggleTheme}>
