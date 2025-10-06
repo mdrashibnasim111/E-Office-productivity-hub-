@@ -17,6 +17,7 @@ const teamGroups = [
     time: '10:45 AM',
     avatar: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     unreadCount: 3,
+    type: 'group',
   },
   {
     id: 2,
@@ -25,6 +26,7 @@ const teamGroups = [
     time: 'Yesterday',
     avatar: 'https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     unreadCount: 0,
+    type: 'group',
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ const teamGroups = [
     time: 'Mon',
     avatar: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     unreadCount: 0,
+    type: 'group',
   },
 ];
 
@@ -44,6 +47,7 @@ const individualChats = [
     time: '9:30 AM',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2561&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     unreadCount: 1,
+    type: 'individual',
   },
   {
     id: 2,
@@ -52,6 +56,7 @@ const individualChats = [
     time: 'Yesterday',
     avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     unreadCount: 0,
+    type: 'individual',
   },
   {
     id: 3,
@@ -60,17 +65,18 @@ const individualChats = [
     time: 'Tue',
     avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     unreadCount: 5,
+    type: 'individual',
   },
 ];
 
 
-const ChatListItem = ({ chat }: { chat: typeof teamGroups[0] }) => {
+const ChatListItem = ({ chat }: { chat: typeof teamGroups[0] | typeof individualChats[0] }) => {
     const router = useRouter();
     const hasUnread = chat.unreadCount > 0;
     return (
         <div 
             className="flex items-center gap-4 p-3 rounded-lg bg-card hover:bg-muted/80 cursor-pointer border border-border"
-            onClick={() => router.push(`/dashboard/chat/detail?name=${encodeURIComponent(chat.name)}`)}
+            onClick={() => router.push(`/dashboard/chat/detail?name=${encodeURIComponent(chat.name)}&type=${chat.type}`)}
         >
             <Avatar className="h-12 w-12">
                 <AvatarImage src={chat.avatar} alt={chat.name} />
@@ -131,5 +137,3 @@ export default function ChatListPage() {
     </div>
   );
 }
-
-    
