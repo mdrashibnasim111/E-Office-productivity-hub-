@@ -13,23 +13,24 @@ import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 export default function GoalsPage() {
   const router = useRouter();
   const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
+  const [isTeamPerformanceOpen, setIsTeamPerformanceOpen] = useState(false);
 
   return (
     <>
       <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
         <Sidebar />
         <div className="flex flex-col">
-          <header className="sticky top-0 z-10 flex items-center justify-between bg-background/80 p-4 -mx-4 -mt-4 mb-4 border-b border-border backdrop-blur-sm lg:hidden">
-            <Button variant="ghost" size="icon" onClick={() => router.back()}>
-              <ArrowLeft />
-            </Button>
-            <h1 className="text-lg font-bold text-center flex-1 text-card-foreground">Goals &amp; KPIs</h1>
-            <Button variant="ghost" size="icon" onClick={() => setIsCreateGoalOpen(true)}>
-              <Plus />
-            </Button>
-          </header>
-
           <main className="flex-1 flex flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background pb-20 lg:pb-6">
+            <div className="flex items-center justify-between lg:hidden">
+              <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                <ArrowLeft />
+              </Button>
+              <h1 className="text-lg font-bold text-center flex-1 text-card-foreground">Goals &amp; KPIs</h1>
+              <Button variant="ghost" size="icon" onClick={() => setIsCreateGoalOpen(true)}>
+                <Plus />
+              </Button>
+            </div>
+
             <div className="hidden lg:flex justify-between items-start mb-6">
                 <div>
                     <h2 className="text-3xl font-bold text-card-foreground">Goals and KPIs</h2>
@@ -101,20 +102,20 @@ export default function GoalsPage() {
               <section className="bg-card p-4 rounded-xl shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-card-foreground">Team Performance</h2>
-                    <Link href="/dashboard/performance" className="text-primary hover:text-primary/80">
+                    <Link href="/dashboard/team" className="text-primary hover:text-primary/80">
                         <ArrowRight className="h-5 w-5" />
                     </Link>
                 </div>
                 <div className="space-y-2">
-                  <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
+                  <Link href="/dashboard/team" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                     <span className="text-base font-medium text-foreground">Tasks Completed</span>
                     <span className="text-lg font-bold text-sky-500">128</span>
                   </Link>
-                  <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
+                  <Link href="/dashboard/team" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                     <span className="text-base font-medium text-foreground">On-time Completion</span>
                     <span className="text-lg font-bold text-primary">92%</span>
                   </Link>
-                  <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
+                  <Link href="/dashboard/team" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                     <span className="text-base font-medium text-foreground">Active Projects</span>
                     <span className="text-lg font-bold text-yellow-500">5</span>
                   </Link>
