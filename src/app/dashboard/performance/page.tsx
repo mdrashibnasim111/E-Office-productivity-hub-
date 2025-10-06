@@ -153,7 +153,7 @@ export default function PerformancePage() {
 
   return (
     <>
-      <h1 class="text-2xl md:text-3xl font-bold tracking-tight font-headline text-accent">
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-headline text-accent">
         Performance Review
       </h1>
       <Tabs defaultValue="self-assessment">
