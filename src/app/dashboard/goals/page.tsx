@@ -3,9 +3,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, ArrowLeft } from 'lucide-react';
+import { Plus, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CreateGoalDialog } from '@/components/dashboard/create-goal-dialog';
+import Link from 'next/link';
 
 export default function GoalsPage() {
   const router = useRouter();
@@ -93,37 +94,47 @@ export default function GoalsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <section className="bg-card p-4 rounded-xl shadow-sm">
-            <h2 className="text-lg font-bold mb-4 text-card-foreground">Team Performance</h2>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold text-card-foreground">Team Performance</h2>
+                <Link href="#" className="text-primary hover:text-primary/80">
+                    <ArrowRight className="h-5 w-5" />
+                </Link>
+            </div>
+            <div className="space-y-2">
+              <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                 <span className="text-base font-medium text-foreground">Tasks Completed</span>
                 <span className="text-lg font-bold text-sky-500">128</span>
-              </div>
-              <div className="flex justify-between items-center">
+              </Link>
+              <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                 <span className="text-base font-medium text-foreground">On-time Completion</span>
                 <span className="text-lg font-bold text-primary">92%</span>
-              </div>
-              <div className="flex justify-between items-center">
+              </Link>
+              <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                 <span className="text-base font-medium text-foreground">Active Projects</span>
                 <span className="text-lg font-bold text-yellow-500">5</span>
-              </div>
+              </Link>
             </div>
           </section>
           <section className="bg-card p-4 rounded-xl shadow-sm">
-            <h2 className="text-lg font-bold mb-4 text-card-foreground">Individual Performance</h2>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold text-card-foreground">Individual Performance</h2>
+                 <Link href="#" className="text-primary hover:text-primary/80">
+                    <ArrowRight className="h-5 w-5" />
+                </Link>
+            </div>
+            <div className="space-y-2">
+              <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                 <span className="text-base font-medium text-foreground">Your Tasks Done</span>
                 <span className="text-lg font-bold text-sky-500">24</span>
-              </div>
-              <div className="flex justify-between items-center">
+              </Link>
+              <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                 <span className="text-base font-medium text-foreground">Avg. Completion Time</span>
                 <span className="text-lg font-bold text-primary">2.5 Days</span>
-              </div>
-              <div className="flex justify-between items-center">
+              </Link>
+              <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
                 <span className="text-base font-medium text-foreground">Achievements</span>
                 <span className="text-lg font-bold text-yellow-500">3</span>
-              </div>
+              </Link>
             </div>
           </section>
         </div>
@@ -156,5 +167,3 @@ export default function GoalsPage() {
     </>
   );
 }
-
-    
