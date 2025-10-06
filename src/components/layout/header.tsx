@@ -53,6 +53,8 @@ const navItems = [
 const getTitleFromPathname = (pathname: string): string => {
     if (pathname === '/dashboard') return 'Manager Dashboard';
     if (pathname.startsWith('/dashboard/performance/')) return 'Performance Details';
+    if (pathname.startsWith('/dashboard/chat/detail')) return 'Chat';
+    if (pathname.startsWith('/dashboard/chat')) return 'Chat';
     
     const matchedItem = navItems.find(item => pathname.startsWith(item.href));
     return matchedItem ? matchedItem.label : 'Dashboard';
@@ -76,15 +78,15 @@ export function Header() {
   const handleLogout = async () => {
     if(auth) {
         await signOut(auth);
-        router.push('/');
+        router.push('/login');
     }
   };
 
   return (
-    <header className="flex items-center justify-between bg-navbar p-4 shadow-sm">
+    <header className="flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 lg:hidden">
        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="shrink-0 lg:hidden text-text-primary">
+          <Button variant="ghost" size="icon" className="shrink-0 text-text-primary">
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
@@ -101,7 +103,7 @@ export function Header() {
                   href={item.href}
                   onClick={() => setIsSheetOpen(false)}
                   className={`flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    pathname === item.href ? 'bg-card text-primary' : ''
+                    pathname.startsWith(item.href) && item.href !== '/dashboard' || pathname === item.href ? 'bg-card text-primary' : ''
                   }`}
                 >
                   <item.icon className="h-5 w-5" />
@@ -112,29 +114,27 @@ export function Header() {
         </SheetContent>
       </Sheet>
 
-      <div className="hidden lg:block w-10"></div>
-
-      <div className="flex-1"></div>
-
-      <div className="flex items-center gap-2">
-        <button className="text-text-primary" onClick={toggleTheme}>
-            <span className="material-symbols-outlined text-3xl hidden dark:inline">light_mode</span>
-            <span className="material-symbols-outlined text-3xl dark:hidden">dark_mode</span>
-        </button>
+      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4 justify-end">
+        <h1 className="flex-1 text-lg font-bold text-text-heading">{pageTitle}</h1>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-            <button className="text-text-primary">
-                <span className="material-symbols-outlined text-3xl">
-                    account_circle
-                </span>
-            </button>
+              <Button variant="secondary" size="icon" className="rounded-full">
+                <Avatar>
+                  <AvatarImage src={user?.photoURL || managerAvatar?.imageUrl} />
+                </Avatar>
+                <span className="sr-only">Toggle user menu</span>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="bg-card border-border-divider">
-            <DropdownMenuLabel className="text-text-heading">My Account</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-text-heading">{user?.displayName || 'e-Office User'}</DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-border-divider"/>
             <DropdownMenuItem className="text-text-primary focus:bg-primary/20">
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
+            </DropdownMenuItem>
+             <DropdownMenuItem onClick={toggleTheme} className="cursor-pointer text-text-primary focus:bg-primary/20">
+                {theme === 'dark' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
+                <span>Toggle Theme</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-border-divider" />
             <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-text-primary focus:bg-primary/20">

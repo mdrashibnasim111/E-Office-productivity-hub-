@@ -27,7 +27,7 @@ export default function SelectRolePage() {
 
     if (!user) {
       // If no user is authenticated, send them to the login page.
-      router.push('/');
+      router.push('/login');
       return;
     }
 
