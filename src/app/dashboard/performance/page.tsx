@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ChevronRight, Search } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 const performanceData = [
     {
+        id: 'user-001',
         name: 'Ananya Sharma',
         title: 'Clerk, Finance Dept.',
         avatar: PlaceHolderImages.find(p => p.id === 'avatar-ananya')?.imageUrl || '',
@@ -19,6 +21,7 @@ const performanceData = [
         bgColor: 'bg-accent-highlight',
     },
     {
+        id: 'user-002',
         name: 'Rohan Verma',
         title: 'Section Officer, PW',
         avatar: PlaceHolderImages.find(p => p.id === 'avatar-rohan')?.imageUrl || '',
@@ -29,6 +32,7 @@ const performanceData = [
         bgColor: 'bg-sky-400',
     },
     {
+        id: 'user-003',
         name: 'Priya Singh',
         title: 'Director, Health',
         avatar: PlaceHolderImages.find(p => p.id === 'avatar-priya')?.imageUrl || '',
@@ -39,6 +43,7 @@ const performanceData = [
         bgColor: 'bg-yellow-500',
     },
     {
+        id: 'user-004',
         name: 'Karan Gupta',
         title: 'Jr. Assistant, IT',
         avatar: PlaceHolderImages.find(p => p.id === 'avatar-karan')?.imageUrl || '',
@@ -66,8 +71,8 @@ export default function IndividualPerformanceListPage() {
       </header>
 
       <main className="flex-grow space-y-4">
-        {performanceData.map((person, index) => (
-            <a key={index} className="block bg-card p-4 rounded-xl hover:bg-muted/50 transition-colors duration-200" href="#">
+        {performanceData.map((person) => (
+            <Link key={person.id} href={`/dashboard/performance/${person.id}`} className="block bg-card p-4 rounded-xl hover:bg-muted/50 transition-colors duration-200">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Image alt={person.name} className={`w-12 h-12 rounded-full border-2 ${person.borderColor}`} src={person.avatar} width={48} height={48} />
@@ -91,7 +96,7 @@ export default function IndividualPerformanceListPage() {
                         <span>Avg. Time: {person.avgTime} Days</span>
                     </div>
                 </div>
-            </a>
+            </Link>
         ))}
       </main>
     </div>
