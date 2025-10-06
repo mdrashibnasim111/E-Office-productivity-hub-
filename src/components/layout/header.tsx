@@ -12,6 +12,14 @@ import {
   LogOut,
   Moon,
   Sun,
+  Home,
+  ListTodo,
+  Target,
+  Users,
+  ClipboardCheck,
+  MessageSquare,
+  BarChart2,
+  Trophy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,10 +39,22 @@ import { doc } from 'firebase/firestore';
 
 const managerAvatar = PlaceHolderImages.find(i => i.id === 'avatar-manager');
 
+const navItems = [
+  { href: '/dashboard', icon: Home, label: 'Home' },
+  { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
+  { href: '/dashboard/goals', icon: Target, label: 'Goals' },
+  { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
+  { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
+  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
+  { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
+];
+
 export function Header() {
   const { theme, setTheme } = useTheme();
   const auth = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const { user } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -61,11 +81,25 @@ export function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col bg-navbar">
-            <Link href="#" className="flex items-center gap-2 text-lg font-semibold mb-4">
+            <Link href="/dashboard" className="flex items-center gap-2 text-lg font-semibold mb-4">
                 <Logo className="h-6 w-6 text-primary" />
                 <span className="font-headline text-lg text-text-heading">e-Office Hub</span>
             </Link>
-          {/* Mobile Nav Links Here if needed */}
+            <nav className="grid gap-2 text-lg font-medium">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setIsSheetOpen(false)}
+                  className={`flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
+                    pathname === item.href ? 'bg-card text-primary' : ''
+                  }`}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
         </SheetContent>
       </Sheet>
 

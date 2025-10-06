@@ -3,15 +3,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ListTodo, Target, Users, User as ProfileIcon, Loader2 } from 'lucide-react';
+import { Home, ListTodo, Target, Users, ClipboardCheck, Loader2 } from 'lucide-react';
 import { useUser, type AppUser } from '@/firebase';
 
 const navItems = [
-  { href: '/dashboard', icon: 'home', label: 'Home' },
-  { href: '/dashboard/tasks', icon: 'task_alt', label: 'Tasks' },
-  { href: '/dashboard/goals', icon: 'business_center', label: 'Projects' },
-  { href: '/dashboard/team', icon: 'group', label: 'Team' },
-  { href: '/dashboard/performance', icon: 'person', label: 'Profile' },
+  { href: '/dashboard', icon: Home, label: 'Home' },
+  { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
+  { href: '/dashboard/goals', icon: Target, label: 'Goals' },
+  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Profile' },
 ];
 
 
@@ -33,13 +33,13 @@ export function BottomNavBar() {
                 <Link
                     key={item.label}
                     href={item.href}
-                    className={`flex flex-col items-center justify-end gap-1 ${
+                    className={`flex flex-col items-center justify-center gap-1 p-2 rounded-md ${
                     pathname === item.href
-                        ? 'text-info'
-                        : 'text-text-secondary hover:text-info'
+                        ? 'text-primary bg-primary/10'
+                        : 'text-muted-foreground hover:text-primary'
                     }`}
                 >
-                    <span className="material-symbols-outlined">{item.icon}</span>
+                    <item.icon className="h-5 w-5" />
                     <p className="text-xs font-medium">{item.label}</p>
                 </Link>
                 ))}
