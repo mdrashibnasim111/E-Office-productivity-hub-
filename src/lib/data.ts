@@ -237,15 +237,52 @@ export type LeaderboardUser = {
   points: number;
   avatar: string | undefined;
   badges: BadgeType[];
+  team?: string;
 }
 
 export const leaderboard: LeaderboardUser[] = [
-  { id: 'user-001', name: 'Sarah Lee', title: 'Finance Analyst', points: 1250, avatar: PlaceHolderImages.find(i => i.id === 'avatar-1')?.imageUrl, badges: [{name: 'Achiever', variant: 'default'}, {name: 'Pro', variant: 'secondary'}] },
-  { id: 'user-002', name: 'David Chen', title: 'HR Coordinator', points: 1180, avatar: PlaceHolderImages.find(i => i.id === 'avatar-2')?.imageUrl, badges: [{name: 'Rising Star', variant: 'outline'}] },
-  { id: 'user-003', name: 'Maria Rodriguez', title: 'System Administrator', points: 1120, avatar: PlaceHolderImages.find(i => i.id === 'avatar-3')?.imageUrl, badges: [{name: 'Achiever', variant: 'default'}] },
-  { id: 'user-004', name: 'Kenji Tanaka', title: 'UI/UX Designer', points: 1050, avatar: PlaceHolderImages.find(i => i.id === 'avatar-4')?.imageUrl, badges: [{name: 'Pro', variant: 'secondary'}] },
-  { id: 'user-005', name: 'Fatima Al-Fassi', title: 'Field Officer', points: 980, avatar: PlaceHolderImages.find(i => i.id === 'avatar-5')?.imageUrl, badges: [] },
+  { id: 'user-001', name: 'Ethan Carter', title: 'Finance Analyst', points: 1250, avatar: 'https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=2521&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', badges: [{name: 'Achiever', variant: 'default'}, {name: 'Pro', variant: 'secondary'}], team: 'Team Alpha' },
+  { id: 'user-002', name: 'Olivia Bennett', title: 'HR Coordinator', points: 1180, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', badges: [{name: 'Rising Star', variant: 'outline'}], team: 'Team Beta' },
+  { id: 'user-003', name: 'Noah Thompson', title: 'System Administrator', points: 1120, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', badges: [{name: 'Achiever', variant: 'default'}], team: 'Team Alpha' },
+  { id: 'user-004', name: 'Ava Harper', title: 'UI/UX Designer', points: 1050, avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2561&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', badges: [{name: 'Pro', variant: 'secondary'}], team: 'Team Gamma' },
+  { id: 'user-005', name: 'Fatima Al-Fassi', title: 'Field Officer', points: 980, avatar: PlaceHolderImages.find(i => i.id === 'avatar-5')?.imageUrl, badges: [], team: 'Team Beta' },
 ];
+
+export type Team = {
+  name: string;
+  totalPoints: number;
+  progress: number;
+  avatar: string;
+  sharedBadges: { name: string; icon: string }[];
+};
+
+export const teamRankings: Team[] = [
+  {
+    name: 'Team Alpha',
+    totalPoints: 2500,
+    progress: 75,
+    avatar: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    sharedBadges: [
+      { name: 'Task Master', icon: 'task_alt' },
+      { name: 'Collaboration Champion', icon: 'groups' },
+    ],
+  },
+  {
+    name: 'Team Beta',
+    totalPoints: 2100,
+    progress: 60,
+    avatar: 'https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    sharedBadges: [{ name: 'Deadline Dominator', icon: 'timer' }],
+  },
+  {
+    name: 'Team Gamma',
+    totalPoints: 1950,
+    progress: 50,
+    avatar: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    sharedBadges: [{ name: 'Efficiency Experts', icon: 'speed' }],
+  },
+];
+
 
 export type Goal = {
   id: string;
@@ -261,7 +298,7 @@ export const teamGoals: Goal[] = [
     { id: 'goal-team-3', title: 'Launch New Digital Service Portal', description: 'Complete development, testing, and launch of the new portal for citizen services.', progress: 30, deadline: '2024-11-15' },
 ];
 
-export const individualGoals: Goal[] = [
+export const individualGoals: (Goal & { assignee: string })[] = [
     { id: 'goal-ind-1', title: 'Complete Advanced Project Management Certification', assignee: 'Sarah Lee', progress: 80, deadline: '2024-08-31' },
     { id: 'goal-ind-2', title: 'Master New UI/UX Design Software', assignee: 'Kenji Tanaka', progress: 60, deadline: '2024-09-15' },
     { id: 'goal-ind-3', title: 'Improve Public Speaking Skills', assignee: 'David Chen', progress: 90, deadline: '2024-08-20' },
