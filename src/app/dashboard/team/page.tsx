@@ -48,7 +48,7 @@ export default function TeamPerformancePage() {
                     <h2 className="text-base font-semibold text-muted-foreground mb-2">Finance Department</h2>
                     <div className="grid grid-cols-3 gap-4 text-center">
                         <div>
-                            <p className="text-2xl font-bold text-primary">92%</p>
+                            <p className="text-2xl font-bold text-accent-highlight" style={{color: '#46EBEB'}}>92%</p>
                             <p className="text-xs text-muted-foreground">KPI Score</p>
                         </div>
                         <div>
@@ -70,7 +70,7 @@ export default function TeamPerformancePage() {
                         <div className="w-full h-full flex items-end justify-between space-x-2">
                             {performanceTrend.map((item, index) => (
                                 <div key={item.month} className="flex flex-col items-center space-y-1 w-full">
-                                    <div className={`w-6 rounded-t-sm ${index === 2 ? 'bg-primary' : 'bg-sky-400'}`} style={{ height: item.height }}></div>
+                                    <div className={`w-6 rounded-t-sm ${index === 2 ? 'bg-accent-highlight' : 'bg-sky-400'}`} style={{ height: item.height, backgroundColor: index === 2 ? '#46EBEB' : 'hsl(var(--secondary))' }}></div>
                                     <span className="text-xs text-muted-foreground">{item.month}</span>
                                 </div>
                             ))}
