@@ -81,7 +81,7 @@ export function TeamPerformanceDialog({ isOpen, onClose }: TeamPerformanceDialog
                             <div className="w-full h-full flex items-end justify-between space-x-2">
                                 {performanceTrend.map(item => (
                                     <div key={item.month} className="flex flex-col items-center space-y-1 w-full">
-                                        <div className="w-6 bg-sky-400 rounded-t-sm" style={{ height: item.height }}></div>
+                                        <div className="w-6 bg-primary rounded-t-sm" style={{ height: item.height }}></div>
                                         <span className="text-xs text-muted-foreground">{item.month}</span>
                                     </div>
                                 ))}

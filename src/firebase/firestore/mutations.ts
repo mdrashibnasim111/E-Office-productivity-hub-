@@ -41,13 +41,12 @@ export function savePerformanceReview(
 
   if (reviewData.type === 'manager-feedback') {
     dataToSave = {
-      ...reviewData,
+      type: reviewData.type,
+      feedback: reviewData.feedback,
       userId: reviewData.reviewedUserId, // The user being reviewed
       reviewerId: userId, // The manager
       createdAt: serverTimestamp(),
     };
-    // The 'reviewedUserId' field is redundant in the final object, so we can remove it.
-    delete (dataToSave as any).reviewedUserId;
   } else {
     dataToSave = {
       ...reviewData,

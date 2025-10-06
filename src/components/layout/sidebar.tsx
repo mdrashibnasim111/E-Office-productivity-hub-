@@ -27,7 +27,7 @@ import { Button } from '@/components/ui/button';
 const baseNavItems = [
   { href: '/dashboard', icon: Home, label: 'Home' },
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
-  { href: '/dashboard/goals', icon: Target, label: 'Projects' },
+  { href: '/dashboard/goals', icon: Target, label: 'Goals' },
   { href: '/dashboard/team', icon: Users, label: 'Team' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Profile' },
 ];
@@ -35,9 +35,9 @@ const baseNavItems = [
 const managerNavItems = [
     { href: '/dashboard', icon: Home, label: 'Home' },
     { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
-    { href: '/dashboard/goals', icon: Target, label: 'Projects' },
+    { href: '/dashboard/goals', icon: Target, label: 'Goals' },
     { href: '/dashboard/team', icon: Users, label: 'Team' },
-    { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Profile' },
+    { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
 ];
 
 
