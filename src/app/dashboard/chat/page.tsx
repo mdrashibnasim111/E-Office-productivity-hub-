@@ -70,7 +70,7 @@ const ChatListItem = ({ chat }: { chat: typeof teamGroups[0] }) => {
     return (
         <div 
             className="flex items-center gap-4 p-3 rounded-lg bg-card hover:bg-muted/80 cursor-pointer border border-border"
-            onClick={() => router.push('/dashboard/chat/detail')}
+            onClick={() => router.push(`/dashboard/chat/detail?name=${encodeURIComponent(chat.name)}`)}
         >
             <Avatar className="h-12 w-12">
                 <AvatarImage src={chat.avatar} alt={chat.name} />
@@ -131,3 +131,5 @@ export default function ChatListPage() {
     </div>
   );
 }
+
+    

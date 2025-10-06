@@ -20,7 +20,7 @@ import {
   Flame,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const participants = [
     { name: 'Ethan Carter', role: 'Manager', avatar: 'https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=2521&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', online: true },
@@ -52,6 +52,8 @@ const quickReplies = ["👍 Awesome!", "Will do.", "Okay!", "Got it!", "😁", "
 
 export default function ChatDetailPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const chatName = searchParams.get('name') || 'Chat';
 
   return (
       <div className="flex h-screen flex-col bg-background">
@@ -59,7 +61,7 @@ export default function ChatDetailPage() {
             <Button variant="ghost" size="icon" onClick={() => router.back()}>
                 <ArrowLeft />
             </Button>
-            <h1 className="text-lg font-bold text-card-foreground">Project Phoenix</h1>
+            <h1 className="text-lg font-bold text-card-foreground">{chatName}</h1>
             <div className="w-6"></div>
         </header>
 
@@ -212,3 +214,5 @@ const Message = ({ author, avatar, time, isYou, children }: { author: string, av
         </div>
     )
 }
+
+    
