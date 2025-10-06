@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode } from 'react';
 import { Sidebar } from '@/components/layout/sidebar';
 import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
