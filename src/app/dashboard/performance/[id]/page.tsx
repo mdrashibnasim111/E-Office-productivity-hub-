@@ -79,8 +79,9 @@ const employeeData = {
     }
 };
 
-export default function PerformanceDetailPage({ params: { id } }: { params: { id: string } }) {
+export default function PerformanceDetailPage({ params }: { params: { id: string } }) {
     const router = useRouter();
+    const { id } = params;
     const employee = employeeData[id as keyof typeof employeeData];
 
     if (!employee) {
@@ -197,3 +198,5 @@ export default function PerformanceDetailPage({ params: { id } }: { params: { id
     </div>
   );
 }
+
+    
