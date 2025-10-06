@@ -17,12 +17,12 @@ export default function TasksPage() {
        <Tabs defaultValue="team">
         <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
           <TabsTrigger value="team">Team Tasks</TabsTrigger>
-          <TabsTrigger value="my-tasks">My Tasks</TabsTrigger>
+          <TabsTrigger value="individual-tasks">Individual Tasks</TabsTrigger>
         </TabsList>
         <TabsContent value="team">
           <TasksTable tasks={teamTasks} caption="A list of tasks assigned to your team." />
         </TabsContent>
-        <TabsContent value="my-tasks">
+        <TabsContent value="individual-tasks">
           <TasksTable tasks={myTasks} caption="A list of tasks assigned to you." />
         </TabsContent>
       </Tabs>
