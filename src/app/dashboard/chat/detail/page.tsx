@@ -13,14 +13,12 @@ import {
   Star,
   Trophy,
   Users,
-  Badge,
-  Smile,
-  ThumbsUp,
-  Laugh,
-  Flame,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
+import { Badge } from '@/components/ui/badge';
+
 
 const participants = [
     { name: 'Ethan Carter', role: 'Manager', avatar: 'https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=2521&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', online: true },
@@ -49,12 +47,75 @@ const leaderboard = [
 
 const quickReplies = ["👍 Awesome!", "Will do.", "Okay!", "Got it!", "😁", "🥳"];
 
+const initialMessages = [
+    { author: 'Ethan Carter', avatar: participants[0].avatar, time: '10:30 AM', isYou: false, content: "Good morning, team. Let's discuss the progress on the project." },
+    { author: 'Olivia Bennett', avatar: participants[1].avatar, time: '10:31 AM', isYou: true, content: "Morning, Ethan. We've completed the initial draft and are ready for review." },
+    { author: 'Ethan Carter', avatar: participants[0].avatar, time: '10:32 AM', isYou: false, content: "Great work, Olivia. Noah, can you share the latest updates on the budget?" },
+    { author: 'Noah Thompson', avatar: participants[2].avatar, time: '10:33 AM', isYou: true, content: "Sure, Ethan. The budget is on track, with a slight variance due to unexpected expenses." },
+    { author: 'Ethan Carter', avatar: participants[0].avatar, time: '10:34 AM', isYou: false, content: "Thanks, Noah. Ava, how's the client communication going?" },
+    { author: 'Ava Harper', avatar: participants[3].avatar, time: '10:35 AM', isYou: true, content: "Client is satisfied with the progress. We have a meeting scheduled next week to finalize the details." },
+    { author: 'Ethan Carter', avatar: participants[0].avatar, time: '10:36 AM', isYou: false, content: (
+        <div className="w-64">
+            <p className="mb-2 font-semibold">Quick Poll: Project Deadline?</p>
+            <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start">👍 Next Week</Button>
+                <Button variant="outline" className="w-full justify-start">👎 End of Month</Button>
+            </div>
+        </div>
+    )},
+];
+
+type MessageType = {
+    author: string;
+    avatar: string;
+    time: string;
+    isYou: boolean;
+    content: React.ReactNode;
+};
 
 export default function ChatDetailPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const chatName = searchParams.get('name') || 'Chat';
   const chatType = searchParams.get('type');
+  const [messages, setMessages] = useState<MessageType[]>(initialMessages);
+  const [inputValue, setInputValue] = useState('');
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+        const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (viewport) {
+            viewport.scrollTop = viewport.scrollHeight;
+        }
+    }
+  }, [messages]);
+  
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputValue.trim()) {
+      const newMessage: MessageType = {
+        author: 'Olivia Bennett', // Assuming the current user is Olivia
+        avatar: participants[1].avatar,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isYou: true,
+        content: inputValue,
+      };
+      setMessages([...messages, newMessage]);
+      setInputValue('');
+    }
+  };
+
+  const handleQuickReply = (reply: string) => {
+    const newMessage: MessageType = {
+        author: 'Olivia Bennett',
+        avatar: participants[1].avatar,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isYou: true,
+        content: reply,
+      };
+      setMessages([...messages, newMessage]);
+  }
 
   return (
       <div className="flex h-screen flex-col bg-background">
@@ -132,58 +193,38 @@ export default function ChatDetailPage() {
             
             {/* Main Chat Area */}
             <main className="flex flex-1 flex-col bg-background">
-                <ScrollArea className="flex-1 space-y-6 overflow-y-auto p-4 md:p-6">
-                    <Message author="Ethan Carter" avatar={participants[0].avatar} time="10:30 AM" isYou={false}>
-                        Good morning, team. Let's discuss the progress on the project.
-                    </Message>
-                    <Message author="Olivia Bennett" avatar={participants[1].avatar} time="10:31 AM" isYou={true}>
-                        Morning, Ethan. We've completed the initial draft and are ready for review.
-                    </Message>
-                    <Message author="Ethan Carter" avatar={participants[0].avatar} time="10:32 AM" isYou={false}>
-                        Great work, Olivia. Noah, can you share the latest updates on the budget?
-                    </Message>
-                     <Message author="Noah Thompson" avatar={participants[2].avatar} time="10:33 AM" isYou={true}>
-                        Sure, Ethan. The budget is on track, with a slight variance due to unexpected expenses.
-                    </Message>
-                     <Message author="Ethan Carter" avatar={participants[0].avatar} time="10:34 AM" isYou={false}>
-                        Thanks, Noah. Ava, how's the client communication going?
-                    </Message>
-                    <Message author="Ava Harper" avatar={participants[3].avatar} time="10:35 AM" isYou={true}>
-                         Client is satisfied with the progress. We have a meeting scheduled next week to finalize the details.
-                    </Message>
-                    <Message author="Ethan Carter" avatar={participants[0].avatar} time="10:36 AM" isYou={false}>
-                        <div className="w-64">
-                            <p className="mb-2 font-semibold">Quick Poll: Project Deadline?</p>
-                            <div className="space-y-2">
-                                <Button variant="outline" className="w-full justify-start">👍 Next Week</Button>
-                                <Button variant="outline" className="w-full justify-start">👎 End of Month</Button>
-                            </div>
-                        </div>
-                    </Message>
+                <ScrollArea ref={scrollAreaRef} className="flex-1 space-y-6 overflow-y-auto p-4 md:p-6">
+                    {messages.map((msg, index) => (
+                        <Message key={index} author={msg.author} avatar={msg.avatar} time={msg.time} isYou={msg.isYou}>
+                            {msg.content}
+                        </Message>
+                    ))}
                 </ScrollArea>
 
                  {/* Message Input */}
                 <div className="border-t p-4 bg-card border-border">
                     <div className="mb-3 flex space-x-2 overflow-x-auto pb-2">
                         {quickReplies.map(reply => (
-                            <Button key={reply} variant="secondary" size="sm" className="rounded-full flex-shrink-0">{reply}</Button>
+                            <Button key={reply} variant="secondary" size="sm" className="rounded-full flex-shrink-0" onClick={() => handleQuickReply(reply)}>{reply}</Button>
                         ))}
                     </div>
-                    <div className="relative">
+                    <form className="relative" onSubmit={handleSendMessage}>
                         <Input
-                        className="w-full rounded-full border py-3 pl-4 pr-24 focus:outline-none focus:ring-1 bg-background text-foreground border-border"
-                        placeholder="Type your message..."
-                        type="text"
+                            className="w-full rounded-full border py-3 pl-4 pr-24 focus:outline-none focus:ring-1 bg-background text-foreground border-border"
+                            placeholder="Type your message..."
+                            type="text"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
                         />
                         <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-                        <Button variant="ghost" size="icon" className="text-muted-foreground">
-                            <Paperclip className="h-5 w-5" />
-                        </Button>
-                        <Button className="ml-1 h-8 w-8 rounded-full bg-primary p-2 text-primary-foreground hover:bg-primary/90">
-                            <Send className="h-4 w-4" />
-                        </Button>
+                            <Button variant="ghost" size="icon" className="text-muted-foreground">
+                                <Paperclip className="h-5 w-5" />
+                            </Button>
+                            <Button type="submit" className="ml-1 h-8 w-8 rounded-full bg-primary p-2 text-primary-foreground hover:bg-primary/90">
+                                <Send className="h-4 w-4" />
+                            </Button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </main>
         </div>
