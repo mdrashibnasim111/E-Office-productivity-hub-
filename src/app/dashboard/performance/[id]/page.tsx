@@ -28,6 +28,54 @@ const employeeData = {
             { month: 'Jan', score: 93 }, { month: 'Feb', score: 33 }, { month: 'Mar', score: 101 },
             { month: 'Apr', score: 61 }, { month: 'May', score: 45 }, { month: 'Jun', score: 121 },
         ],
+    },
+    'user-002': {
+        name: 'Rohan Verma',
+        title: 'Section Officer',
+        department: 'Public Works',
+        avatar: PlaceHolderImages.find(p => p.id === 'avatar-rohan')?.imageUrl || '',
+        kpi: { score: 82, target: 85, achievement: 96 },
+        tasks: { completed: 95, total: 110, rate: 86 },
+        projects: [
+            { role: 'Project Coordinator', name: 'City Bridge Repair' },
+            { role: 'Site Inspector', name: 'New Highway Construction' },
+        ],
+        trend: [
+            { month: 'Jan', score: 75 }, { month: 'Feb', score: 78 }, { month: 'Mar', score: 80 },
+            { month: 'Apr', score: 85 }, { month: 'May', score: 82 }, { month: 'Jun', score: 88 },
+        ],
+    },
+    'user-003': {
+        name: 'Priya Singh',
+        title: 'Director',
+        department: 'Health',
+        avatar: PlaceHolderImages.find(p => p.id === 'avatar-priya')?.imageUrl || '',
+        kpi: { score: 76, target: 80, achievement: 95 },
+        tasks: { completed: 40, total: 50, rate: 80 },
+        projects: [
+            { role: 'Program Lead', name: 'Public Health Initiative' },
+            { role: 'Oversight', name: 'Community Clinic Expansion' },
+        ],
+        trend: [
+            { month: 'Jan', score: 70 }, { month: 'Feb', score: 72 }, { month: 'Mar', score: 68 },
+            { month: 'Apr', score: 75 }, { month: 'May', score: 78 }, { month: 'Jun', score: 76 },
+        ],
+    },
+    'user-004': {
+        name: 'Karan Gupta',
+        title: 'Jr. Assistant',
+        department: 'IT',
+        avatar: PlaceHolderImages.find(p => p.id === 'avatar-karan')?.imageUrl || '',
+        kpi: { score: 58, target: 70, achievement: 82 },
+        tasks: { completed: 65, total: 100, rate: 65 },
+        projects: [
+            { role: 'Support Specialist', name: 'Helpdesk Ticketing System' },
+            { role: 'Developer', name: 'Internal Portal Update' },
+        ],
+        trend: [
+            { month: 'Jan', score: 50 }, { month: 'Feb', score: 55 }, { month: 'Mar', score: 62 },
+            { month: 'Apr', score: 58 }, { month: 'May', score: 60 }, { month: 'Jun', score: 56 },
+        ],
     }
 };
 
