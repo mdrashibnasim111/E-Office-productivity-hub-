@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Star, Military, Check } from 'lucide-react';
+import { ArrowLeft, Star, Check, Trophy } from 'lucide-react';
 import { teamRankings, leaderboard, Team, LeaderboardUser } from '@/lib/data';
 import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 import { Progress } from '@/components/ui/progress';
