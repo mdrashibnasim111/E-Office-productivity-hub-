@@ -9,6 +9,7 @@ import {
   Target,
   Users,
   ClipboardCheck,
+  Trophy,
 } from 'lucide-react';
 import { useUser, type AppUser } from '@/firebase';
 import { cn } from '@/lib/utils';
@@ -17,7 +18,7 @@ const baseNavItems = [
   { href: '/dashboard', icon: Home, label: 'Home' },
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
   { href: '/dashboard/goals', icon: Target, label: 'Goals' },
-  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Profile' },
 ];
 
@@ -25,7 +26,7 @@ const managerNavItems = [
   { href: '/dashboard', icon: Home, label: 'Home' },
   { href: '/dashboard/tasks', icon: ListTodo, label: 'Tasks' },
   { href: '/dashboard/goals', icon: Target, label: 'Goals' },
-  { href: '/dashboard/team', icon: Users, label: 'Team' },
+  { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
 ];
 
@@ -44,7 +45,7 @@ export function BottomNavBar() {
             key={item.label}
             href={item.href}
             className={cn(
-              'flex flex-col items-center gap-1 p-2 rounded-lg transition-colors duration-200',
+              'flex flex-col items-center gap-1 p-2 rounded-lg transition-colors duration-200 w-16',
               pathname === item.href
                 ? 'text-primary bg-primary/10'
                 : 'text-muted-foreground hover:text-primary'
@@ -55,7 +56,7 @@ export function BottomNavBar() {
           </Link>
         ))}
       </nav>
-      <div className="h-4 bg-navbar" />
+      <div className="h-safe-bottom bg-navbar" />
     </footer>
   );
 }
