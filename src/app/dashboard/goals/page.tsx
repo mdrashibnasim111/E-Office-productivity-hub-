@@ -1,10 +1,12 @@
 
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from "@/components/ui/progress";
+import { CreateGoalDialog } from '@/components/dashboard/create-goal-dialog';
 
 const teamGoals = [
     {
@@ -70,6 +72,7 @@ const individualGoals = [
 
 export default function GoalsPage() {
   const router = useRouter();
+  const [isCreateGoalOpen, setIsCreateGoalOpen] = useState(false);
 
   return (
     <>
@@ -82,7 +85,7 @@ export default function GoalsPage() {
             <h2 className="text-3xl font-bold text-card-foreground">Goals and KPIs</h2>
             <p className="text-muted-foreground mt-1">Set and track team and individual goals to enhance productivity and performance.</p>
             </div>
-            <Button className="mt-4">
+            <Button className="mt-4" onClick={() => setIsCreateGoalOpen(true)}>
                 <Plus className="mr-2 h-4 w-4" />
                 Create New Goal
             </Button>
@@ -206,6 +209,7 @@ export default function GoalsPage() {
                 </div>
             </div>
         </div>
+        <CreateGoalDialog isOpen={isCreateGoalOpen} onClose={() => setIsCreateGoalOpen(false)} />
     </>
   );
 }
