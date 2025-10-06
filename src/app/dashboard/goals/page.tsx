@@ -101,9 +101,9 @@ export default function GoalsPage() {
               <section className="bg-card p-4 rounded-xl shadow-sm">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold text-card-foreground">Team Performance</h2>
-                    <Button variant="ghost" size="icon" disabled className="text-primary hover:text-primary/80">
+                    <Link href="/dashboard/performance" className="text-primary hover:text-primary/80">
                         <ArrowRight className="h-5 w-5" />
-                    </Button>
+                    </Link>
                 </div>
                 <div className="space-y-2">
                   <Link href="#" className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50 transition-colors duration-200">
