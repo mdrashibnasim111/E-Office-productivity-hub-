@@ -9,7 +9,6 @@ import { CreateGoalDialog } from '@/components/dashboard/create-goal-dialog';
 import Link from 'next/link';
 import { TeamPerformanceDialog } from '@/components/dashboard/team-performance-dialog';
 import { Sidebar } from '@/components/layout/sidebar';
-import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 
 export default function GoalsPage() {
   const router = useRouter();
@@ -172,7 +171,6 @@ export default function GoalsPage() {
           </main>
         </div>
       </div>
-      <BottomNavBar />
       <CreateGoalDialog isOpen={isCreateGoalOpen} onClose={() => setIsCreateGoalOpen(false)} />
       <TeamPerformanceDialog isOpen={isTeamPerformanceOpen} onClose={() => setIsTeamPerformanceOpen(false)} />
     </>

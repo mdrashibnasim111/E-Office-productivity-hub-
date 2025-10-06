@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import { Sidebar } from '@/components/layout/sidebar';
 import { Header } from '@/components/layout/header';
-import { BottomNavBar } from '@/components/layout/bottom-nav-bar';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +14,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </main>
         </div>
       </div>
-      <BottomNavBar />
     </>
   );
 }
