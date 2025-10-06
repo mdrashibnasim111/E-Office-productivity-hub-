@@ -44,7 +44,6 @@ const managerNavItems = [
     { href: '/dashboard/goals', icon: Target, label: 'Goals' },
     { href: '/dashboard/team', icon: Users, label: 'Team' },
     { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
-    { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
 ];
 
 const sharedNavItems = [

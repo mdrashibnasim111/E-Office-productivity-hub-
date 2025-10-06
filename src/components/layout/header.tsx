@@ -47,7 +47,6 @@ const navItems = [
   { href: '/dashboard/performance', icon: ClipboardCheck, label: 'Performance' },
   { href: '/dashboard/chat', icon: MessageSquare, label: 'Chat' },
   { href: '/dashboard/team', icon: Users, label: 'Team' },
-  { href: '/dashboard/reports', icon: BarChart2, label: 'Reports' },
   { href: '/dashboard/leaderboard', icon: Trophy, label: 'Leaderboard' },
 ];
 
@@ -65,7 +64,6 @@ export function Header() {
   }, []);
 
   const toggleTheme = () => {
-    document.documentElement.classList.toggle('dark');
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }
 
@@ -86,9 +84,9 @@ export function Header() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col bg-navbar">
-            <SheetHeader className="sr-only">
-              <SheetTitle>Navigation Menu</SheetTitle>
-              <SheetDescription>Main navigation links for the application.</SheetDescription>
+            <SheetHeader>
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <SheetDescription className="sr-only">Main navigation links for the application.</SheetDescription>
             </SheetHeader>
             <Link href="/dashboard" className="flex items-center gap-2 text-lg font-semibold mb-4">
                 <Logo className="h-6 w-6 text-primary" />
